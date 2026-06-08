@@ -26,7 +26,7 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
     try:
         lines = header.read_text(encoding="utf-8").splitlines()
     except Exception as exc:
-        print(f"Warning: cannot read {header}: {exc}", file=sys.stderr)
+        print(f"aLD6sgKg8w :: Warning: cannot read {header}: {exc}", file=sys.stderr)
         return []
 
     depth = 0
@@ -68,7 +68,7 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
                 break
 
         if class_name is None:
-            print(f"Warning: BEAN annotation at {header}:{i+1} — no 'class' found nearby, skipping",
+            print(f"4WYWniEyQh :: Warning: BEAN annotation at {header}:{i+1} — no 'class' found nearby, skipping",
                   file=sys.stderr)
             continue
 
