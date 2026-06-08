@@ -5,7 +5,7 @@
 #include <mutex>
 #include <shared_mutex>
 
-namespace getter {
+namespace di {
   template <typename T,                                //
             typename Deleter = std::default_delete<T>> //
   class Getter

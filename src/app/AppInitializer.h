@@ -1,19 +1,19 @@
-//
-// Created by pompei on 2026-06-08.
-//
-
 #pragma once
 #include "app/Settings.h"
 #include "di/Getter.h"
+#include "vul/Print.h"
 
 namespace app {
 
   class AppInitializer
-  /// Bean application app::Settings vul::Print
+  /// Bean appInitializer app::Settings vul::Print
   {
-    getter::Getter<app::Settings> &setting_;
+    di::Getter<Settings> &setting_;
+    di::Getter<vul::Print> &print_;
 
   public:
-    explicit AppInitializer(getter::Getter<Settings> &setting);
+    explicit AppInitializer(di::Getter<Settings> &setting, di::Getter<vul::Print> &print);
+
+    void init();
   };
 } // namespace app
