@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Vulkan REQUIRED)
 find_package(SDL3 REQUIRED CONFIG)
 
+include(cmake/DiContextGenerator.cmake)
+
 add_executable(prob_vulkan
     src/main.cpp
     src/app/AppInitializer.cpp
@@ -15,12 +17,16 @@ add_executable(prob_vulkan
     src/app/Settings.cpp
     src/app/Settings.h
     src/vul/Print.cpp
-    src/vul/Print.h
-    src/di/ContextDi.cpp
-    src/di/ContextDi.h)
+    src/vul/Print.h)
 
 target_link_libraries(prob_vulkan PRIVATE Vulkan::Vulkan SDL3::SDL3)
 
-include_directories(
-    src
+target_include_directories(prob_vulkan PRIVATE src)
+
+generate_di_context(prob_vulkan
+    SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated"
+    GEN_GETTER_NAME        "di::Getter"
+    GEN_GETTER_INC         "di/Getter.h"
+    GEN_CONTEXT_CLASS_NAME "di::Context"
 )

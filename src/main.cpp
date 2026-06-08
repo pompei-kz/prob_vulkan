@@ -1,6 +1,5 @@
 // ReSharper disable CppUseStructuredBinding
-#include "vul/Print.h"
-#include "di/ContextDi.h"
+#include "di/Context.h"
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
@@ -26,7 +25,7 @@ int main()
     throw std::runtime_error(std::string("4E7viRAzp3 :: failed to init SDL: ") + SDL_GetError());
   }
 
-  di::ContextDi context;
+  di::Context context;
 
   app::AppInitializer *appInitializer = context.get_appInitializer();
 
