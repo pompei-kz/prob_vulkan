@@ -5,6 +5,17 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
+std::string deviceTypeName(VkPhysicalDeviceType t)
+{
+  switch (t) {
+    case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: return "Integrated GPU";
+    case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: return "Discrete GPU";
+    case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: return "Virtual GPU";
+    case VK_PHYSICAL_DEVICE_TYPE_CPU: return "CPU";
+    default: return "Other";
+  }
+}
+
 int main()
 {
   if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -43,16 +54,6 @@ int main()
   std::vector<VkPhysicalDevice> devices(deviceCount);
   vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
-  const auto deviceTypeName = [](VkPhysicalDeviceType t) -> const char * {
-    switch (t) {
-    case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: return "Integrated GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: return "Discrete GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: return "Virtual GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_CPU: return "CPU";
-    default: return "Other";
-    }
-  };
-
   for (uint32_t i = 0; i < deviceCount; ++i) {
     VkPhysicalDeviceProperties props;
     vkGetPhysicalDeviceProperties(devices[i], &props);
@@ -60,9 +61,9 @@ int main()
     VkPhysicalDeviceMemoryProperties mem;
     vkGetPhysicalDeviceMemoryProperties(devices[i], &mem);
 
-    uint64_t vramBytes = 0;
+    uint64_t vRamBytes = 0;
     for (uint32_t h = 0; h < mem.memoryHeapCount; ++h) {
-      if (mem.memoryHeaps[h].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) vramBytes += mem.memoryHeaps[h].size;
+      if (mem.memoryHeaps[h].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) vRamBytes += mem.memoryHeaps[h].size;
     }
 
     uint32_t queueFamilyCount = 0;
@@ -78,7 +79,7 @@ int main()
               << "  Driver ver:   " << props.driverVersion << "\n"
               << "  Vendor ID:    0x" << std::hex << props.vendorID << std::dec << "\n"
               << "  Device ID:    0x" << std::hex << props.deviceID << std::dec << "\n"
-              << "  V_RAM:         " << vramBytes / (1024 * 1024) << " MB\n"
+              << "  V_RAM:        " << vRamBytes / (1024 * 1024) << " MB\n"
               << "  Queue families: " << queueFamilyCount << "\n";
 
     for (uint32_t q = 0; q < queueFamilyCount; ++q) {
