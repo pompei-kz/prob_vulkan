@@ -6,7 +6,7 @@
 namespace app {
 
   class AppInitializer
-  /// Bean appInitializer app::Settings vul::Print
+  /// BEAN appInitializer app::Settings vul::Print
   {
     di::Getter<Settings> &setting_;
     di::Getter<vul::Print> &print_;

@@ -10,7 +10,7 @@
 
 namespace vul {
   class Print
-  // Bean print
+  // BEAN print
   {
   public:
     const char *deviceTypeName(VkPhysicalDeviceType t);

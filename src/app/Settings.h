@@ -5,7 +5,7 @@
 #pragma once
 
 namespace app {
-  /// Bean settings
+  /// BEAN settings
   class Settings
   {
   public:
