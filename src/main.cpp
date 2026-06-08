@@ -1,19 +1,21 @@
+// ReSharper disable CppUseStructuredBinding
+#include "prints.h"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_vulkan.h>
 #include <iostream>
 #include <stdexcept>
+#include <unordered_set>
 #include <vector>
 #include <vulkan/vulkan.h>
 
-std::string deviceTypeName(VkPhysicalDeviceType t)
+VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
+                                             VkDebugUtilsMessageTypeFlagsEXT             type,
+                                             const VkDebugUtilsMessengerCallbackDataEXT *data,
+                                             void                                       *userData)
 {
-  switch (t) {
-    case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: return "Integrated GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: return "Discrete GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: return "Virtual GPU";
-    case VK_PHYSICAL_DEVICE_TYPE_CPU: return "CPU";
-    default: return "Other";
-  }
+  std::cerr << data->pMessage << '\n';
+
+  return VK_FALSE;
 }
 
 int main()
@@ -21,6 +23,10 @@ int main()
   if (!SDL_Init(SDL_INIT_VIDEO)) {
     throw std::runtime_error(std::string("4E7viRAzp3 :: failed to init SDL: ") + SDL_GetError());
   }
+
+  std::unordered_set<std::string> instanceExtensions;
+
+  prints::loadInstanceExtensions(true, &instanceExtensions);
 
   VkApplicationInfo appInfo{};
   appInfo.sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO;
@@ -33,11 +39,28 @@ int main()
   uint32_t           sdlExtCount   = 0;
   const char *const *sdlExtensions = SDL_Vulkan_GetInstanceExtensions(&sdlExtCount);
 
+  std::vector<std::string> extensions;
+  for (uint32_t i = 0; i < sdlExtCount; ++i) {
+    extensions.push_back(sdlExtensions[i]);
+  }
+
+  std::vector<std::string> validationLayers;
+
+  if (instanceExtensions.contains(VK_EXT_DEBUG_UTILS_EXTENSION_NAME)) {
+    extensions.emplace_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
+    validationLayers.emplace_back("VK_LAYER_KHRONOS_validation");
+  }
+
+  std::vector<const char *> cExtensions;
+  for (const std::string &s : extensions) {
+    cExtensions.push_back(s.c_str());
+  }
+
   VkInstanceCreateInfo createInfo{};
   createInfo.sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
   createInfo.pApplicationInfo        = &appInfo;
-  createInfo.enabledExtensionCount   = sdlExtCount;
-  createInfo.ppEnabledExtensionNames = sdlExtensions;
+  createInfo.enabledExtensionCount   = cExtensions.size();
+  createInfo.ppEnabledExtensionNames = cExtensions.data();
   createInfo.enabledLayerCount       = 0;
 
   VkInstance instance;
@@ -55,42 +78,7 @@ int main()
   vkEnumeratePhysicalDevices(instance, &deviceCount, devices.data());
 
   for (uint32_t i = 0; i < deviceCount; ++i) {
-    VkPhysicalDeviceProperties props;
-    vkGetPhysicalDeviceProperties(devices[i], &props);
-
-    VkPhysicalDeviceMemoryProperties mem;
-    vkGetPhysicalDeviceMemoryProperties(devices[i], &mem);
-
-    uint64_t vRamBytes = 0;
-    for (uint32_t h = 0; h < mem.memoryHeapCount; ++h) {
-      if (mem.memoryHeaps[h].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) vRamBytes += mem.memoryHeaps[h].size;
-    }
-
-    uint32_t queueFamilyCount = 0;
-    vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queueFamilyCount, nullptr);
-    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
-    vkGetPhysicalDeviceQueueFamilyProperties(devices[i], &queueFamilyCount, queueFamilies.data());
-
-    std::cout << "\n[Device " << i << "]\n"
-              << "  Name:         " << props.deviceName << "\n"
-              << "  Type:         " << deviceTypeName(props.deviceType) << "\n"
-              << "  API version:  " << VK_VERSION_MAJOR(props.apiVersion) << "." << VK_VERSION_MINOR(props.apiVersion) << "."
-              << VK_VERSION_PATCH(props.apiVersion) << "\n"
-              << "  Driver ver:   " << props.driverVersion << "\n"
-              << "  Vendor ID:    0x" << std::hex << props.vendorID << std::dec << "\n"
-              << "  Device ID:    0x" << std::hex << props.deviceID << std::dec << "\n"
-              << "  V_RAM:        " << vRamBytes / (1024 * 1024) << " MB\n"
-              << "  Queue families: " << queueFamilyCount << "\n";
-
-    for (uint32_t q = 0; q < queueFamilyCount; ++q) {
-      const auto &qf = queueFamilies[q];
-      std::cout << "    [" << q << "] count=" << qf.queueCount << " flags=";
-      if (qf.queueFlags & VK_QUEUE_GRAPHICS_BIT) std::cout << "GRAPHICS ";
-      if (qf.queueFlags & VK_QUEUE_COMPUTE_BIT) std::cout << "COMPUTE ";
-      if (qf.queueFlags & VK_QUEUE_TRANSFER_BIT) std::cout << "TRANSFER ";
-      if (qf.queueFlags & VK_QUEUE_SPARSE_BINDING_BIT) std::cout << "SPARSE ";
-      std::cout << "\n";
-    }
+    prints::printPhysicalDeviceProperties(i, devices[i]);
   }
 
   vkDestroyInstance(instance, nullptr);
