@@ -4,7 +4,7 @@ PRESET := debug-clang
 BUILD_DIR := cmake-build-debug-clang
 
 run: build
-	$(BUILD_DIR)/probe_vulkan
+	$(BUILD_DIR)/prob_vulkan
 
 configure:
 	cmake --preset $(PRESET)

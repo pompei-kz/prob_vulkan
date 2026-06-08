@@ -38,3 +38,5 @@ AllowAllArgumentsOnNextLine: false
 
 AlwaysBreakAfterReturnType: None
 PenaltyReturnTypeOnItsOwnLine: 1000000
+
+AllowShortCaseLabelsOnASingleLine: true
