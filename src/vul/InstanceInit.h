@@ -1,0 +1,27 @@
+//
+// Created by pompei on 2026-06-09.
+//
+
+#pragma once
+#include "DescriptorStore.h"
+#include "Print.h"
+#include "app/Settings.h"
+#include "di/Getter.h"
+
+namespace vul {
+  class InstanceInit
+  // BEAN instanceInit vul::DescriptorStore app::Settings vul::Print
+  {
+    di::Getter<DescriptorStore> &descriptorStore_;
+    di::Getter<app::Settings> &setting_;
+    di::Getter<vul::Print> &print_;
+
+  public:
+    explicit InstanceInit(di::Getter<DescriptorStore> &descriptorStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print);
+
+    void initTopInstance() const;
+
+  private:
+    void initSDL() const;
+  };
+}

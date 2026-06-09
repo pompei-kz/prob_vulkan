@@ -11,15 +11,17 @@ include(cmake/DiContextGenerator.cmake)
 
 add_executable(prob_vulkan
     src/main.cpp
-    src/app/AppInitializer.cpp
-    src/app/AppInitializer.h
     src/di/Getter.h
     src/app/Settings.cpp
     src/app/Settings.h
     src/vul/Print.cpp
-    src/vul/Print.h)
-
-target_link_libraries(prob_vulkan PRIVATE Vulkan::Vulkan SDL3::SDL3)
+    src/vul/Print.h
+    src/util/util.cpp
+    src/util/util.h
+    src/vul/DescriptorStore.cpp
+    src/vul/DescriptorStore.h
+    src/vul/InstanceInit.cpp
+    src/vul/InstanceInit.h)
 
 target_include_directories(prob_vulkan PRIVATE src)
 
@@ -30,3 +32,15 @@ generate_di_context(prob_vulkan
     GEN_GETTER_INC         "di/Getter.h"
     GEN_CONTEXT_CLASS_NAME "di::Context"
 )
+
+include(FetchContent)
+
+FetchContent_Declare(
+    CLI11
+    GIT_REPOSITORY https://github.com/CLIUtils/CLI11.git
+    GIT_TAG v2.6.2
+)
+
+FetchContent_MakeAvailable(CLI11)
+
+target_link_libraries(prob_vulkan PRIVATE Vulkan::Vulkan SDL3::SDL3 CLI11::CLI11)

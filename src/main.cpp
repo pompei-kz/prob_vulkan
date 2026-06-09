@@ -9,27 +9,19 @@
 #include <vector>
 #include <vulkan/vulkan.h>
 
-VKAPI_ATTR VkBool32 VKAPI_CALL DebugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
-                                             VkDebugUtilsMessageTypeFlagsEXT             type,
-                                             const VkDebugUtilsMessengerCallbackDataEXT *data,
-                                             void                                       *userData)
+int main(int argCount, char *args[])
 {
-  std::cerr << data->pMessage << std::endl;
-
-  return VK_FALSE;
-}
-
-int main()
-{
-  if (!SDL_Init(SDL_INIT_VIDEO)) {
-    throw std::runtime_error(std::string("4E7viRAzp3 :: failed to init SDL: ") + SDL_GetError());
-  }
-
   di::Context context;
 
-  app::AppInitializer *appInitializer = context.get_appInitializer();
+  if (context.get_settings()->readCommandArguments(argCount, args)) {
+    return EXIT_FAILURE;
+  }
 
-  appInitializer->init();
+  //context.get_appInitializer()->init();
 
-  return 0;
+  context.get_instanceInit()->initTopInstance();
+
+
+
+  return EXIT_SUCCESS;
 }
