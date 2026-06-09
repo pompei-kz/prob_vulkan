@@ -21,7 +21,9 @@ add_executable(prob_vulkan
     src/vul/DescriptorStore.cpp
     src/vul/DescriptorStore.h
     src/vul/InstanceInit.cpp
-    src/vul/InstanceInit.h)
+    src/vul/InstanceInit.h
+    src/vul/Log.cpp
+    src/vul/Log.h)
 
 target_include_directories(prob_vulkan PRIVATE src)
 

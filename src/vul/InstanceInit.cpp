@@ -10,6 +10,7 @@
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_vulkan.h>
 #include <iostream>
+#include <sstream>
 #include <unordered_set>
 
 namespace {
@@ -31,27 +32,25 @@ namespace {
   VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(const VkDebugUtilsMessageSeverityFlagBitsEXT severity,
                                                const VkDebugUtilsMessageTypeFlagsEXT        type,
                                                const VkDebugUtilsMessengerCallbackDataEXT  *data,
-                                               // ReSharper disable once CppParameterNeverUsed
-                                               void *userData)
+                                               void                                        *userData)
   {
-    std::ostream *out;
-    std::string   severityStr;
+
+    if (!userData) return VK_TRUE;
+
+    vul::Log          *log = static_cast<vul::Log *>(userData);
+    std::ostringstream ss;
+
+    ss << messageTypeToStr(type) << " " << data->pMessage;
 
     if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
-      out         = &std::cerr;
-      severityStr = " ERROR";
+      log->error("z52BtjTM1A", "{}", ss.str());
     } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
-      out         = &std::cerr;
-      severityStr = " WARNING";
+      log->warn("5kgI0mMfGJ", "{}", ss.str());
     } else if (severity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
-      out         = &std::cout;
-      severityStr = " INFO";
+      log->info("yP46Dh9i5J", "{}", ss.str());
     } else {
-      out         = &std::cout;
-      severityStr = " VERBOSE";
+      log->verbose("haXHF2ksfM", "{}", ss.str());
     }
-
-    *out << util::nowStr() << severityStr << " " << messageTypeToStr(type) << " " << data->pMessage << std::endl;
 
     return VK_FALSE;
   }
@@ -59,10 +58,14 @@ namespace {
 
 namespace vul {
 
-  InstanceInit::InstanceInit(di::Getter<DescriptorStore> &descriptorStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
+  InstanceInit::InstanceInit(di::Getter<DescriptorStore> &descriptorStore,
+                             di::Getter<app::Settings>   &setting,
+                             di::Getter<Print>           &print,
+                             di::Getter<Log>             &log)
       : descriptorStore_(descriptorStore)
       , setting_(setting)
       , print_(print)
+      , log_(log)
   {}
 
   void InstanceInit::initTopObjects() const
@@ -145,10 +148,9 @@ namespace vul {
 
     descriptorStore_->storeVkInstance(vkInstance);
 
-    if (setting_->isLogLevelInfo()) {
-      std::cout << "qClyNZccLo :: Vulkan instance created successfully\n";
-    }
+    if (log_->hasInfo()) log_->info("qClyNZccLo", "Vulkan instance created successfully");
   }
+
   void InstanceInit::initVkMessenger() const
   {
     const VkInstance vkInstance = descriptorStore_->vkInstance();
@@ -156,7 +158,8 @@ namespace vul {
     VkDebugUtilsMessengerEXT vkMessenger;
 
     VkDebugUtilsMessengerCreateInfoEXT info{};
-    info.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    info.sType     = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+    info.pUserData = log_.get();
 
     {
       VkDebugUtilsMessageSeverityFlagsEXT flags = 0;
@@ -172,13 +175,17 @@ namespace vul {
 
     info.pfnUserCallback = debugCallback;
 
-    const auto func = reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(vkInstance, "vkCreateDebugUtilsMessengerEXT"));
+    constexpr char funcName[] = "vkCreateDebugUtilsMessengerEXT";
+
+    const auto func = reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(vkInstance, funcName));
 
     if (const VkResult vkResult = func(vkInstance, &info, nullptr, &vkMessenger); vkResult != VK_SUCCESS) {
-      std::cerr << "dEt7M1FfiK :: Cannot call func `vkCreateDebugUtilsMessengerEXT`" << std::endl;
+      log_->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
     descriptorStore_->storeVkMessenger(vkMessenger);
+
+    if (log_->hasInfo()) log_->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
 
   void InstanceInit::initVkPhysicalDevice() const
@@ -192,8 +199,8 @@ namespace vul {
       throw std::runtime_error("Xm4Pq9rT2k :: No Vulkan-capable physical devices found");
     }
 
-    if (setting_->isLogLevelInfo()) {
-      std::cout << "8nd8ta7Wu1 :: Physical devices found: " << deviceCount << "\n";
+    if (log_->hasInfo()) {
+      log_->info("8nd8ta7Wu1", "Physical devices found: {}", deviceCount);
     }
 
     std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -235,10 +242,10 @@ namespace vul {
 
       uint64_t typeScore = 0;
       switch (props.deviceType) {
-        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:   typeScore = 1'000'000'000'000ULL; break;
-        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: typeScore =   100'000'000'000ULL; break;
-        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:    typeScore =    10'000'000'000ULL; break;
-        default:                                     typeScore =                 0ULL; break;
+        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU: typeScore = 1'000'000'000'000ULL; break;
+        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: typeScore = 100'000'000'000ULL; break;
+        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU: typeScore = 10'000'000'000ULL; break;
+        default: typeScore = 0ULL; break;
       }
 
       return typeScore + vRamBytes;
@@ -257,12 +264,13 @@ namespace vul {
       throw std::runtime_error("Yp3Lr8wNbX :: No suitable physical device found (requires graphics queue)");
     }
 
-    descriptorStore_->storeVkPhysicalDevice(bestDevice);
+    descriptorStore_->selectVkPhysicalDevice(bestDevice);
 
-    if (setting_->isLogLevelInfo()) {
+    if (log_->hasInfo()) {
       VkPhysicalDeviceProperties props;
       vkGetPhysicalDeviceProperties(bestDevice, &props);
-      std::cout << "Kz7Mc5tJqW :: Selected physical device: " << props.deviceName << "\n";
+
+      log_->info("igIRqIKRBd", "Selected physical device: {}", props.deviceName);
     }
   }
 

@@ -14,9 +14,9 @@ namespace vul {
   {
     bool is_SDL_initialized = false;
 
-    VkDebugUtilsMessengerEXT vkDebugMessenger_ = VK_NULL_HANDLE;
-    VkInstance               vkInstance_       = VK_NULL_HANDLE;
-    VkPhysicalDevice         vkPhysicalDevice_ = VK_NULL_HANDLE;
+    VkDebugUtilsMessengerEXT vkDebugMessenger_         = VK_NULL_HANDLE;
+    VkInstance               vkInstance_               = VK_NULL_HANDLE;
+    VkPhysicalDevice         selectedVkPhysicalDevice_ = VK_NULL_HANDLE;
 
   public:
     ~DescriptorStore();
@@ -51,14 +51,23 @@ namespace vul {
     /**
      * Stores handle of the selected VkPhysicalDevice.
      *
-     * VkPhysicalDevice is owned by VkInstance — it cannot be destroyed explicitly.
+     * VkPhysicalDevice is owned by Vulkan driver — it cannot be destroyed explicitly.
      *
-     * @param vkPhysicalDevice handle of the selected physical device
+     * @param selectedVkPhysicalDevice handle of the selected physical device
      */
-    void storeVkPhysicalDevice(VkPhysicalDevice vkPhysicalDevice);
+    void selectVkPhysicalDevice(const VkPhysicalDevice selectedVkPhysicalDevice)
+    {
+      selectedVkPhysicalDevice_ = selectedVkPhysicalDevice;
+    }
 
-    [[nodiscard]] VkInstance vkInstance() const;
+    [[nodiscard]] VkInstance vkInstance() const
+    {
+      return vkInstance_;
+    }
 
-    [[nodiscard]] VkPhysicalDevice vkPhysicalDevice() const;
+    [[nodiscard]] VkPhysicalDevice selectedVkPhysicalDevice() const
+    {
+      return selectedVkPhysicalDevice_;
+    }
   };
 } // namespace vul
