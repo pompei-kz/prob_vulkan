@@ -19,7 +19,7 @@ int main(int argCount, char *args[])
 
   //context.get_appInitializer()->init();
 
-  context.get_instanceInit()->initTopInstance();
+  context.get_instanceInit()->initTopObjects();
 
 
 

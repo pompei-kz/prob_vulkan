@@ -41,6 +41,7 @@ namespace vul {
 
   void DescriptorStore::storeVkInstance(VkInstance vkInstance)
   {
+    storeVkPhysicalDevice(VK_NULL_HANDLE);
     storeVkMessenger(VK_NULL_HANDLE);
     if (vkInstance_) {
       vkDestroyInstance(vkInstance_, nullptr);
@@ -49,8 +50,18 @@ namespace vul {
     vkInstance_ = vkInstance;
   }
 
+  void DescriptorStore::storeVkPhysicalDevice(VkPhysicalDevice vkPhysicalDevice)
+  {
+    vkPhysicalDevice_ = vkPhysicalDevice;
+  }
+
   [[nodiscard]] inline VkInstance DescriptorStore::vkInstance() const
   {
     return vkInstance_;
+  }
+
+  [[nodiscard]] inline VkPhysicalDevice DescriptorStore::vkPhysicalDevice() const
+  {
+    return vkPhysicalDevice_;
   }
 } // namespace vul

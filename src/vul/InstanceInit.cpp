@@ -188,6 +188,10 @@ namespace vul {
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(vkInstance, &deviceCount, nullptr);
 
+    if (deviceCount == 0) {
+      throw std::runtime_error("Xm4Pq9rT2k :: No Vulkan-capable physical devices found");
+    }
+
     if (setting_->isLogLevelInfo()) {
       std::cout << "8nd8ta7Wu1 :: Physical devices found: " << deviceCount << "\n";
     }
@@ -201,8 +205,65 @@ namespace vul {
       }
     }
 
-    // TODO write code to initialize a physical device - you need to choose the most suitable one
+    auto scoreDevice = [](const VkPhysicalDevice device) -> uint64_t {
+      uint32_t queueFamilyCount = 0;
+      vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+      std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+      vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies.data());
 
+      bool hasGraphics = false;
+      for (const VkQueueFamilyProperties &qfp : queueFamilies) {
+        if (qfp.queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+          hasGraphics = true;
+          break;
+        }
+      }
+      if (!hasGraphics) return 0;
+
+      VkPhysicalDeviceProperties props;
+      vkGetPhysicalDeviceProperties(device, &props);
+
+      VkPhysicalDeviceMemoryProperties mem;
+      vkGetPhysicalDeviceMemoryProperties(device, &mem);
+
+      uint64_t vRamBytes = 0;
+      for (uint32_t h = 0; h < mem.memoryHeapCount; ++h) {
+        if (mem.memoryHeaps[h].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) {
+          vRamBytes += mem.memoryHeaps[h].size;
+        }
+      }
+
+      uint64_t typeScore = 0;
+      switch (props.deviceType) {
+        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:   typeScore = 1'000'000'000'000ULL; break;
+        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU: typeScore =   100'000'000'000ULL; break;
+        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:    typeScore =    10'000'000'000ULL; break;
+        default:                                     typeScore =                 0ULL; break;
+      }
+
+      return typeScore + vRamBytes;
+    };
+
+    VkPhysicalDevice bestDevice = VK_NULL_HANDLE;
+    uint64_t         bestScore  = 0;
+    for (const VkPhysicalDevice device : devices) {
+      if (const uint64_t score = scoreDevice(device); score > bestScore) {
+        bestScore  = score;
+        bestDevice = device;
+      }
+    }
+
+    if (bestDevice == VK_NULL_HANDLE) {
+      throw std::runtime_error("Yp3Lr8wNbX :: No suitable physical device found (requires graphics queue)");
+    }
+
+    descriptorStore_->storeVkPhysicalDevice(bestDevice);
+
+    if (setting_->isLogLevelInfo()) {
+      VkPhysicalDeviceProperties props;
+      vkGetPhysicalDeviceProperties(bestDevice, &props);
+      std::cout << "Kz7Mc5tJqW :: Selected physical device: " << props.deviceName << "\n";
+    }
   }
 
 } // namespace vul

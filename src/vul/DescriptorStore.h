@@ -16,6 +16,7 @@ namespace vul {
 
     VkDebugUtilsMessengerEXT vkDebugMessenger_ = VK_NULL_HANDLE;
     VkInstance               vkInstance_       = VK_NULL_HANDLE;
+    VkPhysicalDevice         vkPhysicalDevice_ = VK_NULL_HANDLE;
 
   public:
     ~DescriptorStore();
@@ -47,6 +48,17 @@ namespace vul {
      */
     void storeVkInstance(VkInstance vkInstance);
 
+    /**
+     * Stores handle of the selected VkPhysicalDevice.
+     *
+     * VkPhysicalDevice is owned by VkInstance — it cannot be destroyed explicitly.
+     *
+     * @param vkPhysicalDevice handle of the selected physical device
+     */
+    void storeVkPhysicalDevice(VkPhysicalDevice vkPhysicalDevice);
+
     [[nodiscard]] VkInstance vkInstance() const;
+
+    [[nodiscard]] VkPhysicalDevice vkPhysicalDevice() const;
   };
 } // namespace vul
