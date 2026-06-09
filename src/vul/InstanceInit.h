@@ -30,6 +30,6 @@ namespace vul {
     void initSDL() const;
     void initVkInstance() const;
     void initVkMessenger() const;
-    void initVkPhysicalDevice() const;
+    void selectVkPhysicalDevice() const;
   };
 } // namespace vul

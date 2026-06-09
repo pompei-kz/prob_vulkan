@@ -77,7 +77,7 @@ namespace vul {
       initVkMessenger();
     }
 
-    initVkPhysicalDevice();
+    selectVkPhysicalDevice();
   }
 
   void InstanceInit::initSDL() const
@@ -188,7 +188,7 @@ namespace vul {
     if (log_->hasInfo()) log_->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
 
-  void InstanceInit::initVkPhysicalDevice() const
+  void InstanceInit::selectVkPhysicalDevice() const
   {
     const VkInstance vkInstance = descriptorStore_->vkInstance();
 
