@@ -51,7 +51,7 @@ namespace vul {
     /**
      * Stores handle of the selected VkPhysicalDevice.
      *
-     * VkPhysicalDevice is owned by Vulkan driver — it cannot be destroyed explicitly.
+     * Vulkan driver owns VkPhysicalDevice — it cannot be destroyed explicitly.
      *
      * @param selectedVkPhysicalDevice handle of the selected physical device
      */
@@ -68,6 +68,11 @@ namespace vul {
     [[nodiscard]] VkPhysicalDevice selectedVkPhysicalDevice() const
     {
       return selectedVkPhysicalDevice_;
+    }
+
+    void destroy()
+    {
+      storeVkInstance(VK_NULL_HANDLE);
     }
   };
 } // namespace vul

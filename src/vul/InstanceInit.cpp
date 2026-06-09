@@ -61,16 +61,19 @@ namespace vul {
   InstanceInit::InstanceInit(di::Getter<DescriptorStore> &descriptorStore,
                              di::Getter<app::Settings>   &setting,
                              di::Getter<Print>           &print,
-                             di::Getter<Log>             &log)
+                             di::Getter<Log>             &log,
+                             di::Getter<app::FirstInit>  &firstInit)
       : descriptorStore_(descriptorStore)
       , setting_(setting)
       , print_(print)
       , log_(log)
+      , firstInit_(firstInit)
   {}
 
   void InstanceInit::initTopObjects() const
   {
-    initSDL();
+    firstInit_->init();
+
     initVkInstance();
 
     if (setting_->validation()) {
@@ -78,17 +81,6 @@ namespace vul {
     }
 
     selectVkPhysicalDevice();
-  }
-
-  void InstanceInit::initSDL() const
-  {
-    if (descriptorStore_->is_SDL_Initialized()) return;
-
-    if (!SDL_Init(SDL_INIT_VIDEO)) {
-      throw std::runtime_error(std::string("4E7viRAzp3 :: failed to init SDL: ") + SDL_GetError());
-    }
-
-    descriptorStore_->mark_SDL_Initialized();
   }
 
   void InstanceInit::initVkInstance() const

@@ -11,17 +11,17 @@
 
 int main(int argCount, char *args[])
 {
+
   di::Context context;
 
   if (context.get_settings()->readCommandArguments(argCount, args)) {
     return EXIT_FAILURE;
   }
 
-  //context.get_appInitializer()->init();
-
   context.get_instanceInit()->initTopObjects();
 
-
+  context.get_descriptorStore()->destroy();
+  context.get_firstInit()->destroy();
 
   return EXIT_SUCCESS;
 }

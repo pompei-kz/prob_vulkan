@@ -23,7 +23,11 @@ add_executable(prob_vulkan
     src/vul/InstanceInit.cpp
     src/vul/InstanceInit.h
     src/vul/Log.cpp
-    src/vul/Log.h)
+    src/vul/Log.h
+    src/app/MainWindow.cpp
+    src/app/MainWindow.h
+    src/app/FirstInit.cpp
+    src/app/FirstInit.h)
 
 target_include_directories(prob_vulkan PRIVATE src)
 
