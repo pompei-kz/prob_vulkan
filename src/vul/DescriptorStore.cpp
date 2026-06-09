@@ -16,7 +16,7 @@ namespace vul {
     is_SDL_initialized = true;
   }
 
-  bool DescriptorStore::is_SDL_Initialized() const
+  [[nodiscard]] bool DescriptorStore::is_SDL_Initialized() const
   {
     return is_SDL_initialized;
   }
@@ -47,5 +47,10 @@ namespace vul {
       vkInstance_ = VK_NULL_HANDLE;
     }
     vkInstance_ = vkInstance;
+  }
+
+  [[nodiscard]] inline VkInstance DescriptorStore::vkInstance() const
+  {
+    return vkInstance_;
   }
 } // namespace vul

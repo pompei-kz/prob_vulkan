@@ -65,6 +65,18 @@ namespace vul {
       , print_(print)
   {}
 
+  void InstanceInit::initTopObjects() const
+  {
+    initSDL();
+    initVkInstance();
+
+    if (setting_->validation()) {
+      initVkMessenger();
+    }
+
+    initVkPhysicalDevice();
+  }
+
   void InstanceInit::initSDL() const
   {
     if (descriptorStore_->is_SDL_Initialized()) return;
@@ -76,10 +88,8 @@ namespace vul {
     descriptorStore_->mark_SDL_Initialized();
   }
 
-  void InstanceInit::initTopInstance() const
+  void InstanceInit::initVkInstance() const
   {
-    initSDL();
-
     std::unordered_set<std::string> instanceExtensions;
 
     print_->loadInstanceExtensions(setting_->isLogLevelVerbose(), &instanceExtensions);
@@ -138,6 +148,10 @@ namespace vul {
     if (setting_->isLogLevelInfo()) {
       std::cout << "qClyNZccLo :: Vulkan instance created successfully\n";
     }
+  }
+  void InstanceInit::initVkMessenger() const
+  {
+    const VkInstance vkInstance = descriptorStore_->vkInstance();
 
     VkDebugUtilsMessengerEXT vkMessenger;
 
@@ -165,6 +179,11 @@ namespace vul {
     }
 
     descriptorStore_->storeVkMessenger(vkMessenger);
+  }
+
+  void InstanceInit::initVkPhysicalDevice() const
+  {
+    const VkInstance vkInstance = descriptorStore_->vkInstance();
 
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(vkInstance, &deviceCount, nullptr);
@@ -176,11 +195,14 @@ namespace vul {
     std::vector<VkPhysicalDevice> devices(deviceCount);
     vkEnumeratePhysicalDevices(vkInstance, &deviceCount, devices.data());
 
-    if (setting_->isLogLevelInfo()) {
+    if (setting_->isLogLevelVerbose()) {
       for (uint32_t i = 0; i < deviceCount; ++i) {
         print_->printPhysicalDeviceProperties(i, devices[i]);
       }
     }
+
+    // TODO write code to initialize a physical device - you need to choose the most suitable one
+
   }
 
 } // namespace vul

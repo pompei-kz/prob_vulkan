@@ -13,15 +13,18 @@ namespace vul {
   // BEAN instanceInit vul::DescriptorStore app::Settings vul::Print
   {
     di::Getter<DescriptorStore> &descriptorStore_;
-    di::Getter<app::Settings> &setting_;
-    di::Getter<vul::Print> &print_;
+    di::Getter<app::Settings>   &setting_;
+    di::Getter<vul::Print>      &print_;
 
   public:
     explicit InstanceInit(di::Getter<DescriptorStore> &descriptorStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print);
 
-    void initTopInstance() const;
+    void initTopObjects() const;
 
   private:
     void initSDL() const;
+    void initVkInstance() const;
+    void initVkMessenger() const;
+    void initVkPhysicalDevice() const;
   };
-}
+} // namespace vul

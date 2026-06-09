@@ -22,7 +22,7 @@ namespace vul {
 
     void mark_SDL_Initialized();
 
-    bool is_SDL_Initialized() const;
+    [[nodiscard]] bool is_SDL_Initialized() const;
 
     /**
      * Stores descriptor of VkDebugUtilsMessenger.
@@ -46,5 +46,7 @@ namespace vul {
      * @param vkInstance descriptor of VkInstance
      */
     void storeVkInstance(VkInstance vkInstance);
+
+    [[nodiscard]] VkInstance vkInstance() const;
   };
 } // namespace vul
