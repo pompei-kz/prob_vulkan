@@ -166,7 +166,7 @@ def generate(beans: list[dict], type_to_include: dict[str, str],
 
     h += ["", "  public:"]
     for b in beans:
-        h.append(f"    {b['class_type']} *get_{b['name']}() {{ return {b['name']}_.get(); }}")
+        h.append(f"    {b['class_type']} *{b['name']}() {{ return {b['name']}_.get(); }}")
 
     h += ["", "  private:"]
     for b in beans:

@@ -14,16 +14,17 @@ int main(int argCount, char *args[])
 
   di::Context context;
 
-  if (context.get_settings()->readCommandArguments(argCount, args)) {
+  if (context.settings()->readCommandArguments(argCount, args)) {
     return EXIT_FAILURE;
   }
 
-  context.get_mainWindow()->create();
+  context.mainWindow()->create();
+  context.instanceInit()->initTopObjects();
 
-  context.get_instanceInit()->initTopObjects();
+  // Working...
 
-  context.get_descriptorStore()->destroy();
-  context.get_firstInit()->destroy();
+  context.descriptorStore()->destroy();
+  context.firstInit()->destroy();
 
   return EXIT_SUCCESS;
 }
