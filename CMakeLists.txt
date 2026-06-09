@@ -20,22 +20,29 @@ add_executable(prob_vulkan
     src/util/util.h
     src/vul/DescriptorStore.cpp
     src/vul/DescriptorStore.h
-    src/vul/InstanceInit.cpp
-    src/vul/InstanceInit.h
+    src/vul/InitInstance.cpp
+    src/vul/InitInstance.h
     src/vul/Log.cpp
     src/vul/Log.h
     src/app/MainWindow.cpp
     src/app/MainWindow.h
     src/app/FirstInit.cpp
-    src/app/FirstInit.h)
+    src/app/FirstInit.h
+    src/vul/Device.cpp
+    src/vul/Device.h
+    src/vul/SelectPhysicalDevice.cpp
+    src/vul/SelectPhysicalDevice.h
+    src/vul/model/QueueFamilyIndices.cpp
+    src/vul/model/QueueFamilyIndices.h
+)
 
 target_include_directories(prob_vulkan PRIVATE src)
 
 generate_di_context(prob_vulkan
     SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src"
     OUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/generated"
-    GEN_GETTER_NAME        "di::Getter"
-    GEN_GETTER_INC         "di/Getter.h"
+    GEN_GETTER_NAME "di::Getter"
+    GEN_GETTER_INC "di/Getter.h"
     GEN_CONTEXT_CLASS_NAME "di::Context"
 )
 

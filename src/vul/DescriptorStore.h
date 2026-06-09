@@ -3,6 +3,8 @@
 //
 
 #pragma once
+#include "Device.h"
+#include <memory>
 #include <vulkan/vulkan.h>
 
 namespace vul {
@@ -34,6 +36,8 @@ namespace vul {
      * Выбранное физическое устройство Vulkan.
      */
     VkPhysicalDevice selectedVkPhysicalDevice_ = VK_NULL_HANDLE;
+
+    std::unique_ptr<Device> device_;
 
   public:
     ~DescriptorStore();
@@ -102,6 +106,11 @@ namespace vul {
     void destroy()
     {
       storeVkInstance(VK_NULL_HANDLE);
+    }
+
+    [[nodiscard]] VkSurfaceKHR vkSdkSurface() const
+    {
+      return vkSdkSurface_;
     }
   };
 } // namespace vul
