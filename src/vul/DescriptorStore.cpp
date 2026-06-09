@@ -5,6 +5,8 @@
 // ReSharper disable CppParameterMayBeConst
 #include "DescriptorStore.h"
 
+#include <SDL3/SDL_vulkan.h>
+
 namespace vul {
   DescriptorStore::~DescriptorStore()
   {
@@ -39,8 +41,18 @@ namespace vul {
     }
   }
 
+  void DescriptorStore::storeVkSdkSurface(VkSurfaceKHR vkSdkSurface)
+  {
+    if (vkSdkSurface_) {
+      SDL_Vulkan_DestroySurface(vkInstance_, vkSdkSurface_, nullptr);
+      vkSdkSurface_ = VK_NULL_HANDLE;
+    }
+    vkSdkSurface_ = vkSdkSurface;
+  }
+
   void DescriptorStore::storeVkInstance(VkInstance vkInstance)
   {
+    storeVkSdkSurface(VK_NULL_HANDLE);
     selectVkPhysicalDevice(VK_NULL_HANDLE);
     storeVkMessenger(VK_NULL_HANDLE);
     if (vkInstance_) {

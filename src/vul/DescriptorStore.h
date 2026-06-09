@@ -6,6 +6,7 @@
 #include <vulkan/vulkan.h>
 
 namespace vul {
+
   /**
    * Stores descriptor of Vulkan and destroys its
    */
@@ -14,9 +15,25 @@ namespace vul {
   {
     bool is_SDL_initialized = false;
 
-    VkDebugUtilsMessengerEXT vkDebugMessenger_         = VK_NULL_HANDLE;
-    VkInstance               vkInstance_               = VK_NULL_HANDLE;
-    VkPhysicalDevice         selectedVkPhysicalDevice_ = VK_NULL_HANDLE;
+    /**
+     * Дескриптор экземпляра Vulkan.
+     */
+    VkInstance vkInstance_ = VK_NULL_HANDLE;
+
+    /**
+     * Дескриптор системы вывода сообщений валидации Vulkan.
+     */
+    VkDebugUtilsMessengerEXT vkDebugMessenger_ = VK_NULL_HANDLE;
+
+    /**
+     * Дескриптор поверхности Vulkan для окна SDL.
+     */
+    VkSurfaceKHR vkSdkSurface_ = VK_NULL_HANDLE;
+
+    /**
+     * Выбранное физическое устройство Vulkan.
+     */
+    VkPhysicalDevice selectedVkPhysicalDevice_ = VK_NULL_HANDLE;
 
   public:
     ~DescriptorStore();
@@ -24,6 +41,18 @@ namespace vul {
     void mark_SDL_Initialized();
 
     [[nodiscard]] bool is_SDL_Initialized() const;
+
+    /**
+     *
+     * Stores descriptor of VkInstance.
+     *
+     * Old descriptor will be destroyed with all its dependants.
+     *
+     * It is assumed that this descriptor is genuine - sent from the Vulkan driver.
+     *
+     * @param vkInstance descriptor of VkInstance
+     */
+    void storeVkInstance(VkInstance vkInstance);
 
     /**
      * Stores descriptor of VkDebugUtilsMessenger.
@@ -37,16 +66,16 @@ namespace vul {
     void storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger);
 
     /**
+     * Stores the Vulkan surface handle for the window.
      *
-     * Stores descriptor of VkInstance.
-     *
-     * Old descriptor will be destroyed with all its dependants.
-     *
-     * It is assumed that this descriptor is genuine - sent from the Vulkan driver.
-     *
-     * @param vkInstance descriptor of VkInstance
+     * @param vkSdkSurface Vulkan surface handle for the window.
      */
-    void storeVkInstance(VkInstance vkInstance);
+    void storeVkSdkSurface(VkSurfaceKHR vkSdkSurface);
+
+    [[nodiscard]] VkSurfaceKHR VkSdkSurface() const
+    {
+      return vkSdkSurface_;
+    }
 
     /**
      * Stores handle of the selected VkPhysicalDevice.

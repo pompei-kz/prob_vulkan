@@ -18,6 +18,8 @@ int main(int argCount, char *args[])
     return EXIT_FAILURE;
   }
 
+  context.get_mainWindow()->create();
+
   context.get_instanceInit()->initTopObjects();
 
   context.get_descriptorStore()->destroy();

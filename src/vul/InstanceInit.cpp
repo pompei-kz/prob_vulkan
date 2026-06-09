@@ -62,12 +62,14 @@ namespace vul {
                              di::Getter<app::Settings>   &setting,
                              di::Getter<Print>           &print,
                              di::Getter<Log>             &log,
-                             di::Getter<app::FirstInit>  &firstInit)
+                             di::Getter<app::FirstInit>  &firstInit,
+                             di::Getter<app::MainWindow> &mainWindow)
       : descriptorStore_(descriptorStore)
       , setting_(setting)
       , print_(print)
       , log_(log)
       , firstInit_(firstInit)
+      , mainWindow_(mainWindow)
   {}
 
   void InstanceInit::initTopObjects() const
@@ -79,6 +81,8 @@ namespace vul {
     if (setting_->validation()) {
       initVkMessenger();
     }
+
+    createVkSdkSurface();
 
     selectVkPhysicalDevice();
   }
@@ -264,6 +268,20 @@ namespace vul {
 
       log_->info("igIRqIKRBd", "Selected physical device: {}", props.deviceName);
     }
+  }
+
+  void InstanceInit::createVkSdkSurface() const
+  {
+    SDL_Window      *mainWindow   = mainWindow_->windowPtr();
+    const VkInstance vkInstance   = descriptorStore_->vkInstance();
+    VkSurfaceKHR     vkSdkSurface = VK_NULL_HANDLE;
+
+    // Создаем Vulkan surface для окна SDL.
+    if (!SDL_Vulkan_CreateSurface(mainWindow, vkInstance, nullptr, &vkSdkSurface)) {
+      throw std::runtime_error(std::string("idXh7XaHT6 :: ERROR IN `SDL_Vulkan_CreateSurface()`: ") + SDL_GetError());
+    }
+
+    descriptorStore_->storeVkSdkSurface(vkSdkSurface);
   }
 
 } // namespace vul
