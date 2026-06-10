@@ -24,6 +24,7 @@ add_executable(prob_vulkan
     src/vul/InitInstance.h
     src/util/Log.cpp
     src/util/Log.h
+    src/util/SyncQueue.ixx
     src/app/MainWindow.cpp
     src/app/MainWindow.h
     src/app/FirstInit.cpp
@@ -38,6 +39,10 @@ add_executable(prob_vulkan
     src/vul/model/SwapChainSupport.h
     src/vul/SwapChain.cpp
     src/vul/SwapChain.h
+    src/cmd/Cmd.cpp
+    src/cmd/Cmd.h
+    src/cmd/CmdLog.cpp
+    src/cmd/CmdLog.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)
