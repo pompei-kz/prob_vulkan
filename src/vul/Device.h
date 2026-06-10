@@ -3,6 +3,9 @@
 //
 
 #pragma once
+#include "SwapChain.h"
+
+#include <memory>
 #include <vulkan/vulkan.h>
 
 namespace vul {
@@ -45,5 +48,10 @@ namespace vul {
     ~Device();
 
     void create(const VkPhysicalDevice vkPhysicalDevice, const VkSurfaceKHR vkSdkSurface);
+
+    VkDevice handle() const
+    {
+      return vkDevice_;
+    }
   };
 } // namespace vul

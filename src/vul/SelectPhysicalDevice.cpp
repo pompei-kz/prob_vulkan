@@ -4,6 +4,8 @@
 
 #include "SelectPhysicalDevice.h"
 
+#include "model/SwapChainSupport.h"
+
 #include <set>
 
 namespace vul {
@@ -83,35 +85,6 @@ namespace vul {
     return typeScore + vRamBytes;
   }
 
-  SwapChainSupport SelectPhysicalDevice::querySwapChainSupport(const VkPhysicalDevice device) const
-  {
-    const VkSurfaceKHR vkSdkSurface = descriptorStore_->vkSdkSurface();
-
-    SwapChainSupport details;
-    // Получаем ограничения Vulkan surface для swap-chain.
-    vkGetPhysicalDeviceSurfaceCapabilitiesKHR(device, vkSdkSurface, &details.capabilities);
-
-    uint32_t formatCount = 0;
-    // Запрашиваем количество форматов Vulkan surface.
-    vkGetPhysicalDeviceSurfaceFormatsKHR(device, vkSdkSurface, &formatCount, nullptr);
-    if (formatCount != 0) {
-      details.formats.resize(formatCount);
-      // Получаем доступные форматы Vulkan surface.
-      vkGetPhysicalDeviceSurfaceFormatsKHR(device, vkSdkSurface, &formatCount, details.formats.data());
-    }
-
-    uint32_t presentModeCount = 0;
-    // Запрашиваем количество режимов показа Vulkan surface.
-    vkGetPhysicalDeviceSurfacePresentModesKHR(device, vkSdkSurface, &presentModeCount, nullptr);
-    if (presentModeCount != 0) {
-      details.presentModes.resize(presentModeCount);
-      // Получаем доступные режимы показа Vulkan surface.
-      vkGetPhysicalDeviceSurfacePresentModesKHR(device, vkSdkSurface, &presentModeCount, details.presentModes.data());
-    }
-
-    return details;
-  }
-
   bool SelectPhysicalDevice::isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const
   {
 
@@ -122,8 +95,8 @@ namespace vul {
     bool                            swapChainAdequate   = false;
 
     if (extensionsSupported) {
-      const SwapChainSupport swapChainSupport = querySwapChainSupport(vkPhysicalDevice);
-      swapChainAdequate                       = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
+      const model::SwapChainSupport swapChainSupport = model::querySwapChainSupport(vkPhysicalDevice, vkSdkSurface);
+      swapChainAdequate                              = !swapChainSupport.formats.empty() && !swapChainSupport.presentModes.empty();
     }
 
     return indices.complete() && extensionsSupported && swapChainAdequate;

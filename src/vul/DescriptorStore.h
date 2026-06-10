@@ -39,6 +39,8 @@ namespace vul {
 
     std::unique_ptr<Device> device_;
 
+    std::unique_ptr<SwapChain> swapChain_;
+
   public:
     ~DescriptorStore();
 
@@ -111,6 +113,29 @@ namespace vul {
     [[nodiscard]] VkSurfaceKHR vkSdkSurface() const
     {
       return vkSdkSurface_;
+    }
+
+    Device *device() const
+    {
+      return device_.get();
+    }
+
+    void storeDevice(Device *device)
+    {
+      if (device_.get() == device) return;
+
+      storeSwapChain(nullptr);
+      device_.reset(device);
+    }
+
+    void storeSwapChain(SwapChain *swapChain)
+    {
+      swapChain_.reset(swapChain);
+    }
+
+    SwapChain *swapChain() const
+    {
+      return swapChain_.get();
     }
   };
 } // namespace vul

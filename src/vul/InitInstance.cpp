@@ -71,6 +71,10 @@ namespace vul {
     createVkSdkSurface();
 
     selectPhysicalDevice_->select();
+
+    createDevice();
+
+    createSwapChain();
   }
 
   void InitInstance::createVkInstance() const
@@ -182,6 +186,30 @@ namespace vul {
     }
 
     descriptorStore_->storeVkSdkSurface(vkSdkSurface);
+  }
+
+  void InitInstance::createDevice() const
+  {
+    const VkSurfaceKHR     vkSdkSurface     = descriptorStore_->vkSdkSurface();
+    const VkPhysicalDevice vkPhysicalDevice = descriptorStore_->selectedVkPhysicalDevice();
+
+    std::unique_ptr<Device> device = std::make_unique<Device>();
+    device->create(vkPhysicalDevice, vkSdkSurface);
+    descriptorStore_->storeDevice(device.release());
+  }
+
+  void InitInstance::createSwapChain() const
+  {
+    const VkSurfaceKHR     vkSdkSurface     = descriptorStore_->vkSdkSurface();
+    const VkPhysicalDevice vkPhysicalDevice = descriptorStore_->selectedVkPhysicalDevice();
+    Device                *device           = descriptorStore_->device();
+    SDL_Window            *mainWindow       = mainWindow_->windowPtr();
+
+    std::unique_ptr<SwapChain> swapChain = std::make_unique<SwapChain>(device->handle());
+
+    swapChain->create(vkPhysicalDevice, vkSdkSurface, mainWindow);
+
+    descriptorStore_->storeSwapChain(swapChain.release());
   }
 
 } // namespace vul

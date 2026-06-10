@@ -34,6 +34,10 @@ add_executable(prob_vulkan
     src/vul/SelectPhysicalDevice.h
     src/vul/model/QueueFamilyIndices.cpp
     src/vul/model/QueueFamilyIndices.h
+    src/vul/model/SwapChainSupport.cpp
+    src/vul/model/SwapChainSupport.h
+    src/vul/SwapChain.cpp
+    src/vul/SwapChain.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

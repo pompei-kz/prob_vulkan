@@ -52,7 +52,7 @@ namespace vul {
 
   void DescriptorStore::storeVkInstance(VkInstance vkInstance)
   {
-    device_.reset();
+    storeDevice(nullptr);
 
     storeVkSdkSurface(VK_NULL_HANDLE);
     selectVkPhysicalDevice(VK_NULL_HANDLE);

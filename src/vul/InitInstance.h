@@ -47,5 +47,7 @@ namespace vul {
     void createVkInstance() const;
     void initVkMessenger() const;
     void createVkSdkSurface() const;
+    void createDevice() const;
+    void createSwapChain()const;
   };
 } // namespace vul

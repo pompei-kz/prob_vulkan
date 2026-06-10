@@ -11,16 +11,6 @@
 
 namespace vul {
 
-  struct SwapChainSupport
-  {
-    // Храним ограничения поверхности Vulkan для выбора параметров swap-chain.
-    VkSurfaceCapabilitiesKHR capabilities{};
-    // Доступные форматы поверхности Vulkan.
-    std::vector<VkSurfaceFormatKHR> formats;
-    // Доступные режимы показа Vulkan.
-    std::vector<VkPresentModeKHR> presentModes;
-  };
-
   class SelectPhysicalDevice
   /// BEAN initPhysicalDevice vul::DescriptorStore vul::Log app::Settings vul::Print
   {
@@ -44,8 +34,6 @@ namespace vul {
 
   private:
     uint64_t scoreDevice(const VkPhysicalDevice vkPhysicalDevice) const;
-
-    SwapChainSupport querySwapChainSupport(const VkPhysicalDevice device) const;
 
     bool isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const;
 
