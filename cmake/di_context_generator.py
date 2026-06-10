@@ -40,8 +40,10 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
         opens  = clean.count("{")
         closes = clean.count("}")
 
-        # Detect 'namespace Foo {' on this line before updating depth
-        ns_match = re.match(r"\s*namespace\s+(\w+)\s*", line)
+        # Detect 'namespace Foo {' or C++17 'namespace Foo::Bar {' on this
+        # line before updating depth (a nested-namespace definition still
+        # uses a single brace pair, so one stack entry is correct).
+        ns_match = re.match(r"\s*namespace\s+([\w:]+)\s*", line)
         if ns_match and opens > 0:
             ns_stack.append((ns_match.group(1), depth + opens))
 
