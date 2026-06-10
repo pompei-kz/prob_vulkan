@@ -10,6 +10,6 @@ namespace back {
   // ReSharper disable once CppMemberFunctionMayBeStatic
   cmd::CmdPtr BackStart::start()
   {
-    return std::make_unique<cmd::CmdLog>("GuNxKIz1xC", [] { return "Hello World"; });
+    return std::make_unique<cmd::CmdLog>("GuNxKIz1xC", "Hello World");
   }
 } // namespace back

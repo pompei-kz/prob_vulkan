@@ -57,7 +57,7 @@ namespace app {
       executeAllCmdQueue();
     }
 
-    vkDeviceWaitIdle(descriptorStore_->device()->handle());
+    vkDeviceWaitIdle(handleStore_->device()->handle());
   }
 
   void MainWindow::executeAllCmdQueue()

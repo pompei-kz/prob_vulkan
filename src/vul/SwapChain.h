@@ -5,12 +5,8 @@
 #pragma once
 #include "../util/Log.h"
 #include "model/QueueFamilyIndices.h"
-#include "model/SwapChainSupport.h"
 
 #include <SDL3/SDL_video.h>
-#include <algorithm>
-#include <iostream>
-#include <limits>
 #include <stdexcept>
 #include <vector>
 #include <vulkan/vulkan.h>
@@ -68,6 +64,7 @@ namespace vul {
             util::Log::get()->verbose("5Qq5BzHAij", "vkDestroyImageView");
           }
         }
+
         imageViews_.clear();
 
         vkDestroySwapchainKHR(vkDevice_, swapChain_, nullptr);

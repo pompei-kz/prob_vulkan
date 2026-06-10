@@ -12,27 +12,27 @@
 namespace app {
 
   class Application
-  /// BEAN application app::MainWindow vul::InitInstance back::BackStart vul::DescriptorStore app::FirstInit cmd::ExecuteCmd
+  /// BEAN application app::MainWindow vul::InitInstance back::BackStart vul::HandleStore app::FirstInit cmd::ExecuteCmd
   {
 
-    di::Getter<MainWindow>           &mainWindow_;
-    di::Getter<vul::InitInstance>    &initInstance_;
-    di::Getter<back::BackStart>      &backStart_;
-    di::Getter<vul::DescriptorStore> &descriptorStore_;
-    di::Getter<FirstInit>            &firstInit_;
-    di::Getter<cmd::ExecuteCmd>      &executeCmd_;
+    di::Getter<MainWindow>        &mainWindow_;
+    di::Getter<vul::InitInstance> &initInstance_;
+    di::Getter<back::BackStart>   &backStart_;
+    di::Getter<vul::HandleStore>  &handleStore_;
+    di::Getter<FirstInit>         &firstInit_;
+    di::Getter<cmd::ExecuteCmd>   &executeCmd_;
 
   public:
-    Application(di::Getter<MainWindow>           &mainWindow,
-                di::Getter<vul::InitInstance>    &initInstance,
-                di::Getter<back::BackStart>      &backStart,
-                di::Getter<vul::DescriptorStore> &descriptorStore,
-                di::Getter<FirstInit>            &firstInit,
-                di::Getter<cmd::ExecuteCmd>      &executeCmd)
+    Application(di::Getter<MainWindow>        &mainWindow,
+                di::Getter<vul::InitInstance> &initInstance,
+                di::Getter<back::BackStart>   &backStart,
+                di::Getter<vul::HandleStore>  &handleStore,
+                di::Getter<FirstInit>         &firstInit,
+                di::Getter<cmd::ExecuteCmd>   &executeCmd)
         : mainWindow_(mainWindow)
         , initInstance_(initInstance)
         , backStart_(backStart)
-        , descriptorStore_(descriptorStore)
+        , handleStore_(handleStore)
         , firstInit_(firstInit)
         , executeCmd_(executeCmd)
     {}

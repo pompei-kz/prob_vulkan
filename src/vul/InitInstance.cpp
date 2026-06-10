@@ -76,7 +76,7 @@ namespace vul {
 
     createSwapChain();
 
-    descriptorStore_->swapChain()->createImageViews();
+    handleStore_->swapChain()->createImageViews();
   }
 
   void InitInstance::createVkInstance() const
@@ -134,14 +134,14 @@ namespace vul {
       throw std::runtime_error("c9Hp80dwaM :: failed to create Vulkan instance");
     }
 
-    descriptorStore_->storeVkInstance(vkInstance);
+    handleStore_->storeVkInstance(vkInstance);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
 
   void InitInstance::initVkMessenger() const
   {
-    const VkInstance vkInstance = descriptorStore_->vkInstance();
+    const VkInstance vkInstance = handleStore_->vkInstance();
 
     VkDebugUtilsMessengerEXT vkMessenger;
 
@@ -171,7 +171,7 @@ namespace vul {
       util::Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
-    descriptorStore_->storeVkMessenger(vkMessenger);
+    handleStore_->storeVkMessenger(vkMessenger);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
@@ -179,7 +179,7 @@ namespace vul {
   void InitInstance::createVkSdkSurface() const
   {
     SDL_Window      *mainWindow   = mainWindow_->windowPtr();
-    const VkInstance vkInstance   = descriptorStore_->vkInstance();
+    const VkInstance vkInstance   = handleStore_->vkInstance();
     VkSurfaceKHR     vkSdkSurface = VK_NULL_HANDLE;
 
     // Создаем Vulkan surface для окна SDL.
@@ -187,31 +187,31 @@ namespace vul {
       throw std::runtime_error(std::string("idXh7XaHT6 :: ERROR IN `SDL_Vulkan_CreateSurface()`: ") + SDL_GetError());
     }
 
-    descriptorStore_->storeVkSdkSurface(vkSdkSurface);
+    handleStore_->storeVkSdkSurface(vkSdkSurface);
   }
 
   void InitInstance::createDevice() const
   {
-    const VkSurfaceKHR     vkSdkSurface     = descriptorStore_->vkSdkSurface();
-    const VkPhysicalDevice vkPhysicalDevice = descriptorStore_->selectedVkPhysicalDevice();
+    const VkSurfaceKHR     vkSdkSurface     = handleStore_->vkSdkSurface();
+    const VkPhysicalDevice vkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
 
     std::unique_ptr<Device> device = std::make_unique<Device>();
     device->create(vkPhysicalDevice, vkSdkSurface);
-    descriptorStore_->storeDevice(device.release());
+    handleStore_->storeDevice(device.release());
   }
 
   void InitInstance::createSwapChain() const
   {
-    const VkSurfaceKHR     vkSdkSurface     = descriptorStore_->vkSdkSurface();
-    const VkPhysicalDevice vkPhysicalDevice = descriptorStore_->selectedVkPhysicalDevice();
-    Device                *device           = descriptorStore_->device();
+    const VkSurfaceKHR     vkSdkSurface     = handleStore_->vkSdkSurface();
+    const VkPhysicalDevice vkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
+    Device                *device           = handleStore_->device();
     SDL_Window            *mainWindow       = mainWindow_->windowPtr();
 
     std::unique_ptr<SwapChain> swapChain = std::make_unique<SwapChain>(device->handle());
 
     swapChain->create(vkPhysicalDevice, vkSdkSurface, mainWindow);
 
-    descriptorStore_->storeSwapChain(swapChain.release());
+    handleStore_->storeSwapChain(swapChain.release());
   }
 
 } // namespace vul

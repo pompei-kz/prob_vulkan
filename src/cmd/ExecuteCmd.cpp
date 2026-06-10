@@ -4,6 +4,7 @@
 
 #include "ExecuteCmd.h"
 
+#include "CmdLog.h"
 #include "CmdSequence.h"
 #include "util/Log.h"
 
@@ -37,6 +38,23 @@ namespace cmd {
       return;
     }
 
+    if (const CmdLog *cmd = dynamic_cast<CmdLog *>(cmdPtr.get())) {
+
+      return;
+    }
+
     util::Log::get()->error("G6MW6d6ZGK", "Unknown command {}", (typeid(*cmdPtr)).name());
+  }
+  void ExecuteCmd::execute_CmdLog(const CmdLog *cmd) const
+  {
+    const std::string_view placeId = cmd->placeId;
+    const std::string      msg     = cmd->message;
+
+    switch (cmd->severity) {
+      case Severity::ERROR: log_->error(placeId, "CmdLog {}", msg); break;
+      case Severity::WARNING: log_->warn(placeId, "CmdLog {}", msg); break;
+      case Severity::INFO: log_->info(placeId, "CmdLog {}", msg); break;
+      default: log_->verbose(placeId, "CmdLog {}", msg); break;
+    }
   }
 } // namespace cmd

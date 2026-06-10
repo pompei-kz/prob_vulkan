@@ -3,22 +3,22 @@
 //
 
 // ReSharper disable CppParameterMayBeConst
-#include "DescriptorStore.h"
+#include "HandleStore.h"
 
 #include <SDL3/SDL_vulkan.h>
 
 namespace vul {
-  DescriptorStore::~DescriptorStore()
+  HandleStore::~HandleStore()
   {
     storeVkInstance(VK_NULL_HANDLE);
   }
 
-  void DescriptorStore::mark_SDL_Initialized()
+  void HandleStore::mark_SDL_Initialized()
   {
     is_SDL_initialized = true;
   }
 
-  [[nodiscard]] bool DescriptorStore::is_SDL_Initialized() const
+  [[nodiscard]] bool HandleStore::is_SDL_Initialized() const
   {
     return is_SDL_initialized;
   }
@@ -30,7 +30,7 @@ namespace vul {
     }
   }
 
-  void DescriptorStore::storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
+  void HandleStore::storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
   {
     if (vkDebugMessenger_ && vkInstance_) {
       DestroyDebugUtilsMessengerEXT(vkInstance_, vkDebugMessenger_, nullptr);
@@ -41,7 +41,7 @@ namespace vul {
     }
   }
 
-  void DescriptorStore::storeVkSdkSurface(VkSurfaceKHR vkSdkSurface)
+  void HandleStore::storeVkSdkSurface(VkSurfaceKHR vkSdkSurface)
   {
     if (vkSdkSurface_) {
       SDL_Vulkan_DestroySurface(vkInstance_, vkSdkSurface_, nullptr);
@@ -50,7 +50,7 @@ namespace vul {
     vkSdkSurface_ = vkSdkSurface;
   }
 
-  void DescriptorStore::storeVkInstance(VkInstance vkInstance)
+  void HandleStore::storeVkInstance(VkInstance vkInstance)
   {
     storeDevice(nullptr);
 

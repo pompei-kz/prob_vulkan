@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "DescriptorStore.h"
+#include "HandleStore.h"
 #include "Print.h"
 #include "SelectPhysicalDevice.h"
 #include "app/FirstInit.h"
@@ -13,9 +13,9 @@
 
 namespace vul {
   class InitInstance
-  /// BEAN initInstance vul::DescriptorStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
+  /// BEAN initInstance vul::HandleStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
   {
-    di::Getter<DescriptorStore>      &descriptorStore_;
+    di::Getter<HandleStore>          &handleStore_;
     di::Getter<app::Settings>        &setting_;
     di::Getter<Print>                &print_;
     di::Getter<app::FirstInit>       &firstInit_;
@@ -23,13 +23,13 @@ namespace vul {
     di::Getter<SelectPhysicalDevice> &selectPhysicalDevice_;
 
   public:
-    explicit InitInstance(di::Getter<DescriptorStore>      &descriptorStore,
+    explicit InitInstance(di::Getter<HandleStore>          &handleStore,
                           di::Getter<app::Settings>        &setting,
                           di::Getter<Print>                &print,
                           di::Getter<app::FirstInit>       &firstInit,
                           di::Getter<app::MainWindow>      &mainWindow,
                           di::Getter<SelectPhysicalDevice> &selectPhysicalDevice)
-        : descriptorStore_(descriptorStore)
+        : handleStore_(handleStore)
         , setting_(setting)
         , print_(print)
         , firstInit_(firstInit)
@@ -44,6 +44,6 @@ namespace vul {
     void initVkMessenger() const;
     void createVkSdkSurface() const;
     void createDevice() const;
-    void createSwapChain()const;
+    void createSwapChain() const;
   };
 } // namespace vul

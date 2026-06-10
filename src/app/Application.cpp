@@ -22,7 +22,7 @@ namespace app {
     //
     //
 
-    descriptorStore_->destroy();
+    handleStore_->destroy();
     firstInit_->destroy();
   }
 } // namespace app

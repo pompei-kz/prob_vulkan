@@ -10,10 +10,10 @@
 namespace vul {
 
   /**
-   * Stores descriptor of Vulkan and destroys its
+   * Stores handle of Vulkan and destroys its
    */
-  class DescriptorStore
-  /// BEAN descriptorStore
+  class HandleStore
+  /// BEAN handleStore
   {
     bool is_SDL_initialized = false;
 
@@ -42,7 +42,7 @@ namespace vul {
     std::unique_ptr<SwapChain> swapChain_;
 
   public:
-    ~DescriptorStore();
+    ~HandleStore();
 
     void mark_SDL_Initialized();
 
@@ -50,24 +50,24 @@ namespace vul {
 
     /**
      *
-     * Stores descriptor of VkInstance.
+     * Stores handle of VkInstance.
      *
-     * Old descriptor will be destroyed with all its dependants.
+     * Old handle will be destroyed with all its dependants.
      *
-     * It is assumed that this descriptor is genuine - sent from the Vulkan driver.
+     * It is assumed that this handle is genuine - sent from the Vulkan driver.
      *
-     * @param vkInstance descriptor of VkInstance
+     * @param vkInstance handle of VkInstance
      */
     void storeVkInstance(VkInstance vkInstance);
 
     /**
-     * Stores descriptor of VkDebugUtilsMessenger.
+     * Stores handle of VkDebugUtilsMessenger.
      *
-     * Old descriptor will be destroyed.
+     * Old handle will be destroyed.
      *
-     * It is assumed that this descriptor is genuine - sent from the Vulkan driver.
+     * It is assumed that this handle is genuine - sent from the Vulkan driver.
      *
-     * @param vkMessenger descriptor of VkDebugUtilsMessenger
+     * @param vkMessenger handle of VkDebugUtilsMessenger
      */
     void storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger);
 

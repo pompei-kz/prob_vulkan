@@ -6,27 +6,27 @@
 #include "FirstInit.h"
 #include "cmd/Cmd.h"
 #include "di/Getter.h"
-#include "vul/DescriptorStore.h"
+#include "vul/HandleStore.h"
 
 #include <SDL3/SDL_video.h>
 import SyncQueue;
 
 namespace app {
   class MainWindow
-  /// BEAN mainWindow app::FirstInit vul::DescriptorStore
+  /// BEAN mainWindow app::FirstInit vul::HandleStore
   {
     SDL_Window *window_ = nullptr;
 
-    di::Getter<FirstInit>            &firstInit_;
-    di::Getter<vul::DescriptorStore> &descriptorStore_;
-    util::SyncQueue<cmd::CmdPtr>      cmdQueue_;
+    di::Getter<FirstInit>        &firstInit_;
+    di::Getter<vul::HandleStore> &handleStore_;
+    util::SyncQueue<cmd::CmdPtr>  cmdQueue_;
 
     std::function<void(cmd::CmdPtr)> cmdExecutor_;
 
   public:
-    explicit MainWindow(di::Getter<FirstInit> &firstInit, di::Getter<vul::DescriptorStore> &descriptorStore)
+    explicit MainWindow(di::Getter<FirstInit> &firstInit, di::Getter<vul::HandleStore> &handleStore)
         : firstInit_{firstInit}
-        , descriptorStore_{descriptorStore}
+        , handleStore_{handleStore}
     {}
 
     void create();

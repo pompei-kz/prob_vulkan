@@ -12,7 +12,7 @@ namespace vul {
 
   void SelectPhysicalDevice::select() const
   {
-    const VkInstance vkInstance = descriptorStore_->vkInstance();
+    const VkInstance vkInstance = handleStore_->vkInstance();
 
     uint32_t deviceCount = 0;
     vkEnumeratePhysicalDevices(vkInstance, &deviceCount, nullptr);
@@ -47,7 +47,7 @@ namespace vul {
       throw std::runtime_error("Yp3Lr8wNbX :: No suitable physical device found (requires graphics queue)");
     }
 
-    descriptorStore_->selectVkPhysicalDevice(bestDevice);
+    handleStore_->selectVkPhysicalDevice(bestDevice);
 
     if (util::Log::get()->hasInfo()) {
       VkPhysicalDeviceProperties props;
@@ -88,7 +88,7 @@ namespace vul {
   bool SelectPhysicalDevice::isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const
   {
 
-    const VkSurfaceKHR vkSdkSurface = descriptorStore_->vkSdkSurface();
+    const VkSurfaceKHR vkSdkSurface = handleStore_->vkSdkSurface();
 
     const model::QueueFamilyIndices indices             = model::findQueueFamilies(vkPhysicalDevice, vkSdkSurface);
     const bool                      extensionsSupported = checkDeviceExtensionSupport(vkPhysicalDevice);

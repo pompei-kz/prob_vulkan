@@ -21,7 +21,7 @@ from pathlib import Path
 # ---------------------------------------------------------------------------
 
 def _parse_file(header: Path, src_dir: Path) -> list[dict]:
-    """Return a list of bean descriptors found in one header file."""
+    """Return a list of bean handlers found in one header file."""
     rel = str(header.relative_to(src_dir)).replace("\\", "/")
     try:
         lines = header.read_text(encoding="utf-8").splitlines()

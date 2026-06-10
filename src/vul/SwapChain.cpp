@@ -4,6 +4,8 @@
 
 #include "SwapChain.h"
 
+#include "model/SwapChainSupport.h"
+
 namespace vul {
   void SwapChain::create(const VkPhysicalDevice vkPhysicalDevice, const VkSurfaceKHR vkSdkSurface, SDL_Window *window)
   {
