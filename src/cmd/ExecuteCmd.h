@@ -14,6 +14,6 @@ namespace cmd {
     void execute(const CmdPtr cmdPtr);
   private:
     void execute_Cmd(const CmdPtr cmdPtr);
-  };
+  } ;
 
 } // namespace cmd

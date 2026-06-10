@@ -47,6 +47,10 @@ add_executable(prob_vulkan
     src/back/BackStart.h
     src/app/Application.cpp
     src/app/Application.h
+    src/cmd/CmdSequence.h
+    src/cmd/CmdChangeCamera.h
+    src/cmd/model/Planes.h
+    src/cmd/CmdPipeline.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

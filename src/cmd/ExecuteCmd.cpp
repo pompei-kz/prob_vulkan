@@ -4,6 +4,7 @@
 
 #include "ExecuteCmd.h"
 
+#include "CmdSequence.h"
 #include "util/Log.h"
 
 namespace cmd {
@@ -22,15 +23,20 @@ namespace cmd {
   // ReSharper disable once CppPassValueParameterByConstReference
   void ExecuteCmd::execute_Cmd(const CmdPtr cmdPtr)
   {
-    Cmd *cmd = cmdPtr.get();
+    if (!cmdPtr) return;
 
-    if (!cmd) return;
-
-    if (typeid(*cmd) == typeid(Cmd)) {
-      // Nothing to do: cmd::Cmd is no operation command
+    if (const CmdNop *_ = dynamic_cast<CmdNop *>(cmdPtr.get())) {
+      // Nothing to do: cmd::CmdNop is no operation
       return;
     }
 
-    util::Log::get()->error("G6MW6d6ZGK", "Unknown command {}", typeid(cmd).name());
+    if (const CmdSequence *cmd = dynamic_cast<CmdSequence *>(cmdPtr.get())) {
+      for (const CmdPtr subCmdPtr : cmd->sequence) {
+        execute_Cmd(subCmdPtr);
+      }
+      return;
+    }
+
+    util::Log::get()->error("G6MW6d6ZGK", "Unknown command {}", (typeid(*cmdPtr)).name());
   }
 } // namespace cmd

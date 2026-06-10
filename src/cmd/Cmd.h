@@ -16,4 +16,8 @@ namespace cmd {
   using CmdPtr     = std::shared_ptr<Cmd>;
   using CmdFactory = std::function<CmdPtr()>;
 
+  struct CmdNop : Cmd
+  {
+  };
+
 } // namespace cmd

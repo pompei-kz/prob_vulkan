@@ -14,6 +14,13 @@ namespace cmd {
   {
     std::string_view             placeId;
     std::function<std::string()> messageFunc;
+
+    CmdLog() {}
+
+    CmdLog(const std::string_view placeId, const std::function<std::string()> &messageFunc)
+        : placeId(placeId)
+        , messageFunc(messageFunc)
+    {}
   };
 
 } // namespace cmd
