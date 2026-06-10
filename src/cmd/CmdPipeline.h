@@ -28,7 +28,7 @@ namespace cmd {
     /**
      * ID of a pipeline
      */
-    std::string id; // TODO this field is putting to key of `TriangleApplication::Impl.pipeline_map_`
+    std::string id;
   };
 
   /**
