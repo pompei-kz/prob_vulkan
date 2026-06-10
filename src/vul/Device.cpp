@@ -4,6 +4,7 @@
 
 #include "Device.h"
 
+#include "../util/util.h"
 #include "model/QueueFamilyIndices.h"
 
 #include <set>
@@ -65,8 +66,8 @@ namespace vul {
     createInfo.ppEnabledExtensionNames = model::K_DEVICE_EXTENSIONS.data();                        // Имена включаемых расширений устройства.
 
     // Создаем логическое устройство Vulkan.
-    if (vkCreateDevice(vkPhysicalDevice, &createInfo, nullptr, &vkDevice_) != VK_SUCCESS) {
-      throw std::runtime_error("cY7pD4nVaR :: failed to create logical device");
+    if (const VkResult result = vkCreateDevice(vkPhysicalDevice, &createInfo, nullptr, &vkDevice_); result != VK_SUCCESS) {
+      throw std::runtime_error(std::string("cY7pD4nVaR :: failed to create logical device: VkResult = ") + util::VkResult_to_str(result));
     }
 
     // Получаем графическую очередь Vulkan.

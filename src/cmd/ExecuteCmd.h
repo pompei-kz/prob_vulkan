@@ -35,8 +35,6 @@ namespace cmd {
   private:
     void execute_Cmd(const CmdPtr cmdPtr);
     void execute_CmdLog(const CmdLog *cmd) const;
-    void execute_CmdSetPipeline_ShapeGroup(const CmdSetPipeline_ShapeGroup *cmd);
-    void populatePipeline(const std::unique_ptr<vul::pipeline::Pipeline_ShapeGroup> &pipeline, const CmdSetPipeline_ShapeGroup *cmd) const;
   };
 
 } // namespace cmd

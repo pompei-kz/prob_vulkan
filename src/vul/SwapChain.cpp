@@ -4,6 +4,7 @@
 
 #include "SwapChain.h"
 
+#include "../util/util.h"
 #include "model/SwapChainSupport.h"
 
 namespace vul {
@@ -51,8 +52,8 @@ namespace vul {
     createInfo.oldSwapchain   = VK_NULL_HANDLE;                                 // Старый swap-chain отсутствует при первом создании.
 
     // Создаем swap-chain Vulkan.
-    if (vkCreateSwapchainKHR(vkDevice_, &createInfo, nullptr, &swapChain_) != VK_SUCCESS) {
-      throw std::runtime_error("xV5qN8cTpJ :: failed to create swap chain");
+    if (const VkResult result = vkCreateSwapchainKHR(vkDevice_, &createInfo, nullptr, &swapChain_); result != VK_SUCCESS) {
+      throw std::runtime_error(std::string("xV5qN8cTpJ :: failed to create swap chain: VkResult = ") + util::VkResult_to_str(result));
     }
 
     // Запрашиваем количество изображений swap-chain Vulkan.
@@ -88,8 +89,8 @@ namespace vul {
       createInfo.subresourceRange.layerCount     = 1;                                        // Количество слоев изображения в view.
 
       // Создаем image view Vulkan для изображения swap-chain.
-      if (vkCreateImageView(vkDevice_, &createInfo, nullptr, &imageViews_[i]) != VK_SUCCESS) {
-        throw std::runtime_error("rB1mF6zQeW :: failed to create swap chain image views");
+      if (const VkResult result = vkCreateImageView(vkDevice_, &createInfo, nullptr, &imageViews_[i]); result != VK_SUCCESS) {
+        throw std::runtime_error(std::string("rB1mF6zQeW :: failed to create swap chain image views: VkResult = ") + util::VkResult_to_str(result));
       }
 
       if (util::Log::get()->hasVerbose()) {

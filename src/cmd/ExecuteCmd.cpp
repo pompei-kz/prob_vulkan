@@ -29,7 +29,7 @@ namespace cmd {
   {
     if (!cmdPtr) return;
 
-    if (const CmdNop *_ = dynamic_cast<CmdNop *>(cmdPtr.get())) {
+    if (const CmdNop *ignore = dynamic_cast<CmdNop *>(cmdPtr.get())) {
       // Nothing to do: cmd::CmdNop is no operation
       return;
     }
@@ -47,7 +47,7 @@ namespace cmd {
     }
 
     if (const CmdSetPipeline_ShapeGroup *cmd = dynamic_cast<CmdSetPipeline_ShapeGroup *>(cmdPtr.get())) {
-      execute_CmdSetPipeline_ShapeGroup(cmd);
+      pipeline_shapesGroup_worker_->execute(cmd);
       return;
     }
 
@@ -67,27 +67,4 @@ namespace cmd {
     }
   }
 
-  void ExecuteCmd::execute_CmdSetPipeline_ShapeGroup(const CmdSetPipeline_ShapeGroup *cmd)
-  {
-
-    pipeline_shapesGroup_worker_->execute(cmd);
-
-    auto pipeline = std::unique_ptr<vul::pipeline::Pipeline_ShapeGroup>();
-    populatePipeline(pipeline, cmd);
-    handleStore_->pipelines()->put(cmd->id, std::move(pipeline));
-  }
-
-  void ExecuteCmd::populatePipeline(const std::unique_ptr<vul::pipeline::Pipeline_ShapeGroup> &pipeline, const CmdSetPipeline_ShapeGroup *cmd) const
-  {
-    VkCommandPoolCreateInfo ci{};
-    ci.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    ci.queueFamilyIndex = handleStore_->device()->graphicsFamilyIndex();
-    ci.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
-
-    VkCommandPool vkCommandPool;
-
-    if (const VkResult result = vkCreateCommandPool(handleStore_->device()->handle(), &ci, nullptr, &vkCommandPool); result != VK_SUCCESS) {
-      throw std::runtime_error(std::string("GO6RRSCwQJ :: failed to create logical device: VkResult = ") + util::VkResult_to_str(result));
-    }
-  }
 } // namespace cmd

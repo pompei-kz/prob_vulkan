@@ -130,8 +130,8 @@ namespace vul {
     createInfo.ppEnabledLayerNames     = cValidationLayers.data();
 
     VkInstance vkInstance;
-    if (vkCreateInstance(&createInfo, nullptr, &vkInstance) != VK_SUCCESS) {
-      throw std::runtime_error("c9Hp80dwaM :: failed to create Vulkan instance");
+    if (const VkResult result = vkCreateInstance(&createInfo, nullptr, &vkInstance); result != VK_SUCCESS) {
+      throw std::runtime_error(std::string("c9Hp80dwaM :: failed to create Vulkan instance: VkResult = ") + util::VkResult_to_str(result));
     }
 
     handleStore_->storeVkInstance(vkInstance);

@@ -15,17 +15,19 @@ namespace vul::pipeline {
   /// BEAN pipeline_ShapesGroup_Worker vul::HandleStore
   {
 
-    di::Getter<vul::HandleStore> *handleStore_;
+    di::Getter<HandleStore> &handleStore_;
 
   public:
-    Pipeline_ShapesGroup_Worker(di::Getter<HandleStore> *handleStore)
+    Pipeline_ShapesGroup_Worker(di::Getter<HandleStore> &handleStore)
         : handleStore_(handleStore)
     {}
 
-    void execute(const cmd::CmdSetPipeline_ShapeGroup *cmd);
+    void execute(const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
 
   private:
-    void populatePipeline(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd);
+    void populatePipeline(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
+    void createVkCommandPool(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline) const;
+    void createVkCommandBuffers(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline) const;
   };
 
 } // namespace vul::pipeline

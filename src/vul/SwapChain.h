@@ -37,7 +37,9 @@ namespace vul {
      */
     VkExtent2D swapChainExtent_{};
 
-    // Image views Vulkan для изображений swap-chain.
+    /**
+     * Image views Vulkan для изображений swap-chain.
+     */
     std::vector<VkImageView> imageViews_;
 
   public:
@@ -81,6 +83,16 @@ namespace vul {
     void create(const VkPhysicalDevice vkPhysicalDevice, const VkSurfaceKHR vkSdkSurface, SDL_Window *window);
 
     void createImageViews();
+
+    std::vector<VkImage> swapChainImages() const
+    {
+      return swapChainImages_;
+    }
+
+    std::vector<VkImageView> imageViews() const
+    {
+      return imageViews_;
+    }
 
   private:
     static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats);

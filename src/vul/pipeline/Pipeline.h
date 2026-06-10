@@ -4,14 +4,20 @@
 
 #pragma once
 #include <string>
+#include <vulkan/vulkan_core.h>
 
 namespace vul::pipeline {
 
   class Pipeline
   {
-  public:
-    explicit Pipeline() {}
+  protected:
+    VkDevice vkDevice_;
 
+    explicit Pipeline(const VkDevice vkDevice)
+        : vkDevice_(vkDevice)
+    {}
+
+  public:
     ~Pipeline() = default;
 
     void create();
