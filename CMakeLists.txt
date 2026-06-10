@@ -45,6 +45,8 @@ add_executable(prob_vulkan
     src/cmd/ExecuteCmd.h
     src/back/BackStart.cpp
     src/back/BackStart.h
+    src/app/Application.cpp
+    src/app/Application.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

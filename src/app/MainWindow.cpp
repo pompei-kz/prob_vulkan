@@ -62,20 +62,14 @@ namespace app {
 
   void MainWindow::executeAllCmdQueue()
   {
-    if (const auto ce = cmdExecutor_; ce) {
+    if (const auto exeFunc = cmdExecutor_; exeFunc) {
       for (;;) {
         std::optional<cmd::CmdPtr> cmdPtr = cmdQueue_.pop_front();
         if (!cmdPtr.has_value()) {
           return;
         }
 
-        try {
-          ce(cmdPtr.value());
-        } catch (const std::exception &e) {
-          util::Log::get()->error("luCis0d8Cx", "Cmd exception: {}", e.what());
-        } catch (...) {
-          util::Log::get()->error("VWi4lSkjVK", "Cmd unknown exception");
-        }
+        exeFunc(cmdPtr.value());
       }
     }
   }

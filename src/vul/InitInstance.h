@@ -13,7 +13,7 @@
 
 namespace vul {
   class InitInstance
-  /// BEAN instanceInit vul::DescriptorStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
+  /// BEAN initInstance vul::DescriptorStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
   {
     di::Getter<DescriptorStore>      &descriptorStore_;
     di::Getter<app::Settings>        &setting_;
