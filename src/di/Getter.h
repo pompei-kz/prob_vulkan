@@ -31,18 +31,18 @@ namespace di {
 
     ~Getter()
     {
-      T *pointer = cache_.load(std::memory_order_acquire);
+      T *pointer = cache_.load(std::memory_order_seq_cst);
       deleter_(pointer);
     }
 
-    inline T *get()
+    T *get()
     {
-      T *ref = cache_.load(std::memory_order_acquire);
+      T *ref = cache_.load(std::memory_order_seq_cst);
 
       if (ref == nullptr) {
         std::unique_lock lock(*mutex_);
 
-        ref = cache_.load(std::memory_order_acquire);
+        ref = cache_.load(std::memory_order_seq_cst);
 
         if (ref == nullptr) {
           ref = getter_();

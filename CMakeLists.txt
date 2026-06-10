@@ -24,7 +24,6 @@ add_executable(prob_vulkan
     src/vul/InitInstance.h
     src/util/Log.cpp
     src/util/Log.h
-    src/util/SyncQueue.ixx
     src/app/MainWindow.cpp
     src/app/MainWindow.h
     src/app/FirstInit.cpp
@@ -39,10 +38,13 @@ add_executable(prob_vulkan
     src/vul/model/SwapChainSupport.h
     src/vul/SwapChain.cpp
     src/vul/SwapChain.h
-    src/cmd/Cmd.cpp
     src/cmd/Cmd.h
-    src/cmd/CmdLog.cpp
+    src/cmd/Cmd.cpp
     src/cmd/CmdLog.h
+    src/cmd/ExecuteCmd.cpp
+    src/cmd/ExecuteCmd.h
+    src/back/BackStart.cpp
+    src/back/BackStart.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)
@@ -66,3 +68,9 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(CLI11)
 
 target_link_libraries(prob_vulkan PRIVATE Vulkan::Vulkan SDL3::SDL3 CLI11::CLI11)
+
+target_sources(prob_vulkan
+    PRIVATE
+    FILE_SET CXX_MODULES FILES
+    src/util/SyncQueue.ixx
+)

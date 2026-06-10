@@ -3,13 +3,17 @@
 //
 
 #pragma once
+#include <functional>
+#include <memory>
 
 namespace cmd {
 
-  class Cmd
+  struct Cmd
   {
-  public:
     virtual ~Cmd();
   };
+
+  using CmdPtr     = std::shared_ptr<Cmd>;
+  using CmdFactory = std::function<CmdPtr()>;
 
 } // namespace cmd

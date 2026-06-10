@@ -58,7 +58,7 @@ namespace {
 
 namespace vul {
 
-  void InitInstance::initTopObjects() const
+  void InitInstance::initialize() const
   {
     firstInit_->init();
 

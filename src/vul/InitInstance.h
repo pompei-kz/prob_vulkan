@@ -37,7 +37,7 @@ namespace vul {
         , selectPhysicalDevice_(selectPhysicalDevice)
     {}
 
-    void initTopObjects() const;
+    void initialize() const;
 
   private:
     void createVkInstance() const;

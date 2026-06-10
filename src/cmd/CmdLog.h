@@ -3,20 +3,17 @@
 //
 
 #pragma once
+#include "Cmd.h"
+
 #include <functional>
 #include <string>
 
 namespace cmd {
 
-  class CmdLog
+  struct CmdLog : Cmd
   {
-    std::string_view placeId_;
-    std::function<std::string()> func_;
-
-  public:
-    explicit CmdLog(std::string_view placeId, const std::function<std::string()> &func)
-        : func_(func)
-    {}
+    std::string_view             placeId;
+    std::function<std::string()> messageFunc;
   };
 
 } // namespace cmd

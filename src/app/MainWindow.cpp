@@ -37,8 +37,10 @@ namespace app {
     window_ = window;
   }
 
-  void MainWindow::mainLoop()
+  void MainWindow::mainLoop(cmd::CmdPtr cmdPtr)
   {
+    cmdQueue_.push_back(std::move(cmdPtr));
+
     bool working = true;
     while (working) {
       bool frameBufferResized = false;
@@ -52,10 +54,30 @@ namespace app {
         }
       }
 
-
+      executeAllCmdQueue();
     }
 
     vkDeviceWaitIdle(descriptorStore_->device()->handle());
+  }
+
+  void MainWindow::executeAllCmdQueue()
+  {
+    if (const auto ce = cmdExecutor_; ce) {
+      for (;;) {
+        std::optional<cmd::CmdPtr> cmdPtr = cmdQueue_.pop_front();
+        if (!cmdPtr.has_value()) {
+          return;
+        }
+
+        try {
+          ce(cmdPtr.value());
+        } catch (const std::exception &e) {
+          util::Log::get()->error("luCis0d8Cx", "Cmd exception: {}", e.what());
+        } catch (...) {
+          util::Log::get()->error("VWi4lSkjVK", "Cmd unknown exception");
+        }
+      }
+    }
   }
 
 } // namespace app
