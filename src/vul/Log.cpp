@@ -6,10 +6,29 @@
 #include "util/util.h"
 #include <iostream>
 
+namespace {
+  vul::Log *statis_log;
+}
+
 namespace vul {
-  Log::Log(di::Getter<app::Settings> &setting)
-      : setting_(setting)
-  {}
+  Log::Log() {}
+
+  Log *Log::get()
+  {
+    if (statis_log == nullptr) {
+      throw std::runtime_error("5bmrSfNLEb :: Log is not initialized");
+    }
+    return statis_log;
+  }
+
+  void Log::initialize(const app::Settings *settings)
+  {
+    statis_log                     = new Log();
+    statis_log->isLogLevelError_   = settings->isLogLevelError();
+    statis_log->isLogLevelWarning_ = settings->isLogLevelWarning();
+    statis_log->isLogLevelInfo_    = settings->isLogLevelInfo();
+    statis_log->isLogLevelVerbose_ = settings->isLogLevelVerbose();
+  }
 
   void Log::error0(const std::string_view placeId, const std::string_view message) const
   {
@@ -41,21 +60,21 @@ namespace vul {
 
   [[nodiscard]] inline bool Log::hasError() const
   {
-    return setting_->isLogLevelError();
+    return isLogLevelError_;
   }
 
   [[nodiscard]] inline bool Log::hasWarning() const
   {
-    return setting_->isLogLevelWarning();
+    return isLogLevelWarning_;
   }
 
   [[nodiscard]] inline bool Log::hasInfo() const
   {
-    return setting_->isLogLevelInfo();
+    return isLogLevelInfo_;
   }
 
   [[nodiscard]] inline bool Log::hasVerbose() const
   {
-    return setting_->isLogLevelVerbose();
+    return isLogLevelVerbose_;
   }
 } // namespace vul

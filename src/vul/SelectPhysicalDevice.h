@@ -12,20 +12,17 @@
 namespace vul {
 
   class SelectPhysicalDevice
-  /// BEAN initPhysicalDevice vul::DescriptorStore vul::Log app::Settings vul::Print
+  /// BEAN initPhysicalDevice vul::DescriptorStore app::Settings vul::Print
   {
     di::Getter<DescriptorStore> &descriptorStore_;
-    di::Getter<Log>             &log_;
     di::Getter<app::Settings>   &setting_;
     di::Getter<Print>           &print_;
 
   public:
     explicit SelectPhysicalDevice(di::Getter<DescriptorStore> &descriptorStore,
-                                  di::Getter<Log>             &log,
                                   di::Getter<app::Settings>   &setting,
                                   di::Getter<Print>           &print)
         : descriptorStore_(descriptorStore)
-        , log_(log)
         , setting_(setting)
         , print_(print)
     {}

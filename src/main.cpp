@@ -18,6 +18,8 @@ int main(int argCount, char *args[])
     return EXIT_FAILURE;
   }
 
+  vul::Log::initialize(context.settings());
+
   context.mainWindow()->create();
   context.instanceInit()->initTopObjects();
 

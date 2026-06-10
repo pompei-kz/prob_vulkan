@@ -134,7 +134,7 @@ namespace vul {
 
     descriptorStore_->storeVkInstance(vkInstance);
 
-    if (log_->hasInfo()) log_->info("qClyNZccLo", "Vulkan instance created successfully");
+    if (Log::get()->hasInfo()) Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
 
   void InitInstance::initVkMessenger() const
@@ -145,7 +145,7 @@ namespace vul {
 
     VkDebugUtilsMessengerCreateInfoEXT info{};
     info.sType     = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    info.pUserData = log_.get();
+    info.pUserData = Log::get();
 
     {
       VkDebugUtilsMessageSeverityFlagsEXT flags = 0;
@@ -166,12 +166,12 @@ namespace vul {
     const auto func = reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(vkInstance, funcName));
 
     if (const VkResult vkResult = func(vkInstance, &info, nullptr, &vkMessenger); vkResult != VK_SUCCESS) {
-      log_->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
+      Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
     descriptorStore_->storeVkMessenger(vkMessenger);
 
-    if (log_->hasInfo()) log_->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
+    if (Log::get()->hasInfo()) Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
 
   void InitInstance::createVkSdkSurface() const

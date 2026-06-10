@@ -10,17 +10,24 @@
 
 namespace vul {
   class Log
-  /// BEAN log app::Settings
   {
-    di::Getter<app::Settings> &setting_;
-
-  public:
-    explicit Log(di::Getter<app::Settings> &setting);
+    bool isLogLevelError_   = false;
+    bool isLogLevelWarning_ = false;
+    bool isLogLevelInfo_    = false;
+    bool isLogLevelVerbose_ = false;
 
     void error0(const std::string_view placeId, const std::string_view message) const;
     void warn0(const std::string_view placeId, const std::string_view message) const;
     void info0(const std::string_view placeId, const std::string_view message) const;
     void verbose0(const std::string_view placeId, const std::string_view message) const;
+
+    explicit Log();
+
+  public:
+
+    static Log *get();
+
+    static void initialize(const app::Settings *settings);
 
     [[nodiscard]] bool hasError() const;
     [[nodiscard]] bool hasWarning() const;
