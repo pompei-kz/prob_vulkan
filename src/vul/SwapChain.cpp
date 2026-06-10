@@ -64,6 +64,38 @@ namespace vul {
     swapChainExtent_      = extent;
   }
 
+  void SwapChain::createImageViews()
+  {
+    imageViews_.resize(swapChainImages_.size());
+
+    for (size_t i = 0; i < swapChainImages_.size(); ++i) {
+      // Параметры создания image view Vulkan.
+      VkImageViewCreateInfo createInfo{};
+      createInfo.sType                           = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO; // Тип структуры создания image view.
+      createInfo.image                           = swapChainImages_[i];                      // Изображение swap-chain, для которого создается view.
+      createInfo.viewType                        = VK_IMAGE_VIEW_TYPE_2D;                    // Представление изображения как 2D texture.
+      createInfo.format                          = swapChainImageFormat_;                    // Формат данных изображения.
+      createInfo.components.r                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Красный канал остается без перестановки.
+      createInfo.components.g                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Зеленый канал остается без перестановки.
+      createInfo.components.b                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Синий канал остается без перестановки.
+      createInfo.components.a                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Альфа-канал остается без перестановки.
+      createInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;                // View обращается к цветовой части изображения.
+      createInfo.subresourceRange.baseMipLevel   = 0;                                        // Первый mip level для view.
+      createInfo.subresourceRange.levelCount     = 1;                                        // Количество mip levels в view.
+      createInfo.subresourceRange.baseArrayLayer = 0;                                        // Первый слой массива изображений.
+      createInfo.subresourceRange.layerCount     = 1;                                        // Количество слоев изображения в view.
+
+      // Создаем image view Vulkan для изображения swap-chain.
+      if (vkCreateImageView(vkDevice_, &createInfo, nullptr, &imageViews_[i]) != VK_SUCCESS) {
+        throw std::runtime_error("rB1mF6zQeW :: failed to create swap chain image views");
+      }
+
+      if (util::Log::get()->hasVerbose()) {
+        util::Log::get()->verbose("l1uCgx9vH6", "Created swap chain image view {}", i);
+      }
+    }
+  }
+
   VkSurfaceFormatKHR SwapChain::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats)
   {
     for (const auto &availableFormat : formats) {

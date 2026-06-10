@@ -75,6 +75,8 @@ namespace vul {
     createDevice();
 
     createSwapChain();
+
+    descriptorStore_->swapChain()->createImageViews();
   }
 
   void InitInstance::createVkInstance() const

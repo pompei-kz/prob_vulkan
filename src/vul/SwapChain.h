@@ -41,6 +41,9 @@ namespace vul {
      */
     VkExtent2D swapChainExtent_{};
 
+    // Image views Vulkan для изображений swap-chain.
+    std::vector<VkImageView> imageViews_;
+
   public:
     explicit SwapChain(const VkDevice vkDevice)
         : vkDevice_(vkDevice)
@@ -58,9 +61,19 @@ namespace vul {
     void storeSwapChain(const VkSwapchainKHR swapChain)
     {
       if (swapChain_) {
+        for (const VkImageView imageView : imageViews_) {
+          vkDestroyImageView(vkDevice_, imageView, nullptr);
+
+          if (util::Log::get()->hasVerbose()) {
+            util::Log::get()->verbose("5Qq5BzHAij", "vkDestroyImageView");
+          }
+        }
+        imageViews_.clear();
+
         vkDestroySwapchainKHR(vkDevice_, swapChain_, nullptr);
+
         if (util::Log::get()->hasVerbose()) {
-          util::Log::get()->verbose("ekHpQm9sK4", "vkDestroySwapChainKHR ----------------------------------------------------------------------");
+          util::Log::get()->verbose("ekHpQm9sK4", "vkDestroySwapChainKHR");
         }
 
         swapChain_ = VK_NULL_HANDLE;
@@ -69,6 +82,8 @@ namespace vul {
     }
 
     void create(const VkPhysicalDevice vkPhysicalDevice, const VkSurfaceKHR vkSdkSurface, SDL_Window *window);
+
+    void createImageViews();
 
   private:
     static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats);
