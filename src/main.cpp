@@ -18,6 +18,7 @@ int main(int argCount, char *args[])
   context.instanceInit()->initTopObjects();
 
   // Working...
+  context.mainWindow()->mainLoop();
 
   context.descriptorStore()->destroy();
   context.firstInit()->destroy();
