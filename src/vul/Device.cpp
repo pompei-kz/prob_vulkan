@@ -30,15 +30,15 @@ namespace vul {
         throw std::runtime_error("fPNvCE8M4v :: Queue families not complete");
       }
 
-      graphicsFamily_ = indices.graphicsFamily.value();
-      presentFamily_  = indices.presentFamily.value();
+      graphicsFamilyIndex_ = indices.graphicsFamily.value();
+      presentFamilyIndex_  = indices.presentFamily.value();
     }
 
     // Параметры очередей Vulkan для логического устройства.
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 
     // ReSharper disable once CppTemplateArgumentsCanBeDeduced
-    std::set<uint32_t> uniqueQueueFamilies = {graphicsFamily_, presentFamily_};
+    std::set<uint32_t> uniqueQueueFamilies = {graphicsFamilyIndex_, presentFamilyIndex_};
 
     constexpr float queuePriority = 1.0F;
 
@@ -70,8 +70,8 @@ namespace vul {
     }
 
     // Получаем графическую очередь Vulkan.
-    vkGetDeviceQueue(vkDevice_, graphicsFamily_, 0, &graphicsQueue_);
+    vkGetDeviceQueue(vkDevice_, graphicsFamilyIndex_, 0, &graphicsQueue_);
     // Получаем очередь показа Vulkan.
-    vkGetDeviceQueue(vkDevice_, presentFamily_, 0, &presentQueue_);
+    vkGetDeviceQueue(vkDevice_, presentFamilyIndex_, 0, &presentQueue_);
   }
 } // namespace vul

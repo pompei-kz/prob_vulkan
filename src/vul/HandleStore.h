@@ -4,6 +4,9 @@
 
 #pragma once
 #include "Device.h"
+#include "pipeline/Pipeline.h"
+#include "pipeline/Pipelines.h"
+
 #include <memory>
 #include <vulkan/vulkan.h>
 
@@ -40,6 +43,8 @@ namespace vul {
     std::unique_ptr<Device> device_;
 
     std::unique_ptr<SwapChain> swapChain_;
+
+    pipeline::Pipelines pipelines_;
 
   public:
     ~HandleStore();
@@ -125,6 +130,7 @@ namespace vul {
       if (device_.get() == device) return;
 
       storeSwapChain(nullptr);
+      pipelines_.clear();
       device_.reset(device);
     }
 
@@ -136,6 +142,11 @@ namespace vul {
     SwapChain *swapChain() const
     {
       return swapChain_.get();
+    }
+
+    pipeline::Pipelines *pipelines()
+    {
+      return &pipelines_;
     }
   };
 } // namespace vul

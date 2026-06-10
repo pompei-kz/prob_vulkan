@@ -51,6 +51,14 @@ add_executable(prob_vulkan
     src/cmd/CmdChangeCamera.h
     src/cmd/model/Planes.h
     src/cmd/CmdPipeline.h
+    src/vul/pipeline/Pipeline.cpp
+    src/vul/pipeline/Pipeline.h
+    src/vul/pipeline/Pipeline_ShapeGroup.cpp
+    src/vul/pipeline/Pipeline_ShapeGroup.h
+    src/vul/pipeline/Pipelines.cpp
+    src/vul/pipeline/Pipelines.h
+    src/vul/pipeline/Pipeline_ShapesGroup_Worker.cpp
+    src/vul/pipeline/Pipeline_ShapesGroup_Worker.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

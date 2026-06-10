@@ -21,14 +21,14 @@ namespace vul {
      *
      * Значение этого поля является мусором, если `this->vkDevice_ == VK_NULL_HANDLE`
      */
-    uint32_t graphicsFamily_{};
+    uint32_t graphicsFamilyIndex_{};
 
     /**
      * Индекс семейства очередей для команд передачи изображений на экран.
      *
      * Значение этого поля является мусором, если `this->vkDevice_ == VK_NULL_HANDLE`
      */
-    uint32_t presentFamily_{};
+    uint32_t presentFamilyIndex_{};
 
     /**
      * Очередь Vulkan для графических команд.
@@ -52,6 +52,11 @@ namespace vul {
     VkDevice handle() const
     {
       return vkDevice_;
+    }
+
+    uint32_t graphicsFamilyIndex() const
+    {
+      return graphicsFamilyIndex_;
     }
   };
 } // namespace vul
