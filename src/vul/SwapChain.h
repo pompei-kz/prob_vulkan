@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Log.h"
+#include "../util/Log.h"
 #include "model/QueueFamilyIndices.h"
 #include "model/SwapChainSupport.h"
 
@@ -59,8 +59,8 @@ namespace vul {
     {
       if (swapChain_) {
         vkDestroySwapchainKHR(vkDevice_, swapChain_, nullptr);
-        if (Log::get()->hasVerbose()) {
-          Log::get()->verbose("ekHpQm9sK4", "vkDestroySwapChainKHR ---------------------------------------------------------------------------");
+        if (util::Log::get()->hasVerbose()) {
+          util::Log::get()->verbose("ekHpQm9sK4", "vkDestroySwapChainKHR ----------------------------------------------------------------------");
         }
 
         swapChain_ = VK_NULL_HANDLE;

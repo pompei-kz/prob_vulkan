@@ -8,7 +8,7 @@
 
 #include <format>
 
-namespace vul {
+namespace util {
   class Log
   {
     bool isLogLevelError_   = false;

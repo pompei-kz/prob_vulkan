@@ -21,8 +21,8 @@ namespace vul {
       throw std::runtime_error("Xm4Pq9rT2k :: No Vulkan-capable physical devices found");
     }
 
-    if (Log::get()->hasInfo()) {
-      Log::get()->info("8nd8ta7Wu1", "Physical devices found: {}", deviceCount);
+    if (util::Log::get()->hasInfo()) {
+      util::Log::get()->info("8nd8ta7Wu1", "Physical devices found: {}", deviceCount);
     }
 
     std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -49,11 +49,11 @@ namespace vul {
 
     descriptorStore_->selectVkPhysicalDevice(bestDevice);
 
-    if (Log::get()->hasInfo()) {
+    if (util::Log::get()->hasInfo()) {
       VkPhysicalDeviceProperties props;
       vkGetPhysicalDeviceProperties(bestDevice, &props);
 
-      Log::get()->info("igIRqIKRBd", "Selected physical device: {}", props.deviceName);
+      util::Log::get()->info("igIRqIKRBd", "Selected physical device: {}", props.deviceName);
     }
   }
 

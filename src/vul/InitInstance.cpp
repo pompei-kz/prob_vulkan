@@ -37,7 +37,7 @@ namespace {
 
     if (!userData) return VK_TRUE;
 
-    vul::Log          *log = static_cast<vul::Log *>(userData);
+    util::Log         *log = static_cast<util::Log *>(userData);
     std::ostringstream ss;
 
     ss << messageTypeToStr(type) << " " << data->pMessage;
@@ -134,7 +134,7 @@ namespace vul {
 
     descriptorStore_->storeVkInstance(vkInstance);
 
-    if (Log::get()->hasInfo()) Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
+    if (util::Log::get()->hasInfo()) util::Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
 
   void InitInstance::initVkMessenger() const
@@ -145,7 +145,7 @@ namespace vul {
 
     VkDebugUtilsMessengerCreateInfoEXT info{};
     info.sType     = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
-    info.pUserData = Log::get();
+    info.pUserData = util::Log::get();
 
     {
       VkDebugUtilsMessageSeverityFlagsEXT flags = 0;
@@ -166,12 +166,12 @@ namespace vul {
     const auto func = reinterpret_cast<PFN_vkCreateDebugUtilsMessengerEXT>(vkGetInstanceProcAddr(vkInstance, funcName));
 
     if (const VkResult vkResult = func(vkInstance, &info, nullptr, &vkMessenger); vkResult != VK_SUCCESS) {
-      Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
+      util::Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
     descriptorStore_->storeVkMessenger(vkMessenger);
 
-    if (Log::get()->hasInfo()) Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
+    if (util::Log::get()->hasInfo()) util::Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
 
   void InitInstance::createVkSdkSurface() const

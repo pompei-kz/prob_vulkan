@@ -22,8 +22,8 @@ add_executable(prob_vulkan
     src/vul/DescriptorStore.h
     src/vul/InitInstance.cpp
     src/vul/InitInstance.h
-    src/vul/Log.cpp
-    src/vul/Log.h
+    src/util/Log.cpp
+    src/util/Log.h
     src/app/MainWindow.cpp
     src/app/MainWindow.h
     src/app/FirstInit.cpp

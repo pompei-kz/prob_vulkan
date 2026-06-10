@@ -2,12 +2,6 @@
 #include "di/Context.h"
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_vulkan.h>
-#include <iostream>
-#include <stdexcept>
-#include <unordered_set>
-#include <vector>
-#include <vulkan/vulkan.h>
 
 int main(int argCount, char *args[])
 {
@@ -18,7 +12,7 @@ int main(int argCount, char *args[])
     return EXIT_FAILURE;
   }
 
-  vul::Log::initialize(context.settings());
+  util::Log::initialize(context.settings());
 
   context.mainWindow()->create();
   context.instanceInit()->initTopObjects();

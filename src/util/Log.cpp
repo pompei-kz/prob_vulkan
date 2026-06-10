@@ -7,10 +7,10 @@
 #include <iostream>
 
 namespace {
-  vul::Log *statis_log;
+  util::Log *statis_log;
 }
 
-namespace vul {
+namespace util {
   Log::Log() {}
 
   Log *Log::get()
