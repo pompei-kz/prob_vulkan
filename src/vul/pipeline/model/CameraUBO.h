@@ -6,8 +6,8 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #define GLM_FORCE_RADIANS
 
-#include <glm/vec3.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/vec3.hpp>
 
 namespace vul::pipeline::model {
 
@@ -15,7 +15,8 @@ namespace vul::pipeline::model {
   {
     glm::mat4 view;
     glm::mat4 projection;
-    glm::vec4 lightDirectionAndForce;
+
+    alignas(16) glm::vec4 lightDirectionAndForce;
   };
 
 } // namespace vul::pipeline::model

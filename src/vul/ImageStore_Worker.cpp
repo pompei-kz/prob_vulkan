@@ -49,10 +49,12 @@ namespace vul {
     vkGetImageMemoryRequirements(device, imageStore->handle(), &memReq);
 
     {
+      const VkPhysicalDevice physicalDevice = topStore_->selectedVkPhysicalDevice();
+
       VkMemoryAllocateInfo allocInfo{};
       allocInfo.sType           = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
       allocInfo.allocationSize  = memReq.size;
-      allocInfo.memoryTypeIndex = findMemoryType(topStore_->selectedVkPhysicalDevice(), memReq.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+      allocInfo.memoryTypeIndex = findMemoryType("TrtSWyWx6r", physicalDevice, memReq.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
 
       VkDeviceMemory memory;
 
@@ -103,10 +105,11 @@ namespace vul {
     }
   }
 
-  uint32_t ImageStore_Worker::findMemoryType(const VkPhysicalDevice physicalDevice,
-                                             const uint32_t         typeFilter,
-                                             // ReSharper disable once CppDFAConstantParameter
-                                             const VkMemoryPropertyFlags properties)
+  uint32_t findMemoryType(std::string_view       placeId,
+                          const VkPhysicalDevice physicalDevice,
+                          const uint32_t         typeFilter,
+                          // ReSharper disable once CppDFAConstantParameter
+                          const VkMemoryPropertyFlags properties)
   {
     VkPhysicalDeviceMemoryProperties memProperties{};
 
@@ -123,6 +126,6 @@ namespace vul {
       }
     }
 
-    throw std::runtime_error("pc7BrPBNxO :: Failed to find suitable memory type");
+    throw std::runtime_error(std::format("{} :: Failed to find suitable memory type", placeId));
   }
 } // namespace vul

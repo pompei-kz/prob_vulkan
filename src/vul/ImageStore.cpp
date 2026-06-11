@@ -11,7 +11,7 @@ namespace vul {
     if (imageView_) {
       vkDestroyImageView(device_, imageView_, nullptr);
       if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("HaZYIweByi", "vkDestroyImageView for Depth Image: imageView_ = {}", static_cast<void *>(imageView_));
+        util::Log::get()->verbose("HaZYIweByi", "Depth Image: vkDestroyImageView(), H={}", static_cast<void *>(imageView_));
       }
       imageView_ = VK_NULL_HANDLE;
     }
@@ -24,7 +24,7 @@ namespace vul {
       resetImageView(nullptr);
       vkFreeMemory(device_, memory_, nullptr);
       if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("E6aSGiJCtX", "vkFreeMemory for Depth Image: memory_ = {}", static_cast<void *>(memory_));
+        util::Log::get()->verbose("E6aSGiJCtX", "Depth Image: vkFreeMemory(), H={}", static_cast<void *>(memory_));
       }
       memory_ = VK_NULL_HANDLE;
     }
@@ -38,7 +38,7 @@ namespace vul {
       resetMemory /*it also resets `imageView_`*/ (nullptr);
       vkDestroyImage(device_, handle_, nullptr);
       if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("6ZaHZo8uPv", "vkDestroyImage for Depth Image: image_ = {}", static_cast<void *>(handle_));
+        util::Log::get()->verbose("6ZaHZo8uPv", "Depth Image: vkDestroyImage(), H={}", static_cast<void *>(handle_));
       }
       handle_ = nullptr;
     }

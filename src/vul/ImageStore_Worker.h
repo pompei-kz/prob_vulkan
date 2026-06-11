@@ -22,9 +22,11 @@ namespace vul {
     {}
 
     void createDepthImage() const;
-
-  private:
-    static uint32_t findMemoryType(const VkPhysicalDevice physicalDevice, const uint32_t typeFilter, const VkMemoryPropertyFlags properties);
   };
+
+  uint32_t findMemoryType(std::string_view            placeId,
+                          const VkPhysicalDevice      physicalDevice,
+                          const uint32_t              typeFilter,
+                          const VkMemoryPropertyFlags properties);
 
 } // namespace vul

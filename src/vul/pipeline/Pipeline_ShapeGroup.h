@@ -16,7 +16,10 @@ namespace vul::pipeline {
     VkCommandPool                vkCommandPool_ = VK_NULL_HANDLE;
     std::vector<VkCommandBuffer> commandBuffers_;
 
-    VkBuffer cameraUboBuffer_ = VK_NULL_HANDLE;
+    VkDescriptorSetLayout cameraUboLayout_    = VK_NULL_HANDLE;
+    VkBuffer              cameraUboBuffer_    = VK_NULL_HANDLE;
+    VkDeviceMemory        cameraUboMemory_    = VK_NULL_HANDLE;
+    void                 *cameraUboMemoryRef_ = nullptr;
 
   public:
     explicit Pipeline_ShapeGroup(const VkDevice vkDevice)
@@ -30,12 +33,13 @@ namespace vul::pipeline {
       if (vkCommandPool_) {
         resetVkCommandBuffers(std::vector<VkCommandBuffer>());
         resetCameraUboBuffer(VK_NULL_HANDLE);
+        resetDescriptorSetLayout(VK_NULL_HANDLE);
+        resetCameraUboMemory(VK_NULL_HANDLE);
 
         vkDestroyCommandPool(device_, vkCommandPool_, nullptr);
         if (util::Log::get()->hasVerbose()) {
-          util::Log::get()->verbose("rFW7XX7zgk", "vkDestroyCommandPool({})", static_cast<void *>(vkCommandPool_));
+          util::Log::get()->verbose("rFW7XX7zgk", "vkDestroyCommandPool(), H={}", static_cast<void *>(vkCommandPool_));
         }
-        vkCommandPool_ = VK_NULL_HANDLE;
       }
 
       vkCommandPool_ = vkCommandPool;
@@ -52,7 +56,7 @@ namespace vul::pipeline {
             if (str.length() > 0) str += ", ";
             str += std::format("{}", static_cast<void *>(commandBuffer));
           }
-          util::Log::get()->verbose("fb2tPIM9l2", "vkFreeCommandBuffers({})", str);
+          util::Log::get()->verbose("fb2tPIM9l2", "vkFreeCommandBuffers(), H={}", str);
         }
       }
 
@@ -66,14 +70,56 @@ namespace vul::pipeline {
       if (cameraUboBuffer_) {
         vkDestroyBuffer(device_, cameraUboBuffer_, nullptr);
         if (util::Log::get()->hasVerbose()) {
-          util::Log::get()->verbose("FV3XSc6XFA", "Camera UBO: vkDestroyBuffer({})", static_cast<void *>(cameraUboBuffer_));
+          util::Log::get()->verbose("FV3XSc6XFA", "Camera UBO: vkDestroyBuffer(), H={}", static_cast<void *>(cameraUboBuffer_));
         }
-        cameraUboBuffer_ = VK_NULL_HANDLE;
       }
       cameraUboBuffer_ = buffer;
     }
 
     [[nodiscard]] VkBuffer cameraUboBuffer() const { return cameraUboBuffer_; }
+
+    void resetDescriptorSetLayout(const VkDescriptorSetLayout cameraUboLayout)
+    {
+      if (cameraUboLayout_) {
+        vkDestroyDescriptorSetLayout(device_, cameraUboLayout_, nullptr);
+        if (util::Log::get()->hasVerbose()) {
+          util::Log::get()->verbose("MhZAjM8Ol8", "Camera UBO: vkDestroyDescriptorSetLayout(), H={}", static_cast<void *>(cameraUboLayout_));
+        }
+      }
+      cameraUboLayout_ = cameraUboLayout;
+    }
+
+    [[nodiscard]] VkDescriptorSetLayout cameraUboLayout() const { return cameraUboLayout_; }
+
+    void resetCameraUboMemory(const VkDeviceMemory cameraUboMemory)
+    {
+      if (cameraUboMemory_) {
+        resetCameraUboMemoryRef(nullptr);
+        vkFreeMemory(device_, cameraUboMemory_, nullptr);
+        if (util::Log::get()->hasVerbose()) {
+          util::Log::get()->verbose("sZDmhVO33h", "Camera UBO: vkFreeMemory(), H={}", static_cast<void *>(cameraUboMemory_));
+        }
+      }
+      cameraUboMemory_ = cameraUboMemory;
+    }
+
+    [[nodiscard]] VkDeviceMemory cameraUboMemory() const { return cameraUboMemory_; }
+
+    void resetCameraUboMemoryRef(void *cameraUboMemoryRef)
+    {
+      if (cameraUboMemoryRef_) {
+        vkUnmapMemory(device_, cameraUboMemory_);
+        if (util::Log::get()->hasVerbose()) {
+          util::Log::get()->verbose("obN79x4SoH",
+                                    "Camera UBO: vkUnmapMemory(), H={}, ref={}",
+                                    static_cast<void *>(cameraUboMemory_),
+                                    cameraUboMemoryRef_);
+        }
+      }
+      cameraUboMemoryRef_ = cameraUboMemoryRef;
+    }
+
+    [[nodiscard]] void *cameraUboMemoryRef() const { return cameraUboMemoryRef_; }
   };
 
 } // namespace vul::pipeline
