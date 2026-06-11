@@ -22,6 +22,7 @@ namespace vul::pipeline {
 
     createVkCommandBuffers(pipeline);
 
+    // продолжить здесь, когда буфер глубин будет создан.
   }
 
   void Pipeline_ShapesGroup_Worker::createVkCommandPool(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline) const

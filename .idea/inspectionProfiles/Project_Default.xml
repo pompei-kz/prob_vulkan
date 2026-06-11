@@ -5,6 +5,7 @@
     <inspection_tool class="CppConstParameterInDeclaration" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="CppRedundantControlFlowJump" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppRedundantInlineSpecifier" enabled="false" level="HINT" enabled_by_default="false" />
+    <inspection_tool class="CppRedundantParentheses" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppTemplateArgumentsCanBeDeduced" enabled="false" level="HINT" enabled_by_default="false" />
     <inspection_tool class="CppUseAuto" enabled="false" level="HINT" enabled_by_default="false" />
   </profile>

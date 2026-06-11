@@ -3,9 +3,11 @@
 //
 
 #pragma once
+#include "ImageStore.h"
 #include "SwapChainStore.h"
 #include "model/Queues.h"
 
+#include <memory>
 #include <vulkan/vulkan.h>
 
 namespace vul {
@@ -21,6 +23,8 @@ namespace vul {
 
     model::Queues queues_{};
 
+    std::unique_ptr<ImageStore> depthImage_{};
+
   public:
     ~DeviceStore() { resetHandle(VK_NULL_HANDLE); }
 
@@ -33,5 +37,9 @@ namespace vul {
     void setQueues(const model::Queues &queues) { queues_ = queues; }
 
     void resetHandle(const VkDevice handle);
+
+    void resetDepthImage(std::unique_ptr<ImageStore> depthImage) { depthImage_ = std::move(depthImage); }
+
+    [[nodiscard]] ImageStore *depthImage() const;
   };
 } // namespace vul

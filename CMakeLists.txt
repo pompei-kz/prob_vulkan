@@ -65,6 +65,10 @@ add_executable(prob_vulkan
     src/vul/DeviceStore_Worker.h
     src/vul/model/Queues.cpp
     src/vul/model/Queues.h
+    src/vul/ImageStore.cpp
+    src/vul/ImageStore.h
+    src/vul/ImageStore_Worker.cpp
+    src/vul/ImageStore_Worker.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

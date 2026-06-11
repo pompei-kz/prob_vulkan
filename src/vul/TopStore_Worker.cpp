@@ -76,6 +76,8 @@ namespace vul {
 
     swapChainStore_Worker_->create();
     swapChainStore_Worker_->createImageViews();
+
+    imageStore_worker_->createDepthImage();
   }
 
   void TopStore_Worker::createVkInstance() const
