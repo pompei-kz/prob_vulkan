@@ -65,6 +65,12 @@ namespace vul {
 
     swapChainImageFormat_ = surfaceFormat.format;
     swapChainExtent_      = extent;
+
+    if (util::Log::get()->hasVerbose()) {
+      util::Log::get()->verbose("tYrHJ2OvO3", "Swap chain created with {}", imageCount);
+      util::Log::get()->verbose("bO4usS2XZ1", "Swap chain image format {}", util::VkFormat_to_str(surfaceFormat.format));
+      util::Log::get()->verbose("kpPnGzPKiV", "Swap chain color space  {}", util::VkColorSpaceKHR_to_str(surfaceFormat.colorSpace));
+    }
   }
 
   void SwapChain::createImageViews()

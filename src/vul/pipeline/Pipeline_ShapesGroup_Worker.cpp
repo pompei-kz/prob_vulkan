@@ -21,6 +21,7 @@ namespace vul::pipeline {
     createVkCommandPool(pipeline);
 
     createVkCommandBuffers(pipeline);
+
   }
 
   void Pipeline_ShapesGroup_Worker::createVkCommandPool(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline) const
