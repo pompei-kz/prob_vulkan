@@ -10,10 +10,10 @@ namespace vul {
 
   void SwapChain_Worker::create() const
   {
-    const VkPhysicalDevice vkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
-    const VkSurfaceKHR     vkSdkSurface     = handleStore_->vkSdkSurface();
+    const VkPhysicalDevice vkPhysicalDevice = topStore_->selectedVkPhysicalDevice();
+    const VkSurfaceKHR     vkSdkSurface     = topStore_->vkSdkSurface();
     SDL_Window            *window           = mainWindow_->windowPtr();
-    const Device          *device           = handleStore_->device();
+    const Device          *device           = topStore_->device();
 
     const model::SwapChainSupport swapChainSupport = model::querySwapChainSupport(vkPhysicalDevice, vkSdkSurface);
     // Выбранный формат поверхности Vulkan.
@@ -79,7 +79,7 @@ namespace vul {
       swapChain->setEnvironment(swapChainImages, surfaceFormat.format, extent);
     }
 
-    handleStore_->resetSwapChain(std::move(swapChain));
+    topStore_->resetSwapChain(std::move(swapChain));
 
     if (util::Log::get()->hasVerbose()) {
       util::Log::get()->verbose("tYrHJ2OvO3", "Swap chain created with {}", imageCount);
@@ -90,8 +90,8 @@ namespace vul {
 
   void SwapChain_Worker::createImageViews() const
   {
-    const VkDevice             device    = handleStore_->device()->handle();
-    SwapChain                 *swapChain = handleStore_->swapChain();
+    const VkDevice             device    = topStore_->device()->handle();
+    SwapChain                 *swapChain = topStore_->swapChain();
     const std::vector<VkImage> images    = swapChain->images();
 
     std::vector<VkImageView> imageViews;

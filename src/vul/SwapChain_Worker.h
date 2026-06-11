@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "HandleStore.h"
+#include "TopStore.h"
 #include "app/MainWindow.h"
 #include "model/QueueFamilyIndices.h"
 #include "model/SwapChainSupport.h"
@@ -19,14 +19,14 @@ namespace vul {
 
   class SwapChain_Worker
   /// BEAN swapChainWorker
-  /// DEPS vul::HandleStore app::MainWindow
+  /// DEPS vul::TopStore app::MainWindow
   {
-    di::Getter<HandleStore>     &handleStore_;
+    di::Getter<TopStore>        &topStore_;
     di::Getter<app::MainWindow> &mainWindow_;
 
   public:
-    SwapChain_Worker(di::Getter<HandleStore> &handleStore, di::Getter<app::MainWindow> &mainWindow)
-        : handleStore_(handleStore)
+    SwapChain_Worker(di::Getter<TopStore> &topStore, di::Getter<app::MainWindow> &mainWindow)
+        : topStore_(topStore)
         , mainWindow_(mainWindow)
     {}
 

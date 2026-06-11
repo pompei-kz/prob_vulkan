@@ -8,7 +8,7 @@ namespace vul {
   void Device_Worker::create() const
   {
 
-    const VkPhysicalDevice vkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
+    const VkPhysicalDevice vkPhysicalDevice = topStore_->selectedVkPhysicalDevice();
 
     std::unique_ptr<Device> device = std::make_unique<Device>();
 
@@ -65,13 +65,13 @@ namespace vul {
 
     device->setQueues(queues);
 
-    handleStore_->resetDevice(std::move(device));
+    topStore_->resetDevice(std::move(device));
   }
 
   model::QueueFamilyIndices Device_Worker::selectRequiredQueueFamilyIndices() const
   {
-    const VkSurfaceKHR              vkSdkSurface             = handleStore_->vkSdkSurface();
-    const VkPhysicalDevice          selectedVkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
+    const VkSurfaceKHR              vkSdkSurface             = topStore_->vkSdkSurface();
+    const VkPhysicalDevice          selectedVkPhysicalDevice = topStore_->selectedVkPhysicalDevice();
     const model::QueueFamilyIndices indices                  = model::findQueueFamilies(selectedVkPhysicalDevice, vkSdkSurface);
 
     if (!indices.complete()) {

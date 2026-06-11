@@ -18,8 +18,8 @@ add_executable(prob_vulkan
     src/vul/Print.h
     src/util/util.cpp
     src/util/util.h
-    src/vul/HandleStore.cpp
-    src/vul/HandleStore.h
+    src/vul/TopStore.cpp
+    src/vul/TopStore.h
     src/vul/InitInstance.cpp
     src/vul/InitInstance.h
     src/util/Log.cpp

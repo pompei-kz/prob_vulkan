@@ -7,7 +7,7 @@
 #include "CmdLog.h"
 #include "CmdPipeline.h"
 #include "util/Log.h"
-#include "vul/HandleStore.h"
+#include "vul/TopStore.h"
 #include "vul/pipeline/Pipeline_ShapeGroup.h"
 #include "vul/pipeline/Pipeline_ShapesGroup_Worker.h"
 
@@ -17,17 +17,16 @@ namespace cmd {
 
   class ExecuteCmd
   /// BEAN executeCmd
-  /// DEPS vul::HandleStore vul::pipeline::Pipeline_ShapesGroup_Worker
+  /// DEPS vul::TopStore vul::pipeline::Pipeline_ShapesGroup_Worker
   {
-
     util::Log *log_ = util::Log::get();
 
-    di::Getter<vul::HandleStore>                           &handleStore_;
+    di::Getter<vul::TopStore>                              &topStore_;
     di::Getter<vul::pipeline::Pipeline_ShapesGroup_Worker> &pipeline_shapesGroup_worker_;
 
   public:
-    ExecuteCmd(di::Getter<vul::HandleStore> &handleStore, di::Getter<vul::pipeline::Pipeline_ShapesGroup_Worker> &pipeline_ShapesGroup_Worker)
-        : handleStore_(handleStore)
+    ExecuteCmd(di::Getter<vul::TopStore> &topStore, di::Getter<vul::pipeline::Pipeline_ShapesGroup_Worker> &pipeline_ShapesGroup_Worker)
+        : topStore_(topStore)
         , pipeline_shapesGroup_worker_(pipeline_ShapesGroup_Worker)
     {}
 

@@ -8,15 +8,14 @@
 #include "pipeline/Pipelines.h"
 
 #include <memory>
-#include <vulkan/vulkan.h>
 
 namespace vul {
 
   /**
-   * Stores handles of Vulkan and destroys its
+   * Stores handles of top Vulkan objects and destroys them
    */
-  class HandleStore
-  /// BEAN handleStore
+  class TopStore
+  /// BEAN topStore
   {
     bool is_SDL_initialized = false;
 
@@ -47,7 +46,7 @@ namespace vul {
     pipeline::Pipelines pipelines_;
 
   public:
-    ~HandleStore();
+    ~TopStore();
 
     void mark_SDL_Initialized();
 
@@ -83,10 +82,7 @@ namespace vul {
      */
     void resetVkSdkSurface(VkSurfaceKHR vkSdkSurface);
 
-    [[nodiscard]] VkSurfaceKHR VkSdkSurface() const
-    {
-      return vkSdkSurface_;
-    }
+    [[nodiscard]] VkSurfaceKHR VkSdkSurface() const { return vkSdkSurface_; }
 
     /**
      * Stores handle of the selected VkPhysicalDevice.
@@ -95,35 +91,17 @@ namespace vul {
      *
      * @param selectedVkPhysicalDevice handle of the selected physical device
      */
-    void selectVkPhysicalDevice(const VkPhysicalDevice selectedVkPhysicalDevice)
-    {
-      selectedVkPhysicalDevice_ = selectedVkPhysicalDevice;
-    }
+    void selectVkPhysicalDevice(const VkPhysicalDevice selectedVkPhysicalDevice) { selectedVkPhysicalDevice_ = selectedVkPhysicalDevice; }
 
-    [[nodiscard]] VkInstance vkInstance() const
-    {
-      return vkInstance_;
-    }
+    [[nodiscard]] VkInstance vkInstance() const { return vkInstance_; }
 
-    [[nodiscard]] VkPhysicalDevice selectedVkPhysicalDevice() const
-    {
-      return selectedVkPhysicalDevice_;
-    }
+    [[nodiscard]] VkPhysicalDevice selectedVkPhysicalDevice() const { return selectedVkPhysicalDevice_; }
 
-    void destroy()
-    {
-      resetVkInstance(VK_NULL_HANDLE);
-    }
+    void destroy() { resetVkInstance(VK_NULL_HANDLE); }
 
-    [[nodiscard]] VkSurfaceKHR vkSdkSurface() const
-    {
-      return vkSdkSurface_;
-    }
+    [[nodiscard]] VkSurfaceKHR vkSdkSurface() const { return vkSdkSurface_; }
 
-    Device *device() const
-    {
-      return device_.get();
-    }
+    Device *device() const { return device_.get(); }
 
     void resetDevice(std::unique_ptr<Device> device)
     {
@@ -132,19 +110,10 @@ namespace vul {
       device_ = std::move(device);
     }
 
-    void resetSwapChain(std::unique_ptr<SwapChain> swapChain)
-    {
-      swapChain_ = std::move(swapChain);
-    }
+    void resetSwapChain(std::unique_ptr<SwapChain> swapChain) { swapChain_ = std::move(swapChain); }
 
-    SwapChain *swapChain() const
-    {
-      return swapChain_.get();
-    }
+    SwapChain *swapChain() const { return swapChain_.get(); }
 
-    pipeline::Pipelines *pipelines()
-    {
-      return &pipelines_;
-    }
+    pipeline::Pipelines *pipelines() { return &pipelines_; }
   };
 } // namespace vul

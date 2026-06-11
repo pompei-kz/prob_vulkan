@@ -4,10 +4,10 @@
 
 #pragma once
 #include "Device_Worker.h"
-#include "HandleStore.h"
 #include "Print.h"
 #include "SelectPhysicalDevice.h"
 #include "SwapChain_Worker.h"
+#include "TopStore.h"
 #include "app/FirstInit.h"
 #include "app/MainWindow.h"
 #include "app/Settings.h"
@@ -16,10 +16,10 @@
 namespace vul {
   class InitInstance
   /// BEAN initInstance
-  /// DEPS vul::HandleStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
+  /// DEPS vul::TopStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
   /// DEPS vul::SwapChain_Worker vul::Device_Worker
   {
-    di::Getter<HandleStore>          &handleStore_;
+    di::Getter<TopStore>             &topStore_;
     di::Getter<app::Settings>        &setting_;
     di::Getter<Print>                &print_;
     di::Getter<app::FirstInit>       &firstInit_;
@@ -29,7 +29,7 @@ namespace vul {
     di::Getter<Device_Worker>        &device_Worker_;
 
   public:
-    explicit InitInstance(di::Getter<HandleStore>          &handleStore,
+    explicit InitInstance(di::Getter<TopStore>             &topStore,
                           di::Getter<app::Settings>        &setting,
                           di::Getter<Print>                &print,
                           di::Getter<app::FirstInit>       &firstInit,
@@ -37,7 +37,7 @@ namespace vul {
                           di::Getter<SelectPhysicalDevice> &selectPhysicalDevice,
                           di::Getter<SwapChain_Worker>     &swapChain_Worker,
                           di::Getter<Device_Worker>        &device_Worker)
-        : handleStore_(handleStore)
+        : topStore_(topStore)
         , setting_(setting)
         , print_(print)
         , firstInit_(firstInit)

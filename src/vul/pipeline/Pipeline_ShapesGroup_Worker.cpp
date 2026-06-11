@@ -10,9 +10,9 @@ namespace vul::pipeline {
 
   void Pipeline_ShapesGroup_Worker::execute(const cmd::CmdSetPipeline_ShapeGroup *cmd) const
   {
-    auto pipeline = std::make_unique<Pipeline_ShapeGroup>(handleStore_->device()->handle());
+    auto pipeline = std::make_unique<Pipeline_ShapeGroup>(topStore_->device()->handle());
     populatePipeline(pipeline, cmd);
-    handleStore_->pipelines()->put(cmd->id, std::move(pipeline));
+    topStore_->pipelines()->put(cmd->id, std::move(pipeline));
   }
 
   void Pipeline_ShapesGroup_Worker::populatePipeline(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline,
@@ -28,12 +28,12 @@ namespace vul::pipeline {
   {
     VkCommandPoolCreateInfo ci{};
     ci.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    ci.queueFamilyIndex = handleStore_->device()->queueFamilyIndices().indexGraphics.value();
+    ci.queueFamilyIndex = topStore_->device()->queueFamilyIndices().indexGraphics.value();
     ci.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VkCommandPool vkCommandPool;
 
-    if (const VkResult result = vkCreateCommandPool(handleStore_->device()->handle(), &ci, nullptr, &vkCommandPool); result != VK_SUCCESS) {
+    if (const VkResult result = vkCreateCommandPool(topStore_->device()->handle(), &ci, nullptr, &vkCommandPool); result != VK_SUCCESS) {
       throw std::runtime_error(std::string("GO6RRSCwQJ :: failed to create command pool: VkResult = ") + util::VkResult_to_str(result));
     }
 
@@ -44,7 +44,7 @@ namespace vul::pipeline {
   {
     std::vector<VkCommandBuffer> commandBuffers;
 
-    commandBuffers.resize(handleStore_->swapChain()->swapChainImages().size());
+    commandBuffers.resize(topStore_->swapChain()->swapChainImages().size());
 
     VkCommandBufferAllocateInfo ai{};
     ai.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -52,7 +52,7 @@ namespace vul::pipeline {
     ai.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
     ai.commandBufferCount = commandBuffers.size();
 
-    if (const VkResult result = vkAllocateCommandBuffers(handleStore_->device()->handle(), &ai, commandBuffers.data()); result != VK_SUCCESS) {
+    if (const VkResult result = vkAllocateCommandBuffers(topStore_->device()->handle(), &ai, commandBuffers.data()); result != VK_SUCCESS) {
       throw std::runtime_error(std::string("lwVho03Xia :: failed to allocate command buffers: VkResult = ") + util::VkResult_to_str(result));
     }
   }

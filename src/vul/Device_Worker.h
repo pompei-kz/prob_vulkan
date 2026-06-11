@@ -4,7 +4,7 @@
 
 #pragma once
 #include "Device.h"
-#include "HandleStore.h"
+#include "TopStore.h"
 #include "di/Getter.h"
 #include "model/QueueFamilyIndices.h"
 #include "util/util.h"
@@ -18,13 +18,13 @@ namespace vul {
 
   class Device_Worker
   /// BEAN device_Worker
-  /// DEPS vul::HandleStore
+  /// DEPS vul::TopStore
   {
-    di::Getter<HandleStore> &handleStore_;
+    di::Getter<TopStore> &topStore_;
 
   public:
-    explicit Device_Worker(di::Getter<HandleStore> &handleStore)
-        : handleStore_(handleStore)
+    explicit Device_Worker(di::Getter<TopStore> &topStore)
+        : topStore_(topStore)
     {}
 
     void create() const;

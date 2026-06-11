@@ -133,14 +133,14 @@ namespace vul {
       throw std::runtime_error(std::string("c9Hp80dwaM :: failed to create Vulkan instance: VkResult = ") + util::VkResult_to_str(result));
     }
 
-    handleStore_->resetVkInstance(vkInstance);
+    topStore_->resetVkInstance(vkInstance);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
 
   void InitInstance::initVkMessenger() const
   {
-    const VkInstance vkInstance = handleStore_->vkInstance();
+    const VkInstance vkInstance = topStore_->vkInstance();
 
     VkDebugUtilsMessengerEXT vkMessenger;
 
@@ -170,7 +170,7 @@ namespace vul {
       util::Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
-    handleStore_->resetVkMessenger(vkMessenger);
+    topStore_->resetVkMessenger(vkMessenger);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
@@ -178,7 +178,7 @@ namespace vul {
   void InitInstance::createVkSdkSurface() const
   {
     SDL_Window      *mainWindow   = mainWindow_->windowPtr();
-    const VkInstance vkInstance   = handleStore_->vkInstance();
+    const VkInstance vkInstance   = topStore_->vkInstance();
     VkSurfaceKHR     vkSdkSurface = VK_NULL_HANDLE;
 
     // Создаем Vulkan surface для окна SDL.
@@ -186,7 +186,7 @@ namespace vul {
       throw std::runtime_error(std::string("idXh7XaHT6 :: ERROR IN `SDL_Vulkan_CreateSurface()`: ") + SDL_GetError());
     }
 
-    handleStore_->resetVkSdkSurface(vkSdkSurface);
+    topStore_->resetVkSdkSurface(vkSdkSurface);
   }
 
 } // namespace vul

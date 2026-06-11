@@ -3,22 +3,22 @@
 //
 
 // ReSharper disable CppParameterMayBeConst
-#include "HandleStore.h"
+#include "TopStore.h"
 
 #include <SDL3/SDL_vulkan.h>
 
 namespace vul {
-  HandleStore::~HandleStore()
+  TopStore::~TopStore()
   {
     resetVkInstance(VK_NULL_HANDLE);
   }
 
-  void HandleStore::mark_SDL_Initialized()
+  void TopStore::mark_SDL_Initialized()
   {
     is_SDL_initialized = true;
   }
 
-  [[nodiscard]] bool HandleStore::is_SDL_Initialized() const
+  [[nodiscard]] bool TopStore::is_SDL_Initialized() const
   {
     return is_SDL_initialized;
   }
@@ -30,7 +30,7 @@ namespace vul {
     }
   }
 
-  void HandleStore::resetVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
+  void TopStore::resetVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
   {
     if (vkDebugMessenger_ && vkInstance_) {
       DestroyDebugUtilsMessengerEXT(vkInstance_, vkDebugMessenger_, nullptr);
@@ -41,7 +41,7 @@ namespace vul {
     }
   }
 
-  void HandleStore::resetVkSdkSurface(VkSurfaceKHR vkSdkSurface)
+  void TopStore::resetVkSdkSurface(VkSurfaceKHR vkSdkSurface)
   {
     if (vkSdkSurface_) {
       SDL_Vulkan_DestroySurface(vkInstance_, vkSdkSurface_, nullptr);
@@ -50,7 +50,7 @@ namespace vul {
     vkSdkSurface_ = vkSdkSurface;
   }
 
-  void HandleStore::resetVkInstance(VkInstance vkInstance)
+  void TopStore::resetVkInstance(VkInstance vkInstance)
   {
     resetDevice(nullptr);
 

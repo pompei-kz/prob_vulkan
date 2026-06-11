@@ -4,8 +4,8 @@
 
 #pragma once
 #include "../util/Log.h"
-#include "HandleStore.h"
 #include "Print.h"
+#include "TopStore.h"
 #include "di/Getter.h"
 #include "model/QueueFamilyIndices.h"
 
@@ -13,15 +13,15 @@ namespace vul {
 
   class SelectPhysicalDevice
   /// BEAN initPhysicalDevice
-  /// DEPS vul::HandleStore app::Settings vul::Print
+  /// DEPS vul::TopStore app::Settings vul::Print
   {
-    di::Getter<HandleStore>   &handleStore_;
+    di::Getter<TopStore>      &topStore_;
     di::Getter<app::Settings> &setting_;
     di::Getter<Print>         &print_;
 
   public:
-    explicit SelectPhysicalDevice(di::Getter<HandleStore> &handleStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
-        : handleStore_(handleStore)
+    explicit SelectPhysicalDevice(di::Getter<TopStore> &topStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
+        : topStore_(topStore)
         , setting_(setting)
         , print_(print)
     {}
