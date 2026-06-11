@@ -120,7 +120,7 @@ namespace vul {
       }
 
       if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("l1uCgx9vH6", "Created swap chain image view {}", i);
+        util::Log::get()->verbose("l1uCgx9vH6", "Created swap chain image view {} : {}", i, static_cast<void *>(imageViews[i]));
       }
     }
 

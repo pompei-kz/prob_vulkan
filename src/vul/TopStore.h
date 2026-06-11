@@ -43,8 +43,6 @@ namespace vul {
 
     std::unique_ptr<SwapChainStore> swapChainStore_;
 
-    pipeline::Pipelines pipelines_;
-
   public:
     ~TopStore();
 
@@ -106,7 +104,6 @@ namespace vul {
     void resetDevice(std::unique_ptr<DeviceStore> deviceStore)
     {
       resetSwapChain(nullptr);
-      pipelines_.clear();
       deviceStore_ = std::move(deviceStore);
     }
 
@@ -114,6 +111,5 @@ namespace vul {
 
     SwapChainStore *swapChain() const { return swapChainStore_.get(); }
 
-    pipeline::Pipelines *pipelines() { return &pipelines_; }
   };
 } // namespace vul

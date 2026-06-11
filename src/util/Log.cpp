@@ -33,7 +33,7 @@ namespace util {
   void Log::error0(const std::string_view placeId, const std::string_view message) const
   {
     if (hasError()) {
-      std::cerr << util::nowStr() << " ERROR " << placeId << " :: " << message << std::endl;
+      std::cerr << util::nowStr() << " ERR  " << placeId << " :: " << message << std::endl;
     }
   }
 

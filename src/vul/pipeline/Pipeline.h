@@ -11,16 +11,14 @@ namespace vul::pipeline {
   class Pipeline
   {
   protected:
-    VkDevice vkDevice_;
+    VkDevice device_;
 
-    explicit Pipeline(const VkDevice vkDevice)
-        : vkDevice_(vkDevice)
+    explicit Pipeline(const VkDevice device)
+        : device_(device)
     {}
 
   public:
-    ~Pipeline() = default;
-
-    void create();
+    virtual ~Pipeline() = default;
   };
 
 } // namespace vul::pipeline

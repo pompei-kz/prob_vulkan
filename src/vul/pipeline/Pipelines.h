@@ -5,6 +5,7 @@
 #pragma once
 #include "Pipeline.h"
 
+#include <iostream>
 #include <memory>
 #include <string>
 #include <unordered_map>

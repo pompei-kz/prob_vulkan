@@ -34,7 +34,7 @@ namespace vul {
       vkDestroyImageView(vkDevice_, imageView, nullptr);
 
       if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("5Qq5BzHAij", "vkDestroyImageView");
+        util::Log::get()->verbose("5Qq5BzHAij", "vkDestroyImageView({})", static_cast<void *>(imageView));
       }
     }
     imageViews_ = imageViews;

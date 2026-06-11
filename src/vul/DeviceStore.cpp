@@ -17,6 +17,7 @@ namespace vul {
   void DeviceStore::resetHandle(const VkDevice handle)
   {
     if (handle_) {
+      pipelines_.clear();
       resetDepthImage(nullptr);
 
       // Уничтожаем логическое устройство Vulkan.

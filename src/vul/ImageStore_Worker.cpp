@@ -38,8 +38,8 @@ namespace vul {
         util::Log::get()->error("AdAqQPvDWe", "Cannot create depth image: {}", util::VkResult_to_str(vkResult));
       }
 
-      if (util::Log::get()->hasInfo()) {
-        util::Log::get()->info("W2MSgvB8UE", "vkCreateImage(Depth image) OK, image = {}", static_cast<void *>(depthImage));
+      if (util::Log::get()->hasVerbose()) {
+        util::Log::get()->verbose("W2MSgvB8UE", "vkCreateImage(Depth image) OK, image = {}", static_cast<void *>(depthImage));
       }
 
       imageStore->resetHandle(depthImage);
@@ -60,8 +60,8 @@ namespace vul {
         throw std::runtime_error(std::string("vZ5SuJTxtv :: vkAllocateMemory failed for depth buffer: VkResult = ") + util::VkResult_to_str(result));
       }
 
-      if (util::Log::get()->hasInfo()) {
-        util::Log::get()->info("bSSZr6sRgz", "vkAllocateMemory(Depth image) OK, memory = {}", static_cast<void *>(memory));
+      if (util::Log::get()->hasVerbose()) {
+        util::Log::get()->verbose("bSSZr6sRgz", "vkAllocateMemory(Depth image) OK, memory = {}", static_cast<void *>(memory));
       }
 
       imageStore->resetMemory(memory);
@@ -89,8 +89,8 @@ namespace vul {
         throw std::runtime_error(std::string("ig4yo9KzZ4 :: vkCreateImageView failed for depth buffer: VkResult = ") + util::VkResult_to_str(result));
       }
 
-      if (util::Log::get()->hasInfo()) {
-        util::Log::get()->info("telPnIWnP1", "vkCreateImageView(Depth image) OK, imageView = {}", static_cast<void *>(imageView));
+      if (util::Log::get()->hasVerbose()) {
+        util::Log::get()->verbose("telPnIWnP1", "vkCreateImageView(Depth image) OK, imageView = {}", static_cast<void *>(imageView));
       }
 
       imageStore->resetImageView(imageView);
@@ -98,8 +98,8 @@ namespace vul {
 
     deviceStore->resetDepthImage(std::move(imageStore));
 
-    if (util::Log::get()->hasInfo()) {
-      util::Log::get()->info("AZ1tWiWpUn", "Depth image created {}x{}", width, height);
+    if (util::Log::get()->hasVerbose()) {
+      util::Log::get()->verbose("AZ1tWiWpUn", "Depth image created {}x{}", width, height);
     }
   }
 

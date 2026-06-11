@@ -5,11 +5,17 @@
 #include "BackStart.h"
 
 #include "cmd/CmdLog.h"
+#include "cmd/CmdPipeline.h"
 
 namespace back {
   // ReSharper disable once CppMemberFunctionMayBeStatic
   cmd::CmdPtr BackStart::start()
   {
-    return std::make_unique<cmd::CmdLog>("GuNxKIz1xC", "Hello World");
+    auto cmd = std::make_shared<cmd::CmdSetPipeline_ShapeGroup>();
+    cmd->id = "BackStart";
+
+
+
+    return cmd;
   }
 } // namespace back

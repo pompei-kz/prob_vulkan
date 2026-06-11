@@ -69,6 +69,7 @@ add_executable(prob_vulkan
     src/vul/ImageStore.h
     src/vul/ImageStore_Worker.cpp
     src/vul/ImageStore_Worker.h
+    src/vul/pipeline/model/CameraUBO.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

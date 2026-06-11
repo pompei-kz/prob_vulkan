@@ -6,6 +6,7 @@
 #include "ImageStore.h"
 #include "SwapChainStore.h"
 #include "model/Queues.h"
+#include "pipeline/Pipelines.h"
 
 #include <memory>
 #include <vulkan/vulkan.h>
@@ -25,6 +26,8 @@ namespace vul {
 
     std::unique_ptr<ImageStore> depthImage_{};
 
+    pipeline::Pipelines pipelines_;
+
   public:
     ~DeviceStore() { resetHandle(VK_NULL_HANDLE); }
 
@@ -41,5 +44,7 @@ namespace vul {
     void resetDepthImage(std::unique_ptr<ImageStore> depthImage) { depthImage_ = std::move(depthImage); }
 
     [[nodiscard]] ImageStore *depthImage() const;
+
+    [[nodiscard]] pipeline::Pipelines *pipelines() { return &pipelines_; }
   };
 } // namespace vul
