@@ -4,7 +4,7 @@
 
 #include "QueueFamilyIndices.h"
 
-#include "vul/PhysicalDevice.h"
+#include "vul/PhysicalDevice_Worker.h"
 
 namespace vul::model {
 

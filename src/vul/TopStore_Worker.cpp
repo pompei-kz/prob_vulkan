@@ -70,7 +70,7 @@ namespace vul {
 
     createVkSdkSurface();
 
-    physicalDevice_->select();
+    physicalDevice_Worker_->select();
 
     deviceStore_Worker_->create();
 

@@ -2,7 +2,7 @@
 // Created by pompei on 2026-06-09.
 //
 
-#include "PhysicalDevice.h"
+#include "PhysicalDevice_Worker.h"
 
 #include "model/SwapChainSupport.h"
 
@@ -10,7 +10,7 @@
 
 namespace vul {
 
-  void PhysicalDevice::select() const
+  void PhysicalDevice_Worker::select() const
   {
     const VkInstance vkInstance = topStore_->vkInstance();
 
@@ -57,7 +57,7 @@ namespace vul {
     }
   }
 
-  uint64_t PhysicalDevice::resetDevice(const VkPhysicalDevice vkPhysicalDevice) const
+  uint64_t PhysicalDevice_Worker::resetDevice(const VkPhysicalDevice vkPhysicalDevice) const
   {
     if (!isDeviceSuitable(vkPhysicalDevice)) return 0;
 
@@ -85,7 +85,7 @@ namespace vul {
     return typeScore + vRamBytes;
   }
 
-  bool PhysicalDevice::isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const
+  bool PhysicalDevice_Worker::isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const
   {
 
     const VkSurfaceKHR vkSdkSurface = topStore_->vkSdkSurface();
@@ -102,7 +102,7 @@ namespace vul {
     return indices.complete() && extensionsSupported && swapChainAdequate;
   }
 
-  bool PhysicalDevice::checkDeviceExtensionSupport(const VkPhysicalDevice vkPhysicalDevice)
+  bool PhysicalDevice_Worker::checkDeviceExtensionSupport(const VkPhysicalDevice vkPhysicalDevice)
   {
     uint32_t extensionCount = 0;
     // Запрашиваем количество расширений устройства Vulkan.

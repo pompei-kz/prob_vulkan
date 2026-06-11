@@ -30,8 +30,8 @@ add_executable(prob_vulkan
     src/app/FirstInit.h
     src/vul/DeviceStore.cpp
     src/vul/DeviceStore.h
-    src/vul/PhysicalDevice.cpp
-    src/vul/PhysicalDevice.h
+    src/vul/PhysicalDevice_Worker.cpp
+    src/vul/PhysicalDevice_Worker.h
     src/vul/model/QueueFamilyIndices.cpp
     src/vul/model/QueueFamilyIndices.h
     src/vul/model/SwapChainSupport.cpp

@@ -11,7 +11,7 @@
 
 namespace vul {
 
-  class PhysicalDevice
+  class PhysicalDevice_Worker
   /// BEAN physicalDevice
   /// DEPS vul::TopStore app::Settings vul::Print
   {
@@ -20,7 +20,7 @@ namespace vul {
     di::Getter<Print>         &print_;
 
   public:
-    explicit PhysicalDevice(di::Getter<TopStore> &topStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
+    explicit PhysicalDevice_Worker(di::Getter<TopStore> &topStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
         : topStore_(topStore)
         , setting_(setting)
         , print_(print)
