@@ -2,7 +2,7 @@
 // Created by pompei on 2026-06-09.
 //
 
-#include "InitInstance.h"
+#include "TopStore_Worker.h"
 
 #include "Print.h"
 #include "util/util.h"
@@ -58,7 +58,7 @@ namespace {
 
 namespace vul {
 
-  void InitInstance::initialize() const
+  void TopStore_Worker::initialize() const
   {
     firstInit_->init();
 
@@ -70,15 +70,15 @@ namespace vul {
 
     createVkSdkSurface();
 
-    selectPhysicalDevice_->select();
+    physicalDevice_->select();
 
-    device_Worker_->create();
+    deviceStore_Worker_->create();
 
-    swapChain_Worker_->create();
-    swapChain_Worker_->createImageViews();
+    swapChainStore_Worker_->create();
+    swapChainStore_Worker_->createImageViews();
   }
 
-  void InitInstance::createVkInstance() const
+  void TopStore_Worker::createVkInstance() const
   {
     std::unordered_set<std::string> instanceExtensions;
 
@@ -138,7 +138,7 @@ namespace vul {
     if (util::Log::get()->hasInfo()) util::Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
 
-  void InitInstance::initVkMessenger() const
+  void TopStore_Worker::initVkMessenger() const
   {
     const VkInstance vkInstance = topStore_->vkInstance();
 
@@ -175,7 +175,7 @@ namespace vul {
     if (util::Log::get()->hasInfo()) util::Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
 
-  void InitInstance::createVkSdkSurface() const
+  void TopStore_Worker::createVkSdkSurface() const
   {
     SDL_Window      *mainWindow   = mainWindow_->windowPtr();
     const VkInstance vkInstance   = topStore_->vkInstance();

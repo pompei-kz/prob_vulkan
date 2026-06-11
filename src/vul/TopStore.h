@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "Device.h"
+#include "DeviceStore.h"
 #include "pipeline/Pipeline.h"
 #include "pipeline/Pipelines.h"
 
@@ -39,9 +39,9 @@ namespace vul {
      */
     VkPhysicalDevice selectedVkPhysicalDevice_ = VK_NULL_HANDLE;
 
-    std::unique_ptr<Device> device_;
+    std::unique_ptr<DeviceStore> deviceStore_;
 
-    std::unique_ptr<SwapChain> swapChain_;
+    std::unique_ptr<SwapChainStore> swapChainStore_;
 
     pipeline::Pipelines pipelines_;
 
@@ -101,18 +101,18 @@ namespace vul {
 
     [[nodiscard]] VkSurfaceKHR vkSdkSurface() const { return vkSdkSurface_; }
 
-    Device *device() const { return device_.get(); }
+    DeviceStore *device() const { return deviceStore_.get(); }
 
-    void resetDevice(std::unique_ptr<Device> device)
+    void resetDevice(std::unique_ptr<DeviceStore> deviceStore)
     {
       resetSwapChain(nullptr);
       pipelines_.clear();
-      device_ = std::move(device);
+      deviceStore_ = std::move(deviceStore);
     }
 
-    void resetSwapChain(std::unique_ptr<SwapChain> swapChain) { swapChain_ = std::move(swapChain); }
+    void resetSwapChain(std::unique_ptr<SwapChainStore> swapChainStore) { swapChainStore_ = std::move(swapChainStore); }
 
-    SwapChain *swapChain() const { return swapChain_.get(); }
+    SwapChainStore *swapChain() const { return swapChainStore_.get(); }
 
     pipeline::Pipelines *pipelines() { return &pipelines_; }
   };

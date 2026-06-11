@@ -2,18 +2,18 @@
 // Created by pompei on 2026-06-09.
 //
 
-#include "SwapChain.h"
+#include "SwapChainStore.h"
 
 #include "util/Log.h"
 
 namespace vul {
 
-  SwapChain::~SwapChain()
+  SwapChainStore::~SwapChainStore()
   {
     resetHandle(VK_NULL_HANDLE);
   }
 
-  void SwapChain::resetHandle(const VkSwapchainKHR handle)
+  void SwapChainStore::resetHandle(const VkSwapchainKHR handle)
   {
     if (handle_) {
       resetImageViews(std::vector<VkImageView>());
@@ -28,7 +28,7 @@ namespace vul {
     handle_ = handle;
   }
 
-  void SwapChain::resetImageViews(const std::vector<VkImageView> &imageViews)
+  void SwapChainStore::resetImageViews(const std::vector<VkImageView> &imageViews)
   {
     for (const VkImageView imageView : imageViews_) {
       vkDestroyImageView(vkDevice_, imageView, nullptr);
@@ -40,7 +40,7 @@ namespace vul {
     imageViews_ = imageViews;
   }
 
-  void SwapChain::setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extent)
+  void SwapChainStore::setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extent)
   {
     images_      = images;
     imageFormat_ = imageFormat;

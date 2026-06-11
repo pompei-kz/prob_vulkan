@@ -8,7 +8,7 @@ namespace app {
   void Application::run() const
   {
     mainWindow_->create();
-    initInstance_->initialize();
+    topStore_Worker_->initialize();
 
     mainWindow_->installCmdExecutor([this](const cmd::CmdPtr &cmdPtr) { executeCmd_->execute(cmdPtr); });
 

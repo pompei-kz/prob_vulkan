@@ -17,15 +17,15 @@
 
 namespace vul {
 
-  class SwapChain_Worker
-  /// BEAN swapChainWorker
+  class SwapChainStore_Worker
+  /// BEAN swapChainStore_Worker
   /// DEPS vul::TopStore app::MainWindow
   {
     di::Getter<TopStore>        &topStore_;
     di::Getter<app::MainWindow> &mainWindow_;
 
   public:
-    SwapChain_Worker(di::Getter<TopStore> &topStore, di::Getter<app::MainWindow> &mainWindow)
+    SwapChainStore_Worker(di::Getter<TopStore> &topStore, di::Getter<app::MainWindow> &mainWindow)
         : topStore_(topStore)
         , mainWindow_(mainWindow)
     {}

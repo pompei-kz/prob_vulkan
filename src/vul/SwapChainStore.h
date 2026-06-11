@@ -11,7 +11,7 @@
 
 namespace vul {
 
-  class SwapChain
+  class SwapChainStore
   {
     /**
      * Descriptor of the reference logical Vulkan device
@@ -44,7 +44,7 @@ namespace vul {
     std::vector<VkImageView> imageViews_;
 
   public:
-    explicit SwapChain(const VkDevice vkDevice)
+    explicit SwapChainStore(const VkDevice vkDevice)
         : vkDevice_(vkDevice)
     {
       if (!vkDevice_) {
@@ -52,7 +52,7 @@ namespace vul {
       }
     }
 
-    ~SwapChain();
+    ~SwapChainStore();
 
     void resetHandle(const VkSwapchainKHR handle);
     void resetImageViews(const std::vector<VkImageView> &imageViews);

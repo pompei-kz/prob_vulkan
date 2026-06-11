@@ -2,7 +2,7 @@
 // Created by pompei on 2026-06-09.
 //
 
-#include "Device.h"
+#include "DeviceStore.h"
 
 #include "../util/util.h"
 #include "model/QueueFamilyIndices.h"
@@ -13,7 +13,7 @@
 
 namespace vul {
 
-  void Device::resetHandle(const VkDevice handle)
+  void DeviceStore::resetHandle(const VkDevice handle)
   {
     if (handle_) {
       // Уничтожаем логическое устройство Vulkan.

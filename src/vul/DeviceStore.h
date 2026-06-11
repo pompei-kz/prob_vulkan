@@ -3,14 +3,14 @@
 //
 
 #pragma once
-#include "SwapChain.h"
+#include "SwapChainStore.h"
 #include "model/Queues.h"
 
 #include <vulkan/vulkan.h>
 
 namespace vul {
 
-  class Device
+  class DeviceStore
   {
     model::QueueFamilyIndices queueFamilyIndices_{};
 
@@ -22,7 +22,7 @@ namespace vul {
     model::Queues queues_{};
 
   public:
-    ~Device() { resetHandle(VK_NULL_HANDLE); }
+    ~DeviceStore() { resetHandle(VK_NULL_HANDLE); }
 
     VkDevice handle() const { return handle_; }
 

@@ -4,7 +4,7 @@
 
 #include "MainWindow.h"
 
-#include "vul/Device.h"
+#include "vul/DeviceStore.h"
 
 #include <SDL3/SDL_events.h>
 

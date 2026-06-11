@@ -11,8 +11,8 @@
 
 namespace vul {
 
-  class SelectPhysicalDevice
-  /// BEAN initPhysicalDevice
+  class PhysicalDevice
+  /// BEAN physicalDevice
   /// DEPS vul::TopStore app::Settings vul::Print
   {
     di::Getter<TopStore>      &topStore_;
@@ -20,7 +20,7 @@ namespace vul {
     di::Getter<Print>         &print_;
 
   public:
-    explicit SelectPhysicalDevice(di::Getter<TopStore> &topStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
+    explicit PhysicalDevice(di::Getter<TopStore> &topStore, di::Getter<app::Settings> &setting, di::Getter<Print> &print)
         : topStore_(topStore)
         , setting_(setting)
         , print_(print)
@@ -29,7 +29,7 @@ namespace vul {
     void select() const;
 
   private:
-    uint64_t scoreDevice(const VkPhysicalDevice vkPhysicalDevice) const;
+    uint64_t resetDevice(const VkPhysicalDevice vkPhysicalDevice) const;
 
     bool isDeviceSuitable(const VkPhysicalDevice vkPhysicalDevice) const;
 

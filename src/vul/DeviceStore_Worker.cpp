@@ -2,23 +2,23 @@
 // Created by pompei on 2026-06-11.
 //
 
-#include "Device_Worker.h"
+#include "DeviceStore_Worker.h"
 
 namespace vul {
-  void Device_Worker::create() const
+  void DeviceStore_Worker::create() const
   {
 
     const VkPhysicalDevice vkPhysicalDevice = topStore_->selectedVkPhysicalDevice();
 
-    std::unique_ptr<Device> device = std::make_unique<Device>();
+    std::unique_ptr<DeviceStore> deviceStore = std::make_unique<DeviceStore>();
 
-    device->setQueueFamilyIndices(selectRequiredQueueFamilyIndices());
+    deviceStore->setQueueFamilyIndices(selectRequiredQueueFamilyIndices());
 
     // Параметры очередей Vulkan для логического устройства.
     std::vector<VkDeviceQueueCreateInfo> queueCreateInfos;
 
-    uint32_t queueFamilyIndexGraphics = device->queueFamilyIndices().indexGraphics.value();
-    uint32_t queueFamilyIndexPresent  = device->queueFamilyIndices().indexPresent.value();
+    uint32_t queueFamilyIndexGraphics = deviceStore->queueFamilyIndices().indexGraphics.value();
+    uint32_t queueFamilyIndexPresent  = deviceStore->queueFamilyIndices().indexPresent.value();
 
     // ReSharper disable once CppTemplateArgumentsCanBeDeduced
     std::set<uint32_t> uniqueQueueFamilyIndices = {queueFamilyIndexGraphics, queueFamilyIndexPresent};
@@ -54,7 +54,7 @@ namespace vul {
       throw std::runtime_error(std::string("cY7pD4nVaR :: failed to create logical device: VkResult = ") + util::VkResult_to_str(result));
     }
 
-    device->resetHandle(vkDevice);
+    deviceStore->resetHandle(vkDevice);
 
     model::Queues queues{};
 
@@ -63,12 +63,12 @@ namespace vul {
     // Получаем очередь показа Vulkan.
     vkGetDeviceQueue(vkDevice, queueFamilyIndexPresent, 0, &queues.presentQueue);
 
-    device->setQueues(queues);
+    deviceStore->setQueues(queues);
 
-    topStore_->resetDevice(std::move(device));
+    topStore_->resetDevice(std::move(deviceStore));
   }
 
-  model::QueueFamilyIndices Device_Worker::selectRequiredQueueFamilyIndices() const
+  model::QueueFamilyIndices DeviceStore_Worker::selectRequiredQueueFamilyIndices() const
   {
     const VkSurfaceKHR              vkSdkSurface             = topStore_->vkSdkSurface();
     const VkPhysicalDevice          selectedVkPhysicalDevice = topStore_->selectedVkPhysicalDevice();

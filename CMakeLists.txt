@@ -20,24 +20,24 @@ add_executable(prob_vulkan
     src/util/util.h
     src/vul/TopStore.cpp
     src/vul/TopStore.h
-    src/vul/InitInstance.cpp
-    src/vul/InitInstance.h
+    src/vul/TopStore_Worker.cpp
+    src/vul/TopStore_Worker.h
     src/util/Log.cpp
     src/util/Log.h
     src/app/MainWindow.cpp
     src/app/MainWindow.h
     src/app/FirstInit.cpp
     src/app/FirstInit.h
-    src/vul/Device.cpp
-    src/vul/Device.h
-    src/vul/SelectPhysicalDevice.cpp
-    src/vul/SelectPhysicalDevice.h
+    src/vul/DeviceStore.cpp
+    src/vul/DeviceStore.h
+    src/vul/PhysicalDevice.cpp
+    src/vul/PhysicalDevice.h
     src/vul/model/QueueFamilyIndices.cpp
     src/vul/model/QueueFamilyIndices.h
     src/vul/model/SwapChainSupport.cpp
     src/vul/model/SwapChainSupport.h
-    src/vul/SwapChain.cpp
-    src/vul/SwapChain.h
+    src/vul/SwapChainStore.cpp
+    src/vul/SwapChainStore.h
     src/cmd/Cmd.h
     src/cmd/Cmd.cpp
     src/cmd/CmdLog.h
@@ -59,10 +59,10 @@ add_executable(prob_vulkan
     src/vul/pipeline/Pipelines.h
     src/vul/pipeline/Pipeline_ShapesGroup_Worker.cpp
     src/vul/pipeline/Pipeline_ShapesGroup_Worker.h
-    src/vul/SwapChain_Worker.cpp
-    src/vul/SwapChain_Worker.h
-    src/vul/Device_Worker.cpp
-    src/vul/Device_Worker.h
+    src/vul/SwapChainStore_Worker.cpp
+    src/vul/SwapChainStore_Worker.h
+    src/vul/DeviceStore_Worker.cpp
+    src/vul/DeviceStore_Worker.h
     src/vul/model/Queues.cpp
     src/vul/model/Queues.h
 )

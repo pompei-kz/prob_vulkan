@@ -2,18 +2,18 @@
 // Created by pompei on 2026-06-11.
 //
 
-#include "SwapChain_Worker.h"
+#include "SwapChainStore_Worker.h"
 
 #include <stdexcept>
 
 namespace vul {
 
-  void SwapChain_Worker::create() const
+  void SwapChainStore_Worker::create() const
   {
     const VkPhysicalDevice vkPhysicalDevice = topStore_->selectedVkPhysicalDevice();
     const VkSurfaceKHR     vkSdkSurface     = topStore_->vkSdkSurface();
     SDL_Window            *window           = mainWindow_->windowPtr();
-    const Device          *device           = topStore_->device();
+    const DeviceStore     *deviceStore      = topStore_->device();
 
     const model::SwapChainSupport swapChainSupport = model::querySwapChainSupport(vkPhysicalDevice, vkSdkSurface);
     // Выбранный формат поверхности Vulkan.
@@ -56,30 +56,30 @@ namespace vul {
     createInfo.clipped        = VK_TRUE;                                        // Разрешаем не рисовать скрытые части окна.
     createInfo.oldSwapchain   = VK_NULL_HANDLE;                                 // Старый swap-chain отсутствует при первом создании.
 
-    std::unique_ptr<SwapChain> swapChain = std::make_unique<SwapChain>(device->handle());
+    std::unique_ptr<SwapChainStore> swapChainStore = std::make_unique<SwapChainStore>(deviceStore->handle());
 
     {
       VkSwapchainKHR swapChainLocal;
       // Создаем swap-chain Vulkan.
-      if (const VkResult result = vkCreateSwapchainKHR(device->handle(), &createInfo, nullptr, &swapChainLocal); result != VK_SUCCESS) {
+      if (const VkResult result = vkCreateSwapchainKHR(deviceStore->handle(), &createInfo, nullptr, &swapChainLocal); result != VK_SUCCESS) {
         throw std::runtime_error(std::string("xV5qN8cTpJ :: failed to create swap chain: VkResult = ") + util::VkResult_to_str(result));
       }
-      swapChain->resetHandle(swapChainLocal);
+      swapChainStore->resetHandle(swapChainLocal);
     }
 
     {
       std::vector<VkImage> swapChainImages;
       // Запрашиваем количество изображений swap-chain Vulkan.
-      vkGetSwapchainImagesKHR(device->handle(), swapChain->handle(), &imageCount, nullptr);
+      vkGetSwapchainImagesKHR(deviceStore->handle(), swapChainStore->handle(), &imageCount, nullptr);
       swapChainImages.resize(imageCount);
 
       // Получаем изображения swap-chain Vulkan.
-      vkGetSwapchainImagesKHR(device->handle(), swapChain->handle(), &imageCount, swapChainImages.data());
+      vkGetSwapchainImagesKHR(deviceStore->handle(), swapChainStore->handle(), &imageCount, swapChainImages.data());
 
-      swapChain->setEnvironment(swapChainImages, surfaceFormat.format, extent);
+      swapChainStore->setEnvironment(swapChainImages, surfaceFormat.format, extent);
     }
 
-    topStore_->resetSwapChain(std::move(swapChain));
+    topStore_->resetSwapChain(std::move(swapChainStore));
 
     if (util::Log::get()->hasVerbose()) {
       util::Log::get()->verbose("tYrHJ2OvO3", "Swap chain created with {}", imageCount);
@@ -88,11 +88,11 @@ namespace vul {
     }
   }
 
-  void SwapChain_Worker::createImageViews() const
+  void SwapChainStore_Worker::createImageViews() const
   {
-    const VkDevice             device    = topStore_->device()->handle();
-    SwapChain                 *swapChain = topStore_->swapChain();
-    const std::vector<VkImage> images    = swapChain->images();
+    const VkDevice             device         = topStore_->device()->handle();
+    SwapChainStore            *swapChainStore = topStore_->swapChain();
+    const std::vector<VkImage> images         = swapChainStore->images();
 
     std::vector<VkImageView> imageViews;
     imageViews.resize(images.size());
@@ -103,7 +103,7 @@ namespace vul {
       createInfo.sType                           = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO; // Тип структуры создания image view.
       createInfo.image                           = images[i];                                // Изображение swap-chain, для которого создается
       createInfo.viewType                        = VK_IMAGE_VIEW_TYPE_2D;                    // Представление изображения как 2D texture.
-      createInfo.format                          = swapChain->imageFormat();                 // Формат данных изображения.
+      createInfo.format                          = swapChainStore->imageFormat();            // Формат данных изображения.
       createInfo.components.r                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Красный канал остается без перестановки.
       createInfo.components.g                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Зеленый канал остается без перестановки.
       createInfo.components.b                    = VK_COMPONENT_SWIZZLE_IDENTITY;            // Синий канал остается без перестановки.
@@ -124,10 +124,10 @@ namespace vul {
       }
     }
 
-    swapChain->resetImageViews(imageViews);
+    swapChainStore->resetImageViews(imageViews);
   }
 
-  VkSurfaceFormatKHR SwapChain_Worker::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats)
+  VkSurfaceFormatKHR SwapChainStore_Worker::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats)
   {
     for (const auto &availableFormat : formats) {
       if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB && availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR) {
@@ -138,7 +138,7 @@ namespace vul {
     return formats[0];
   }
 
-  VkPresentModeKHR SwapChain_Worker::chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &presentModes)
+  VkPresentModeKHR SwapChainStore_Worker::chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &presentModes)
   {
     for (const auto &availablePresentMode : presentModes) {
       if (availablePresentMode == VK_PRESENT_MODE_MAILBOX_KHR) {
@@ -149,7 +149,7 @@ namespace vul {
     return VK_PRESENT_MODE_FIFO_KHR;
   }
 
-  [[nodiscard]] VkExtent2D SwapChain_Worker::chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities, SDL_Window *window)
+  [[nodiscard]] VkExtent2D SwapChainStore_Worker::chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities, SDL_Window *window)
   {
     if (capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max()) {
       return capabilities.currentExtent;
