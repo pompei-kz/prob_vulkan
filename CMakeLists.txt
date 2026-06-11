@@ -59,6 +59,8 @@ add_executable(prob_vulkan
     src/vul/pipeline/Pipelines.h
     src/vul/pipeline/Pipeline_ShapesGroup_Worker.cpp
     src/vul/pipeline/Pipeline_ShapesGroup_Worker.h
+    src/vul/SwapChain_Worker.cpp
+    src/vul/SwapChain_Worker.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)
@@ -87,4 +89,8 @@ target_sources(prob_vulkan
     PRIVATE
     FILE_SET CXX_MODULES FILES
     src/util/SyncQueue.ixx
+)
+
+target_compile_options(prob_vulkan PRIVATE
+    $<$<CXX_COMPILER_ID:GNU,Clang>:-Wno-potentially-evaluated-expression>
 )

@@ -20,22 +20,22 @@ namespace vul {
     /**
      * Дескриптор цепочки обмена Vulkan.
      */
-    VkSwapchainKHR swapChain_ = VK_NULL_HANDLE;
+    VkSwapchainKHR handle_ = VK_NULL_HANDLE;
 
     /**
      * Изображения swap-chain Vulkan.
      */
-    std::vector<VkImage> swapChainImages_;
+    std::vector<VkImage> images_;
 
     /**
      * Формат изображений swap-chain Vulkan.
      */
-    VkFormat swapChainImageFormat_ = VK_FORMAT_UNDEFINED;
+    VkFormat imageFormat_ = VK_FORMAT_UNDEFINED;
 
     /**
      * Размер изображений swap-chain Vulkan.
      */
-    VkExtent2D swapChainExtent_{};
+    VkExtent2D extent_{};
 
     /**
      * Image views Vulkan для изображений swap-chain.
@@ -53,53 +53,48 @@ namespace vul {
 
     ~SwapChain()
     {
-      storeSwapChain(VK_NULL_HANDLE);
+      resetHandle(VK_NULL_HANDLE);
     }
 
-    void storeSwapChain(const VkSwapchainKHR swapChain)
+    void resetHandle(const VkSwapchainKHR handle);
+    void resetImageViews(const std::vector<VkImageView> &imageViews);
+
+    [[nodiscard]] VkSwapchainKHR handle() const
     {
-      if (swapChain_) {
-        for (const VkImageView imageView : imageViews_) {
-          vkDestroyImageView(vkDevice_, imageView, nullptr);
-
-          if (util::Log::get()->hasVerbose()) {
-            util::Log::get()->verbose("5Qq5BzHAij", "vkDestroyImageView");
-          }
-        }
-
-        imageViews_.clear();
-
-        vkDestroySwapchainKHR(vkDevice_, swapChain_, nullptr);
-
-        if (util::Log::get()->hasVerbose()) {
-          util::Log::get()->verbose("ekHpQm9sK4", "vkDestroySwapChainKHR");
-        }
-
-        swapChain_ = VK_NULL_HANDLE;
-      }
-      swapChain_ = swapChain;
+      return handle_;
     }
 
-    void create(const VkPhysicalDevice vkPhysicalDevice, const VkSurfaceKHR vkSdkSurface, SDL_Window *window);
+    void setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extent)
+    {
+      images_      = images;
+      imageFormat_ = imageFormat;
+      extent_      = extent;
+    }
 
-    void createImageViews();
+    std::vector<VkImage> images() const
+    {
+      return images_;
+    }
+
+    VkFormat imageFormat() const
+    {
+      return imageFormat_;
+    }
+
+    VkExtent2D extent() const
+    {
+      return extent_;
+    }
 
     std::vector<VkImage> swapChainImages() const
     {
-      return swapChainImages_;
+      return images_;
     }
 
     std::vector<VkImageView> imageViews() const
     {
       return imageViews_;
     }
-
-  private:
-    static VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR> &formats);
-
-    static VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR> &presentModes);
-
-    [[nodiscard]] static VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR &capabilities, SDL_Window *window);
   };
 
 } // namespace vul

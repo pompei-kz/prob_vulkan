@@ -125,18 +125,16 @@ namespace vul {
       return device_.get();
     }
 
-    void storeDevice(Device *device)
+    void storeDevice(std::unique_ptr<Device> device)
     {
-      if (device_.get() == device) return;
-
       storeSwapChain(nullptr);
       pipelines_.clear();
-      device_.reset(device);
+      device_ = std::move(device);
     }
 
-    void storeSwapChain(SwapChain *swapChain)
+    void storeSwapChain(std::unique_ptr<SwapChain> swapChain)
     {
-      swapChain_.reset(swapChain);
+      swapChain_ = std::move(swapChain);
     }
 
     SwapChain *swapChain() const
