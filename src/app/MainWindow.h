@@ -13,7 +13,8 @@ import SyncQueue;
 
 namespace app {
   class MainWindow
-  /// BEAN mainWindow app::FirstInit vul::HandleStore
+  /// BEAN mainWindow
+  /// DEPS app::FirstInit vul::HandleStore
   {
     SDL_Window *window_ = nullptr;
 

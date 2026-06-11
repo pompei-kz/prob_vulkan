@@ -12,7 +12,8 @@
 namespace app {
 
   class Application
-  /// BEAN application app::MainWindow vul::InitInstance back::BackStart vul::HandleStore app::FirstInit cmd::ExecuteCmd
+  /// BEAN application
+  /// DEPS app::MainWindow vul::InitInstance back::BackStart vul::HandleStore app::FirstInit cmd::ExecuteCmd
   {
 
     di::Getter<MainWindow>        &mainWindow_;

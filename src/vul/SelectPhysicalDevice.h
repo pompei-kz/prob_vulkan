@@ -12,7 +12,8 @@
 namespace vul {
 
   class SelectPhysicalDevice
-  /// BEAN initPhysicalDevice vul::HandleStore app::Settings vul::Print
+  /// BEAN initPhysicalDevice
+  /// DEPS vul::HandleStore app::Settings vul::Print
   {
     di::Getter<HandleStore>   &handleStore_;
     di::Getter<app::Settings> &setting_;

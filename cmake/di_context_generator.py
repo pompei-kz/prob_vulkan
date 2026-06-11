@@ -2,12 +2,20 @@
 """
 DI Context Generator
 Scans C++ header files for annotations of the form:
-    /// BEAN <name> [dep_type1 dep_type2 ...]
+    /// BEAN <name>
+    /// DEPS <dep_type1> <dep_type2> ...
+    /// DEPS <dep_type3> ...
 and generates a dependency-injection context class.
 
-The annotation must appear on the line immediately before the class opening brace,
-i.e., between the 'class Name' line and '{', or immediately before the class keyword.
-Both '// BEAN' and '/// BEAN' prefixes are accepted.
+A BEAN annotation declares a bean and carries ONLY the bean name. Dependencies
+are listed in one or more DEPS annotations that follow the BEAN. The DEPS lines
+may be repeated; every dependency type from each DEPS line is appended to the
+most recently declared bean. A DEPS annotation that is not preceded by a BEAN
+is meaningless and is ignored.
+
+The annotation block must appear on the lines around the class opening brace,
+i.e., between the 'class Name' line and '{', or immediately before the class
+keyword. Both '// BEAN' and '/// BEAN' prefixes are accepted (likewise DEPS).
 """
 
 import argparse
@@ -33,6 +41,8 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
     # Each entry: (namespace_name, depth_after_brace_opened)
     ns_stack: list[tuple[str, int]] = []
     beans: list[dict] = []
+    # The most recently declared bean in this file — DEPS lines attach to it.
+    current_bean: dict | None = None
 
     for i, line in enumerate(lines):
         # Strip line comments for brace counting so '// {' doesn't confuse us
@@ -53,13 +63,26 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
         while ns_stack and ns_stack[-1][1] > depth:
             ns_stack.pop()
 
-        # Look for BEAN annotation  (// BEAN or /// BEAN)
-        ann = re.search(r"/{2,}\s*BEAN\s+(\S+)(.*)", line)
+        # Look for DEPS annotation  (// DEPS or /// DEPS). It appends its
+        # dependency types to the current bean. A DEPS without a preceding
+        # BEAN is meaningless and is ignored (with a warning).
+        dep_ann = re.search(r"/{2,}\s*DEPS\b(.*)", line)
+        if dep_ann:
+            deps = [d for d in dep_ann.group(1).strip().split() if d]
+            if current_bean is not None:
+                current_bean["deps"].extend(deps)
+            elif deps:
+                print(f"4WYWniEyQh :: Warning: DEPS annotation at {header}:{i+1} — "
+                      f"no preceding BEAN, ignoring", file=sys.stderr)
+            continue
+
+        # Look for BEAN annotation  (// BEAN or /// BEAN). It carries only the
+        # bean name; any trailing tokens are ignored.
+        ann = re.search(r"/{2,}\s*BEAN\s+(\S+)", line)
         if not ann:
             continue
 
         bean_name = ann.group(1)
-        deps      = [d for d in ann.group(2).strip().split() if d]
 
         # Find nearest 'class ClassName' within ±3 lines
         class_name: str | None = None
@@ -77,12 +100,13 @@ def _parse_file(header: Path, src_dir: Path) -> list[dict]:
         current_ns = "::".join(n for n, _ in ns_stack)
         full_type  = f"{current_ns}::{class_name}" if current_ns else class_name
 
-        beans.append({
+        current_bean = {
             "name":       bean_name,
             "class_type": full_type,
-            "deps":       deps,
+            "deps":       [],
             "include":    rel,
-        })
+        }
+        beans.append(current_bean)
 
     return beans
 

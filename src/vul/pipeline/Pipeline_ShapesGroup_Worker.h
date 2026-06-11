@@ -13,7 +13,8 @@
 namespace vul::pipeline {
 
   class Pipeline_ShapesGroup_Worker
-  /// BEAN pipeline_ShapesGroup_Worker vul::HandleStore
+  /// BEAN pipeline_ShapesGroup_Worker
+  /// DEPS vul::HandleStore
   {
     di::Getter<HandleStore> &handleStore_;
 

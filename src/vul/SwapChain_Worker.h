@@ -18,7 +18,8 @@
 namespace vul {
 
   class SwapChain_Worker
-  /// BEAN swapChainWorker vul::HandleStore app::MainWindow
+  /// BEAN swapChainWorker
+  /// DEPS vul::HandleStore app::MainWindow
   {
     di::Getter<HandleStore>     &handleStore_;
     di::Getter<app::MainWindow> &mainWindow_;

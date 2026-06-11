@@ -17,7 +17,8 @@
 namespace vul {
 
   class Device_Worker
-  /// BEAN device_Worker vul::HandleStore
+  /// BEAN device_Worker
+  /// DEPS vul::HandleStore
   {
     di::Getter<HandleStore> &handleStore_;
 

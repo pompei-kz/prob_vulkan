@@ -26,7 +26,7 @@ namespace vul {
     di::Getter<app::MainWindow>      &mainWindow_;
     di::Getter<SelectPhysicalDevice> &selectPhysicalDevice_;
     di::Getter<SwapChain_Worker>     &swapChain_Worker_;
-    di::Getter<vul::Device_Worker>   &device_Worker_;
+    di::Getter<Device_Worker>        &device_Worker_;
 
   public:
     explicit InitInstance(di::Getter<HandleStore>          &handleStore,
@@ -36,7 +36,7 @@ namespace vul {
                           di::Getter<app::MainWindow>      &mainWindow,
                           di::Getter<SelectPhysicalDevice> &selectPhysicalDevice,
                           di::Getter<SwapChain_Worker>     &swapChain_Worker,
-                          di::Getter<vul::Device_Worker>   &device_Worker)
+                          di::Getter<Device_Worker>        &device_Worker)
         : handleStore_(handleStore)
         , setting_(setting)
         , print_(print)

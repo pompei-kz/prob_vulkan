@@ -16,7 +16,8 @@
 namespace cmd {
 
   class ExecuteCmd
-  /// BEAN executeCmd vul::HandleStore vul::pipeline::Pipeline_ShapesGroup_Worker
+  /// BEAN executeCmd
+  /// DEPS vul::HandleStore vul::pipeline::Pipeline_ShapesGroup_Worker
   {
 
     util::Log *log_ = util::Log::get();

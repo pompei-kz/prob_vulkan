@@ -72,8 +72,6 @@ namespace vul {
 
     selectPhysicalDevice_->select();
 
-    createDevice();
-
     device_Worker_->create();
 
     swapChain_Worker_->create();
