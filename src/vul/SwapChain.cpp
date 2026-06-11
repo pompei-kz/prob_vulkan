@@ -4,10 +4,14 @@
 
 #include "SwapChain.h"
 
-#include "../util/util.h"
-#include "model/SwapChainSupport.h"
+#include "util/Log.h"
 
 namespace vul {
+
+  SwapChain::~SwapChain()
+  {
+    resetHandle(VK_NULL_HANDLE);
+  }
 
   void SwapChain::resetHandle(const VkSwapchainKHR handle)
   {
@@ -34,5 +38,12 @@ namespace vul {
       }
     }
     imageViews_ = imageViews;
+  }
+
+  void SwapChain::setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extent)
+  {
+    images_      = images;
+    imageFormat_ = imageFormat;
+    extent_      = extent;
   }
 } // namespace vul

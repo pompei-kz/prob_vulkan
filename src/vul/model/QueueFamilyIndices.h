@@ -10,12 +10,12 @@
 namespace vul::model {
   struct QueueFamilyIndices
   {
-    std::optional<uint32_t> graphicsFamily;
-    std::optional<uint32_t> presentFamily;
+    std::optional<uint32_t> indexGraphics;
+    std::optional<uint32_t> indexPresent;
 
     [[nodiscard]] bool complete() const
     {
-      return graphicsFamily.has_value() && presentFamily.has_value();
+      return indexGraphics.has_value() && indexPresent.has_value();
     }
   };
 

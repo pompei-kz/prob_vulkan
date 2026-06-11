@@ -61,6 +61,10 @@ add_executable(prob_vulkan
     src/vul/pipeline/Pipeline_ShapesGroup_Worker.h
     src/vul/SwapChain_Worker.cpp
     src/vul/SwapChain_Worker.h
+    src/vul/Device_Worker.cpp
+    src/vul/Device_Worker.h
+    src/vul/model/Queues.cpp
+    src/vul/model/Queues.h
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

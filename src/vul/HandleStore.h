@@ -13,7 +13,7 @@
 namespace vul {
 
   /**
-   * Stores handle of Vulkan and destroys its
+   * Stores handles of Vulkan and destroys its
    */
   class HandleStore
   /// BEAN handleStore
@@ -63,7 +63,7 @@ namespace vul {
      *
      * @param vkInstance handle of VkInstance
      */
-    void storeVkInstance(VkInstance vkInstance);
+    void resetVkInstance(VkInstance vkInstance);
 
     /**
      * Stores handle of VkDebugUtilsMessenger.
@@ -74,14 +74,14 @@ namespace vul {
      *
      * @param vkMessenger handle of VkDebugUtilsMessenger
      */
-    void storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger);
+    void resetVkMessenger(VkDebugUtilsMessengerEXT vkMessenger);
 
     /**
      * Stores the Vulkan surface handle for the window.
      *
      * @param vkSdkSurface Vulkan surface handle for the window.
      */
-    void storeVkSdkSurface(VkSurfaceKHR vkSdkSurface);
+    void resetVkSdkSurface(VkSurfaceKHR vkSdkSurface);
 
     [[nodiscard]] VkSurfaceKHR VkSdkSurface() const
     {
@@ -112,7 +112,7 @@ namespace vul {
 
     void destroy()
     {
-      storeVkInstance(VK_NULL_HANDLE);
+      resetVkInstance(VK_NULL_HANDLE);
     }
 
     [[nodiscard]] VkSurfaceKHR vkSdkSurface() const
@@ -125,14 +125,14 @@ namespace vul {
       return device_.get();
     }
 
-    void storeDevice(std::unique_ptr<Device> device)
+    void resetDevice(std::unique_ptr<Device> device)
     {
-      storeSwapChain(nullptr);
+      resetSwapChain(nullptr);
       pipelines_.clear();
       device_ = std::move(device);
     }
 
-    void storeSwapChain(std::unique_ptr<SwapChain> swapChain)
+    void resetSwapChain(std::unique_ptr<SwapChain> swapChain)
     {
       swapChain_ = std::move(swapChain);
     }

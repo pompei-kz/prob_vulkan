@@ -28,7 +28,7 @@ namespace vul::pipeline {
   {
     VkCommandPoolCreateInfo ci{};
     ci.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-    ci.queueFamilyIndex = handleStore_->device()->graphicsFamilyIndex();
+    ci.queueFamilyIndex = handleStore_->device()->queueFamilyIndices().indexGraphics.value();
     ci.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
 
     VkCommandPool vkCommandPool;

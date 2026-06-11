@@ -74,8 +74,10 @@ namespace vul {
 
     createDevice();
 
-    swapChain_worker_->create();
-    swapChain_worker_->createImageViews();
+    device_Worker_->create();
+
+    swapChain_Worker_->create();
+    swapChain_Worker_->createImageViews();
   }
 
   void InitInstance::createVkInstance() const
@@ -133,7 +135,7 @@ namespace vul {
       throw std::runtime_error(std::string("c9Hp80dwaM :: failed to create Vulkan instance: VkResult = ") + util::VkResult_to_str(result));
     }
 
-    handleStore_->storeVkInstance(vkInstance);
+    handleStore_->resetVkInstance(vkInstance);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("qClyNZccLo", "Vulkan instance created successfully");
   }
@@ -170,7 +172,7 @@ namespace vul {
       util::Log::get()->error("dEt7M1FfiK", "Cannot call func `{}`", funcName);
     }
 
-    handleStore_->storeVkMessenger(vkMessenger);
+    handleStore_->resetVkMessenger(vkMessenger);
 
     if (util::Log::get()->hasInfo()) util::Log::get()->info("7pa1htAJ0T", "VkDebugUtilsMessengerEXT created successfully");
   }
@@ -186,17 +188,7 @@ namespace vul {
       throw std::runtime_error(std::string("idXh7XaHT6 :: ERROR IN `SDL_Vulkan_CreateSurface()`: ") + SDL_GetError());
     }
 
-    handleStore_->storeVkSdkSurface(vkSdkSurface);
-  }
-
-  void InitInstance::createDevice() const
-  {
-    const VkSurfaceKHR     vkSdkSurface     = handleStore_->vkSdkSurface();
-    const VkPhysicalDevice vkPhysicalDevice = handleStore_->selectedVkPhysicalDevice();
-
-    std::unique_ptr<Device> device = std::make_unique<Device>();
-    device->create(vkPhysicalDevice, vkSdkSurface);
-    handleStore_->storeDevice(std::move(device));
+    handleStore_->resetVkSdkSurface(vkSdkSurface);
   }
 
 } // namespace vul

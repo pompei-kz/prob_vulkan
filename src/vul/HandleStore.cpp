@@ -10,7 +10,7 @@
 namespace vul {
   HandleStore::~HandleStore()
   {
-    storeVkInstance(VK_NULL_HANDLE);
+    resetVkInstance(VK_NULL_HANDLE);
   }
 
   void HandleStore::mark_SDL_Initialized()
@@ -30,7 +30,7 @@ namespace vul {
     }
   }
 
-  void HandleStore::storeVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
+  void HandleStore::resetVkMessenger(VkDebugUtilsMessengerEXT vkMessenger)
   {
     if (vkDebugMessenger_ && vkInstance_) {
       DestroyDebugUtilsMessengerEXT(vkInstance_, vkDebugMessenger_, nullptr);
@@ -41,7 +41,7 @@ namespace vul {
     }
   }
 
-  void HandleStore::storeVkSdkSurface(VkSurfaceKHR vkSdkSurface)
+  void HandleStore::resetVkSdkSurface(VkSurfaceKHR vkSdkSurface)
   {
     if (vkSdkSurface_) {
       SDL_Vulkan_DestroySurface(vkInstance_, vkSdkSurface_, nullptr);
@@ -50,13 +50,13 @@ namespace vul {
     vkSdkSurface_ = vkSdkSurface;
   }
 
-  void HandleStore::storeVkInstance(VkInstance vkInstance)
+  void HandleStore::resetVkInstance(VkInstance vkInstance)
   {
-    storeDevice(nullptr);
+    resetDevice(nullptr);
 
-    storeVkSdkSurface(VK_NULL_HANDLE);
+    resetVkSdkSurface(VK_NULL_HANDLE);
     selectVkPhysicalDevice(VK_NULL_HANDLE);
-    storeVkMessenger(VK_NULL_HANDLE);
+    resetVkMessenger(VK_NULL_HANDLE);
     if (vkInstance_) {
       vkDestroyInstance(vkInstance_, nullptr);
       vkInstance_ = VK_NULL_HANDLE;

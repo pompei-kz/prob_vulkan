@@ -40,9 +40,9 @@ namespace vul {
     createInfo.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;         // Изображения будут использоваться как color attachment.
 
     const model::QueueFamilyIndices indices              = model::findQueueFamilies(vkPhysicalDevice, vkSdkSurface);
-    const uint32_t                  queueFamilyIndices[] = {*indices.graphicsFamily, *indices.presentFamily};
+    const uint32_t                  queueFamilyIndices[] = {*indices.indexGraphics, *indices.indexPresent};
 
-    if (indices.graphicsFamily != indices.presentFamily) {
+    if (indices.indexGraphics != indices.indexPresent) {
       createInfo.imageSharingMode      = VK_SHARING_MODE_CONCURRENT; // Изображения доступны нескольким семействам очередей.
       createInfo.queueFamilyIndexCount = 2;                          // Количество семейств очередей, которым нужен доступ.
       createInfo.pQueueFamilyIndices   = queueFamilyIndices;         // Индексы графического и present семейств очередей.
@@ -79,7 +79,7 @@ namespace vul {
       swapChain->setEnvironment(swapChainImages, surfaceFormat.format, extent);
     }
 
-    handleStore_->storeSwapChain(std::move(swapChain));
+    handleStore_->resetSwapChain(std::move(swapChain));
 
     if (util::Log::get()->hasVerbose()) {
       util::Log::get()->verbose("tYrHJ2OvO3", "Swap chain created with {}", imageCount);

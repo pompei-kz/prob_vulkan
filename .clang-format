@@ -20,7 +20,7 @@ NamespaceIndentation: All
 BreakConstructorInitializers: BeforeComma
 
 AllowShortIfStatementsOnASingleLine: true
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: InlineOnly
 
 Standard: Latest
 
@@ -41,3 +41,4 @@ PenaltyReturnTypeOnItsOwnLine: 1000000
 
 AllowShortCaseLabelsOnASingleLine: true
 IndentCaseLabels: true
+

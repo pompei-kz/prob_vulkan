@@ -3,10 +3,8 @@
 //
 
 #pragma once
-#include "../util/Log.h"
 #include "model/QueueFamilyIndices.h"
 
-#include <SDL3/SDL_video.h>
 #include <stdexcept>
 #include <vector>
 #include <vulkan/vulkan.h>
@@ -15,6 +13,9 @@ namespace vul {
 
   class SwapChain
   {
+    /**
+     * Descriptor of the reference logical Vulkan device
+     */
     VkDevice vkDevice_;
 
     /**
@@ -51,50 +52,24 @@ namespace vul {
       }
     }
 
-    ~SwapChain()
-    {
-      resetHandle(VK_NULL_HANDLE);
-    }
+    ~SwapChain();
 
     void resetHandle(const VkSwapchainKHR handle);
     void resetImageViews(const std::vector<VkImageView> &imageViews);
 
-    [[nodiscard]] VkSwapchainKHR handle() const
-    {
-      return handle_;
-    }
+    [[nodiscard]] VkSwapchainKHR handle() const { return handle_; }
 
-    void setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extent)
-    {
-      images_      = images;
-      imageFormat_ = imageFormat;
-      extent_      = extent;
-    }
+    void setEnvironment(const std::vector<VkImage> &images, const VkFormat imageFormat, const VkExtent2D extend);
 
-    std::vector<VkImage> images() const
-    {
-      return images_;
-    }
+    std::vector<VkImage> images() const { return images_; }
 
-    VkFormat imageFormat() const
-    {
-      return imageFormat_;
-    }
+    VkFormat imageFormat() const { return imageFormat_; }
 
-    VkExtent2D extent() const
-    {
-      return extent_;
-    }
+    VkExtent2D extent() const { return extent_; }
 
-    std::vector<VkImage> swapChainImages() const
-    {
-      return images_;
-    }
+    std::vector<VkImage> swapChainImages() const { return images_; }
 
-    std::vector<VkImageView> imageViews() const
-    {
-      return imageViews_;
-    }
+    std::vector<VkImageView> imageViews() const { return imageViews_; }
   };
 
 } // namespace vul

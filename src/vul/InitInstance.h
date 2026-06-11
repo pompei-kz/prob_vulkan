@@ -3,6 +3,7 @@
 //
 
 #pragma once
+#include "Device_Worker.h"
 #include "HandleStore.h"
 #include "Print.h"
 #include "SelectPhysicalDevice.h"
@@ -14,7 +15,9 @@
 
 namespace vul {
   class InitInstance
-  /// BEAN initInstance vul::HandleStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice vul::SwapChain_Worker
+  /// BEAN initInstance
+  /// DEPS vul::HandleStore app::Settings vul::Print app::FirstInit app::MainWindow vul::SelectPhysicalDevice
+  /// DEPS vul::SwapChain_Worker vul::Device_Worker
   {
     di::Getter<HandleStore>          &handleStore_;
     di::Getter<app::Settings>        &setting_;
@@ -22,7 +25,8 @@ namespace vul {
     di::Getter<app::FirstInit>       &firstInit_;
     di::Getter<app::MainWindow>      &mainWindow_;
     di::Getter<SelectPhysicalDevice> &selectPhysicalDevice_;
-    di::Getter<SwapChain_Worker>     &swapChain_worker_;
+    di::Getter<SwapChain_Worker>     &swapChain_Worker_;
+    di::Getter<vul::Device_Worker>   &device_Worker_;
 
   public:
     explicit InitInstance(di::Getter<HandleStore>          &handleStore,
@@ -31,14 +35,16 @@ namespace vul {
                           di::Getter<app::FirstInit>       &firstInit,
                           di::Getter<app::MainWindow>      &mainWindow,
                           di::Getter<SelectPhysicalDevice> &selectPhysicalDevice,
-                          di::Getter<SwapChain_Worker>     &swapChain_Worker)
+                          di::Getter<SwapChain_Worker>     &swapChain_Worker,
+                          di::Getter<vul::Device_Worker>   &device_Worker)
         : handleStore_(handleStore)
         , setting_(setting)
         , print_(print)
         , firstInit_(firstInit)
         , mainWindow_(mainWindow)
         , selectPhysicalDevice_(selectPhysicalDevice)
-        , swapChain_worker_(swapChain_Worker)
+        , swapChain_Worker_(swapChain_Worker)
+        , device_Worker_(device_Worker)
     {}
 
     void initialize() const;
@@ -47,6 +53,5 @@ namespace vul {
     void createVkInstance() const;
     void initVkMessenger() const;
     void createVkSdkSurface() const;
-    void createDevice() const;
   };
 } // namespace vul

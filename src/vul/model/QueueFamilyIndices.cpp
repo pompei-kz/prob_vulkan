@@ -25,7 +25,7 @@ namespace vul::model {
     for (uint32_t i = 0; i < queueFamilies.size(); ++i) {
 
       if ((queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) != 0) {
-        result.graphicsFamily = i;
+        result.indexGraphics = i;
       }
 
       // Флаг поддержки показа через Vulkan surface.
@@ -34,7 +34,7 @@ namespace vul::model {
       // Проверяем поддержку показа Vulkan для семейства очередей.
       vkGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, vkSdkSurface, &presentSupport);
       if (presentSupport == VK_TRUE) {
-        result.presentFamily = i;
+        result.indexPresent = i;
       }
 
       if (result.complete()) {
