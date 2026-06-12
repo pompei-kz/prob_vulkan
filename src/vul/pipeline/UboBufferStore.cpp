@@ -49,7 +49,7 @@ namespace vul::pipeline {
     memoryRef_ = memoryRef;
   }
 
-  void UboBufferStore::populateUboBufferStore(const std::string &pipelineID, const VkDeviceSize bufferSize)
+  void UboBufferStore::populateUboBufferStore(const std::string &pipelineID, const int flightIndex, const VkDeviceSize bufferSize)
   {
     const std::string &uboName = name_;
 
@@ -70,8 +70,9 @@ namespace vul::pipeline {
 
       if (util::Log::get()->hasVerbose()) {
         util::Log::get()->verbose("gd1f36ObfI",
-                                  "Pipeline_ShapeGroup[{}]: {}: vkCreateBuffer() called OK, H={:#x}",
+                                  "Pipeline_ShapeGroup[{}: {}]: {}: vkCreateBuffer() called OK, H={:#x}",
                                   pipelineID,
+                                  flightIndex,
                                   uboName,
                                   reinterpret_cast<uint64_t>(cameraBuffer));
       }
@@ -103,8 +104,9 @@ namespace vul::pipeline {
 
       if (util::Log::get()->hasVerbose()) {
         util::Log::get()->verbose("HWiZrZgWlj",
-                                  "Pipeline_ShapeGroup[{}]: {}: vkAllocateMemory() called OK, H={}",
+                                  "Pipeline_ShapeGroup[{}: {}]: {}: vkAllocateMemory() called OK, H={}",
                                   pipelineID,
+                                  flightIndex,
                                   uboName,
                                   static_cast<void *>(cameraMemory));
       }
@@ -122,16 +124,17 @@ namespace vul::pipeline {
         throw std::runtime_error(std::format("8NoV6r7782 :: {}: ERR vkMapMemory(): VkResult = ", uboName, util::VkResult_to_str(result)));
       }
 
+      resetMemoryRef(cameraUboMemoryRef);
+
       if (util::Log::get()->hasVerbose()) {
         util::Log::get()->verbose("62inNEWxJI", //
-                                  "Pipeline_ShapeGroup[{}]: {}: vkMapMemory() called OK, H={}, ref={}",
+                                  "Pipeline_ShapeGroup[{}: {}]: {}: vkMapMemory() called OK, H={}, ref={}",
                                   pipelineID,
+                                  flightIndex,
                                   uboName,
                                   static_cast<void *>(memory()),
                                   cameraUboMemoryRef);
       }
-
-      resetMemoryRef(cameraUboMemoryRef);
     }
 
     {
@@ -157,8 +160,9 @@ namespace vul::pipeline {
 
       if (util::Log::get()->hasVerbose()) {
         util::Log::get()->verbose("i0sUm2ch5l",
-                                  "Pipeline_ShapeGroup[{}]: {}: vkCreateDescriptorPool() called OK, H={}",
+                                  "Pipeline_ShapeGroup[{}: {}]: {}: vkCreateDescriptorPool() called OK, H={}",
                                   pipelineID,
+                                  flightIndex,
                                   uboName,
                                   static_cast<void *>(descriptorPool));
       }

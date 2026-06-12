@@ -147,7 +147,7 @@ namespace vul::pipeline {
 
     for (int i = 0; i < Pipeline_ShapeGroup::FRAMES_IN_FLIGHT; ++i) {
       auto flight = std::make_unique<ShapeGroupFlightStore>(device);
-      flight->populate(topStore_->selectedVkPhysicalDevice(), cmd->id, pipeline->descriptorSetLayout());
+      flight->populate(topStore_->selectedVkPhysicalDevice(), cmd->id, pipeline->descriptorSetLayout(), i);
       pipeline->flights.push_back(std::move(flight));
     }
   }

@@ -49,7 +49,7 @@ namespace vul::pipeline {
 
     void resetMemoryRef(void *memoryRef);
 
-    void populateUboBufferStore(const std::string &pipelineID, const VkDeviceSize bufferSize);
+    void populateUboBufferStore(const std::string &pipelineID, const int flightIndex, const VkDeviceSize bufferSize);
   };
 
 } // namespace vul::pipeline
