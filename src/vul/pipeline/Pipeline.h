@@ -19,6 +19,8 @@ namespace vul::pipeline {
 
   public:
     virtual ~Pipeline() = default;
+
+    [[nodiscard]] VkDevice device() const { return device_; }
   };
 
 } // namespace vul::pipeline

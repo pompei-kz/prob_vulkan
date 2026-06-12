@@ -70,6 +70,14 @@ add_executable(prob_vulkan
     src/vul/ImageStore_Worker.cpp
     src/vul/ImageStore_Worker.h
     src/vul/pipeline/model/CameraUBO.h
+    src/vul/pipeline/ShapeGroupFlightStore.cpp
+    src/vul/pipeline/ShapeGroupFlightStore.h
+    src/vul/pipeline/model/LightType.h
+    src/vul/pipeline/model/LightType.h
+    src/vul/pipeline/model/Light.h
+    src/vul/pipeline/model/LightsUbo.h
+    src/vul/pipeline/UboBufferStore.h
+    src/vul/pipeline/UboBufferStore.cpp
 )
 
 target_include_directories(prob_vulkan PRIVATE src)

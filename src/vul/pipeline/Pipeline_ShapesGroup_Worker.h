@@ -26,10 +26,12 @@ namespace vul::pipeline {
     void execute(const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
 
   private:
+
     void populatePipeline(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
     void createVkCommandPool(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
     void createVkCommandBuffers(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
-    void createCameraUboEnv(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
-  };
 
+    void createDescriptorSetLayout(const std::unique_ptr<Pipeline_ShapeGroup> &unique, const cmd::CmdSetPipeline_ShapeGroup *cmd) const;
+    void  createFrameFlights(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline, const cmd::CmdSetPipeline_ShapeGroup * cmd) const;
+  };
 } // namespace vul::pipeline

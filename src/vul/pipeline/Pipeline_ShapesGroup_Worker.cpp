@@ -30,9 +30,9 @@ namespace vul::pipeline {
 
     createVkCommandPool(pipeline, cmd);
     createVkCommandBuffers(pipeline, cmd);
-
-    createCameraUboEnv(pipeline, cmd);
-    createCameraUboDescriptorSetLayoutBinding(pipeline, cmd);
+    createDescriptorSetLayout(pipeline, cmd);
+    createDescriptorSetLayout(pipeline, cmd);
+    createFrameFlights(pipeline, cmd);
 
     // TODO Продолжить здесь
   }
@@ -51,7 +51,7 @@ namespace vul::pipeline {
       throw std::runtime_error(std::string("GO6RRSCwQJ :: failed to create command pool: VkResult = ") + util::VkResult_to_str(result));
     }
 
-    pipeline->resetVkCommandPool(commandPool);
+    pipeline->resetCommandPool(commandPool);
 
     if (util::Log::get()->hasVerbose()) {
       util::Log::get()->verbose("t1RBFCyIOQ",
@@ -84,7 +84,7 @@ namespace vul::pipeline {
 
     if (util::Log::get()->hasInfo()) {
       std::string str;
-      for (auto commandBuffer : commandBuffers) {
+      for (const auto commandBuffer : commandBuffers) {
         if (str.length() > 0) str += ", ";
         str += std::format("{}", static_cast<void *>(commandBuffer));
       }
@@ -97,110 +97,58 @@ namespace vul::pipeline {
     pipeline->resetVkCommandBuffers(commandBuffers);
   }
 
-  void Pipeline_ShapesGroup_Worker::createCameraUboEnv(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline,
+  void Pipeline_ShapesGroup_Worker::createDescriptorSetLayout(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline,
+                                                              const cmd::CmdSetPipeline_ShapeGroup       *cmd) const
+  {
+    const VkDevice device = topStore_->device()->handle();
+
+    std::vector<VkDescriptorSetLayoutBinding> bindings{};
+    bindings.resize(2);
+
+    {
+      bindings[0].binding            = 0;
+      bindings[0].descriptorType     = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+      bindings[0].descriptorCount    = 1;
+      bindings[0].stageFlags         = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+      bindings[0].pImmutableSamplers = nullptr;
+
+      bindings[1].binding            = 1;
+      bindings[1].descriptorType     = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+      bindings[1].descriptorCount    = 1;
+      bindings[1].stageFlags         = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
+      bindings[1].pImmutableSamplers = nullptr;
+    }
+
+    VkDescriptorSetLayoutCreateInfo ci{};
+    ci.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    ci.bindingCount = bindings.size();
+    ci.pBindings    = bindings.data();
+
+    VkDescriptorSetLayout layout{};
+
+    if (const VkResult result = vkCreateDescriptorSetLayout(device, &ci, nullptr, &layout); result != VK_SUCCESS) {
+      throw std::runtime_error(std::format("lwVho03Xia :: ERROR calling vkCreateDescriptorSetLayout(): VkResult = {}", //
+                                           util::VkResult_to_str(result)));
+    }
+
+    pipeline->resetDescriptorSetLayout(layout);
+
+    if (util::Log::get()->hasVerbose()) {
+      util::Log::get()->verbose("VphJq8B3uw",
+                                "Pipeline_ShapeGroup[{}]: vkCreateDescriptorSetLayout() called OK, H={}",
+                                cmd->id,
+                                static_cast<void *>(layout));
+    }
+  }
+  void Pipeline_ShapesGroup_Worker::createFrameFlights(const std::unique_ptr<Pipeline_ShapeGroup> &pipeline,
                                                        const cmd::CmdSetPipeline_ShapeGroup       *cmd) const
   {
     const VkDevice device = topStore_->device()->handle();
 
-    {
-      VkBufferCreateInfo ci{};
-      ci.sType       = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-      ci.size        = sizeof(model::CameraUBO);
-      ci.usage       = VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
-      ci.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-      VkBuffer cameraBuffer;
-
-      if (const VkResult result = vkCreateBuffer(device, &ci, nullptr, &cameraBuffer); result != VK_SUCCESS) {
-        throw std::runtime_error(std::string("OFq7HkWThf :: failed to create camera uniform buffer: VkResult = ") + util::VkResult_to_str(result));
-      }
-
-      if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("Li3pcANb5m",
-                                  "Pipeline_ShapeGroup[{}]: Camera UBO: vkCreateBuffer() called OK, H={}",
-                                  cmd->id,
-                                  static_cast<void *>(cameraBuffer));
-      }
-
-      pipeline->resetCameraUboBuffer(cameraBuffer);
-    }
-    {
-      VkMemoryRequirements mr{};
-
-      vkGetBufferMemoryRequirements(device, pipeline->cameraUboBuffer(), &mr);
-
-      VkPhysicalDevice physicalDevice = topStore_->selectedVkPhysicalDevice();
-
-      VkMemoryAllocateInfo mai{};
-      mai.sType          = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-      mai.allocationSize = mr.size;
-      mai.memoryTypeIndex =
-          findMemoryType("gcuZP8ZUt6", physicalDevice, mr.memoryTypeBits, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-      VkDeviceMemory cameraMemory;
-
-      if (const VkResult result = vkAllocateMemory(device, &mai, nullptr, &cameraMemory); result != VK_SUCCESS) {
-        throw std::runtime_error(std::string("U9rlRvHlg3 :: Camera UBO: ERR vkAllocateMemory(): VkResult = ") + util::VkResult_to_str(result));
-      }
-
-      pipeline->resetCameraUboMemory(cameraMemory);
-
-      if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("jr8WebU9CV",
-                                  "Pipeline_ShapeGroup[{}]: Camera UBO: vkAllocateMemory() called OK, H={}",
-                                  cmd->id,
-                                  static_cast<void *>(cameraMemory));
-      }
-    }
-    {
-      if (const VkResult result = vkBindBufferMemory(device, pipeline->cameraUboBuffer(), pipeline->cameraUboMemory(), 0); result != VK_SUCCESS) {
-        throw std::runtime_error(std::string("xNVcbXWFuU :: Camera UBO: ERR vkBindBufferMemory(): VkResult = ") + util::VkResult_to_str(result));
-      }
-    }
-    {
-      void *cameraUboMemoryRef = nullptr;
-      if (const VkResult result = vkMapMemory(device, pipeline->cameraUboMemory(), 0, VK_WHOLE_SIZE, 0, &cameraUboMemoryRef); result != VK_SUCCESS) {
-        throw std::runtime_error(std::string("kwMxuFvlHT :: Camera UBO: ERR vkMapMemory(): VkResult = ") + util::VkResult_to_str(result));
-      }
-
-      if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("Gs5DEL29fq", //
-                                  "Pipeline_ShapeGroup[{}]: Camera UBO: vkMapMemory() called OK, H={}, ref={}",
-                                  cmd->id,
-                                  static_cast<void *>(pipeline->cameraUboMemory()),
-                                  cameraUboMemoryRef);
-      }
-
-      pipeline->resetCameraUboMemoryRef(cameraUboMemoryRef);
-    }
-    {
-      VkDescriptorSetLayoutBinding cameraBinding{};
-      cameraBinding.binding            = 0;
-      cameraBinding.descriptorType     = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-      cameraBinding.descriptorCount    = 1;
-      cameraBinding.stageFlags         = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT;
-      cameraBinding.pImmutableSamplers = nullptr;
-
-      VkDescriptorSetLayoutCreateInfo ci{};
-      ci.sType        = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
-      ci.bindingCount = 1;
-      ci.pBindings    = &cameraBinding;
-
-      VkDescriptorSetLayout layout{};
-
-      if (const VkResult result = vkCreateDescriptorSetLayout(device, &ci, nullptr, &layout); result != VK_SUCCESS) {
-        throw std::runtime_error(std::string("lwVho03Xia :: Camera UBO: ERROR calling vkCreateDescriptorSetLayout(): VkResult = ") +
-                                 util::VkResult_to_str(result));
-      }
-
-      pipeline->resetDescriptorSetLayout(layout);
-
-      if (util::Log::get()->hasVerbose()) {
-        util::Log::get()->verbose("VphJq8B3uw",
-                                  "Pipeline_ShapeGroup[{}]: Camera UBO: vkCreateDescriptorSetLayout() called OK, H={}",
-                                  cmd->id,
-                                  static_cast<void *>(layout));
-      }
+    for (int i = 0; i < Pipeline_ShapeGroup::FRAMES_IN_FLIGHT; ++i) {
+      auto flight = std::make_unique<ShapeGroupFlightStore>(device);
+      flight->populate(topStore_->selectedVkPhysicalDevice(), cmd->id, pipeline->descriptorSetLayout());
+      pipeline->flights.push_back(std::move(flight));
     }
   }
 
