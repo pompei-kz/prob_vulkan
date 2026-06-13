@@ -44,7 +44,7 @@ namespace vul::pipeline {
       if (imageAvailableSemaphore_) {
         vkDestroySemaphore(device_, imageAvailableSemaphore_, nullptr);
         if (util::Log::get()->hasVerbose()) {
-          util::Log::get()->verbose("pVqzS9dW2M", "vkDestroySemaphore(imageAvailableSemaphore), H={}", static_cast<void *>(imageAvailableSemaphore_));
+          util::Log::get()->verbose("pVqz3S9dW2M", "vkDestroySemaphore(imageAvailableSemaphore), H={}", static_cast<void *>(imageAvailableSemaphore_));
         }
       }
       imageAvailableSemaphore_ = imageAvailableSemaphore;
